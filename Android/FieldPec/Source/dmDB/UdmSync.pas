@@ -11,7 +11,8 @@ uses
   FireDAC.Phys, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client,System.Json.writers,System.IniFiles,System.JSON.Types,
   IdBaseComponent, IdComponent, IdIPWatch, FireDAC.Stan.Param, FireDAC.DatS,
-  FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet;
+  FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Stan.StorageJSON;
 
 type
   TdmSync = class(TDataModule)
@@ -26,16 +27,30 @@ type
     PRODUTORES: TFDQuery;
     AUX_REBANHO: TFDQuery;
     ANIMAIS: TFDQuery;
+    BEBEDOURO: TFDQuery;
+    COCHO: TFDQuery;
+    COCHOID: TIntegerField;
+    COCHOID_PASTO: TIntegerField;
+    COCHONOME: TStringField;
+    COCHOTAG: TStringField;
+    COCHOID_USUARIO: TIntegerField;
+    COCHODATAREG: TSQLTimeStampField;
+    COCHOSTATUS: TIntegerField;
+    COCHOID_MINERAL: TIntegerField;
+    COCHOMETRAGEM: TBCDField;
+    COCHOCREEPFEED: TIntegerField;
+    FDStanStorageJSONLink1: TFDStanStorageJSONLink;
+    AUX_MOTIVO_MOVIMENTACAO: TFDQuery;
   private
-    { Private declarations }
+
   public
     Host,Porta:string;
-    function GetGenerico(DataSet: TFDQuery): string;
-    function GetGenericoPostIdPropriedade(DataSet: TFDQuery): string;
-    function GetAnimais: string;
+    function  GetGenerico(DataSet: TFDQuery): string;
+    function  GetGenericoPostIdPropriedade(DataSet: TFDQuery): string;
+    function  GetAnimais: string;
     procedure DeletaTabelaSync(Atabela:string);
     procedure DeletaTabelaSyncPropriedade(Atabela,vIDProp:string);
-    function TestaServidor: string;
+    function  TestaServidor: string;
   end;
 
 var
@@ -54,7 +69,6 @@ uses UDmDB, UPrincipal, UFSync;
 
 
 { TdmSync }
-
 procedure TdmSync.DeletaTabelaSync(Atabela: string);
 begin
  with qryAux,qryAux.SQL do
@@ -249,6 +263,10 @@ begin
              end;
             try
              DataSet.ApplyUpdates(-1);
+             TThread.Synchronize(nil, procedure
+             begin
+              frmPrincipal.FrameSync1.mlog.text :=('Registros '+intToStr(i)+' de '+intToStr(vJoGet.Count));
+             end);
             except
              on E: Exception do
               result:='Erro:'+E.Message;
@@ -320,7 +338,13 @@ begin
      begin
       if(vJsonString<>'{"'+DataSet.Name+'":[]}') then
       begin
-        DeletaTabelaSyncPropriedade(DataSet.Name,dmdb.vIdPropriedade);
+        if (DataSet.Name='COCHO')then
+         dmdb.DeletaCochoPropriedade;
+        if (DataSet.Name='BEBEDOURO') then
+         dmdb.DeletaBebedouroPropriedade;
+        if (DataSet.Name<>'COCHO')and(DataSet.Name<>'BEBEDOURO') then
+         DeletaTabelaSyncPropriedade(DataSet.Name,dmdb.vIdPropriedade);
+
         DataSet.Close;
         DataSet.Open;
         jSubObj  := TJSONObject.ParseJSONValue(vJsonString) as TJSONObject;
@@ -335,10 +359,20 @@ begin
              for f in DataSet.Fields do
              begin
               vField:=f.FieldName;
-              DataSet.FieldByName(vField).AsString := vJoGetJ.GetValue(vField).value;
+              if (DataSet.Name='COCHO')or(DataSet.Name='BEBEDOURO') then
+              begin
+               if vField<>'ID_PROPRIEDADE' then
+                DataSet.FieldByName(vField).AsString := vJoGetJ.GetValue(vField).value;
+              end
+              else
+               DataSet.FieldByName(vField).AsString := vJoGetJ.GetValue(vField).value;
              end;
             try
              DataSet.ApplyUpdates(-1);
+             TThread.Synchronize(nil, procedure
+             begin
+              frmPrincipal.FrameSync1.mlog.text :=('Registros '+intToStr(i)+' de '+intToStr(vJoGet.Count));
+             end);
             except
              on E: Exception do
               result:='Erro:'+E.Message;
@@ -359,5 +393,4 @@ begin
        end;
      end;
 end;
-
 end.

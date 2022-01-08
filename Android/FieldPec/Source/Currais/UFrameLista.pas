@@ -23,6 +23,10 @@ type
     Label2: TLabel;
     lblCapacidade: TLabel;
     lblLotacao: TLabel;
+    Layout6: TLayout;
+    Image5: TImage;
+    Label5: TLabel;
+    lblTipo: TLabel;
   private
     { Private declarations }
   public

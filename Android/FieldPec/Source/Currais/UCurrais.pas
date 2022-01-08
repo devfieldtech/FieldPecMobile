@@ -57,8 +57,17 @@ type
     Label4: TLabel;
     Image4: TImage;
     ListaCards: TListBox;
+    Layout5: TLayout;
+    Rectangle6: TRectangle;
+    rdConfinamento: TRadioButton;
+    RdPasto: TRadioButton;
+    rdTodos: TRadioButton;
+    Layout10: TLayout;
+    btnBuscar: TRectangle;
+    Layout11: TLayout;
+    Label3: TLabel;
+    Image1: TImage;
     procedure btnCloseAllClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure SearchEditButton1Click(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
     procedure ListaCardsCanFocus(Sender: TObject; var ACanFocus: Boolean);
@@ -66,13 +75,15 @@ type
       Shift: TShiftState; X, Y: Single);
     procedure btnSelecionarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnBuscarClick(Sender: TObject);
   private
     procedure FrameMouseUp(Sender: TObject; Button: TMouseButton;
      Shift: TShiftState; X, Y: Single);
     procedure FrameMouseDown(Sender: TObject; Button: TMouseButton;
     Shift: TShiftState; X, Y: Single);
   public
-    vFiltro,vIdCurral:string;
+    vFiltro,vIdCurral,vNomeCurral,vTipo:string;
     FFrame: TFItemListaAbastecimento;
     procedure GeraListaCards(vFiltro:string);
     procedure DestroiFrames;
@@ -97,6 +108,19 @@ begin
  ShowMessage('oia')
 end;
 
+procedure TfrmListaCurrais.btnBuscarClick(Sender: TObject);
+var
+ vFiltro:string;
+begin
+ if rdConfinamento.IsChecked then
+  vFiltro := vFiltro+'and tipo=1';
+ if RdPasto.IsChecked then
+  vFiltro := vFiltro+'and tipo=0';
+ if edtNomeF.Text.Length>0 then
+  vFiltro := vFiltro+' and codigo like '+QuotedStr('%'+edtNomeF.Text+'%');
+ GeraListaCards(vFiltro);
+end;
+
 procedure TfrmListaCurrais.btnCloseAllClick(Sender: TObject);
 begin
  Close;
@@ -104,7 +128,7 @@ end;
 
 procedure TfrmListaCurrais.btnSelecionarClick(Sender: TObject);
 begin
- ShowMessage('Curral Selecionado :'+  vIdCurral);
+ Close;
 end;
 
 procedure TfrmListaCurrais.btnSelecionarMouseDown(Sender: TObject;
@@ -130,9 +154,12 @@ begin
   end;
 end;
 
-procedure TfrmListaCurrais.FormShow(Sender: TObject);
+procedure TfrmListaCurrais.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
- GeraListaCards(vFiltro)
+ if ListaCards=nil then
+  FreeAndNil(ListaCards);
+ DestroiFrames;
+ edtNomeF.Text :='';
 end;
 
 procedure TfrmListaCurrais.FrameMouseDown(Sender: TObject; Button: TMouseButton;
@@ -150,7 +177,6 @@ end;
 procedure TfrmListaCurrais.GeraListaCards(vFiltro: string);
 var
   item: TListBoxItem;
-  vImgBomba,vImgHorimetro,vImgkm :TImage;
 begin
    if ListaCards=nil then
     FreeAndNil(ListaCards);
@@ -178,7 +204,7 @@ begin
       FFrame.Opacity         := 1;
 
       item.HitTest           := true;
-      item.Height            := 155;
+      item.Height            := 210;
       item.Margins.Left      := 10;
       item.Margins.Right     := 10;
       item.Margins.Top       := 10;
@@ -187,10 +213,14 @@ begin
       item.OnClick           := ItemClick;
       item.OnMouseDown       := FrameMouseDown;
       item.OnMouseUp         := FrameMouseUp;
-      item.TagString         := dmDB.CURRAISId.AsString;
+      item.Tag               := dmDB.CURRAISId.AsInteger;
+      item.TagString         := dmDB.CURRAISCODIGO.AsString;
+      item.TagFloat          := dmDB.CURRAISTIPO.AsFloat;
 
       FFrame.lblCurral.Text      := dmDB.CURRAISCODIGO.AsString;
       FFrame.lblCurral.TagString := dmDB.CURRAISId.AsString;
+
+      FFrame.lblTipo.Text        := dmDB.CURRAISTIPOSTR.AsString;
 
       FFrame.lblCapacidade.Text        := dmDB.CURRAISCAPACIDADE.AsString;
       FFrame.lblCapacidade.TagString   := dmDB.CURRAISLOTACAO.AsString;
@@ -207,13 +237,23 @@ end;
 
 procedure TfrmListaCurrais.ItemClick(Sender: TObject);
 begin
- vIdCurral          := TListBoxItem(sender).TagString;
+ vIdCurral          := intToStr(TListBoxItem(sender).Tag);
+ vNomeCurral        := TListBoxItem(sender).TagString;
+ vTipo              := FloatToStr(TListBoxItem(sender).TagFloat);
  TListBoxItem(sender).IsSelected := true;
 end;
 
 procedure TfrmListaCurrais.SearchEditButton1Click(Sender: TObject);
+var
+ vFiltro:string;
 begin
- GeraListaCards(' and codigo like '+QuotedStr('%'+edtNomeF.Text+'%'))
+ if rdConfinamento.IsChecked then
+  vFiltro := vFiltro+'and tipo=1';
+ if RdPasto.IsChecked then
+  vFiltro := vFiltro+'and tipo=0';
+ if edtNomeF.Text.Length>0 then
+  vFiltro := vFiltro+' and codigo like '+QuotedStr('%'+edtNomeF.Text+'%');
+ GeraListaCards(vFiltro);
 end;
 
 end.

@@ -36,9 +36,35 @@ type
     ANIMAL: TFDQuery;
     ANIMALINSERTINTO: TStringField;
     ANIMALID_PROPRIEDADE: TIntegerField;
+    BEBEDOURO: TFDQuery;
+    COCHO: TFDQuery;
+    LIMPEZABEBEDOURO: TFDQuery;
+    LIMPEZABEBEDOUROID: TFDAutoIncField;
+    LIMPEZABEBEDOUROID_BEBEDOURO: TIntegerField;
+    LIMPEZABEBEDOUROID_RESPOPNSAVEL: TIntegerField;
+    LIMPEZABEBEDOURODATA: TDateField;
+    LIMPEZABEBEDOUROOBSERVACAO: TStringField;
+    LIMPEZABEBEDOURODATAREG: TSQLTimeStampField;
+    LIMPEZABEBEDOUROSTATUS: TIntegerField;
+    LIMPEZABEBEDOUROID_USUARIO: TIntegerField;
+    LIMPEZABEBEDOUROHORA: TTimeField;
+    LIMPEZABEBEDOUROLATITUDE: TStringField;
+    LIMPEZABEBEDOUROLONGITUDE: TStringField;
+    AUX_MOTIVO_MOVIMENTACAO: TFDQuery;
+    MOVIMENTACAO_ANIMAL: TFDQuery;
+    qryInsert: TFDQuery;
+    procedure LIMPEZABEBEDOUROReconcileError(DataSet: TFDDataSet;
+      E: EFDException; UpdateKind: TFDDatSRowState;
+      var Action: TFDDAptReconcileAction);
+    procedure MOVIMENTACAO_ANIMALReconcileError(DataSet: TFDDataSet;
+      E: EFDException; UpdateKind: TFDDatSRowState;
+      var Action: TFDDAptReconcileAction);
+    procedure qryInsertReconcileError(DataSet: TFDDataSet; E: EFDException;
+      UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
   private
     function LerIni(Diretorio,Chave1, Chave2, ValorPadrao: String): String;
     function GetDataSetAsJSON(DataSet: TDataSet): TJSONObject;
+    procedure AtualizaLocalAnimal(vIdAnimal,vIdLocal:string);
   public
     var vDataBaseCampo,vPathBD,vPathBDMaster,vNomeBase,vIdUserLogado,
     vNomeUserLogado,vTipoUser,vDataBase,vServer,vNomePropriedade,
@@ -52,6 +78,9 @@ type
     function GetGenericPostPropriedade(DataSet: TDataSet;obj: TJSONObject):TJSONObject;
     function GetAnimaisPostPropriedade(DataSet: TDataSet;obj: TJSONObject):TJSONObject;
     function GetTestaServidor: TJSONObject;
+
+    function AcceptLimpezaBebedouro(obj: TJSONObject): TJSONObject;
+    function AcceptMovAnimal(obj: TJSONObject): TJSONObject;
   end;
 
 var
@@ -139,6 +168,182 @@ begin
   finally
     FreeAndNil(FileIni)
   end;
+end;
+
+procedure TdmDB.LIMPEZABEBEDOUROReconcileError(DataSet: TFDDataSet;
+  E: EFDException; UpdateKind: TFDDatSRowState;
+  var Action: TFDDAptReconcileAction);
+begin
+ frmPrincipal.mlog.Lines.Add(e.Message);
+end;
+
+procedure TdmDB.MOVIMENTACAO_ANIMALReconcileError(DataSet: TFDDataSet;
+  E: EFDException; UpdateKind: TFDDatSRowState;
+  var Action: TFDDAptReconcileAction);
+begin
+  frmPrincipal.mlog.Lines.Add(e.Message);
+end;
+
+procedure TdmDB.qryInsertReconcileError(DataSet: TFDDataSet; E: EFDException;
+  UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+begin
+  frmPrincipal.mlog.Lines.Add(e.Message);
+end;
+
+function TdmDB.AcceptLimpezaBebedouro(obj: TJSONObject): TJSONObject;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  LIMPEZABEBEDOURO.Connection := frmPrincipal.FCon;
+  LIMPEZABEBEDOURO.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    LIMPEZABEBEDOURO.Close;
+    LIMPEZABEBEDOURO.Open;
+    LIMPEZABEBEDOURO.Insert;
+    for x := 0 to LIMPEZABEBEDOURO.Fields.Count -1 do
+    begin
+     vField  := StringReplace(LIMPEZABEBEDOURO.Fields[x].Name,
+      'LIMPEZABEBEDOURO','',[rfReplaceAll]);
+     if (vField<>'DATAREG') and (vField<>'ID') and (vQry.FindField(vField) <> nil)then
+      LIMPEZABEBEDOURO.FieldByName(vField).AsString     := vQry.FieldByName(vField).AsString;
+    end;
+    try
+      LIMPEZABEBEDOURO.ApplyUpdates(-1);
+      if vIdResult.Length>0 then
+       vIdResult:=vIdResult+','+vQry.FieldByName('id').AsString
+      else
+       vIdResult:=vQry.FieldByName('id').AsString;
+      vQry.Next;
+     except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Abastecimento:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
+
+function TdmDB.AcceptMovAnimal(obj: TJSONObject): TJSONObject;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    with qryInsert,qryInsert.SQL do
+    begin
+      Clear;
+      Add('INSERT INTO MOVIMENTACAO_ANIMAL');
+      Add('(ID_USUARIO,');
+      Add('ID_ANIMAL,');
+      Add('ID_PASTO_ORIGEM,');
+      Add('ID_PASTO_DESTINO,');
+      Add('"DATA",');
+      Add('ID_MOTIVO,');
+      Add('ORIGEM_DADOS,');
+      Add('TIPO)');
+      Add('values');
+      Add('(');
+      Add(vQry.FieldByName('ID_USUARIO').AsString+',');
+      Add(vQry.FieldByName('ID_ANIMAL').AsString+',');
+      Add(vQry.FieldByName('ID_PASTO_ORIGEM').AsString+',');
+      Add(vQry.FieldByName('ID_PASTO_DESTINO').AsString+',');
+      Add(FormatDateTime('mm/dd/yyyy',vQry.FieldByName('DATA').AsDateTime).QuotedString+',');
+      Add(vQry.FieldByName('ID_MOTIVO').AsString+',');
+      Add('1,');
+      Add('0');
+      Add(');');
+      qryInsert.SQL.Text;
+      try
+       qryInsert.ExecSQL;
+       AtualizaLocalAnimal(
+        vQry.FieldByName('ID_ANIMAL').AsString,
+        vQry.FieldByName('ID_PASTO_DESTINO').AsString
+       );
+       if vIdResult.Length>0 then
+        vIdResult:=vIdResult+','+vQry.FieldByName('id').AsString
+       else
+        vIdResult:=vQry.FieldByName('id').AsString;
+       vQry.Next;
+      except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Abastecimento:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+      end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
+procedure TdmDB.AtualizaLocalAnimal(vIdAnimal, vIdLocal: string);
+var
+  vQry       : TFDQuery;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  with vQry,vQry.SQL do
+  begin
+    Clear;
+    Add('update animal set id_local='+vIdLocal);
+    Add('where id='+vIdAnimal);
+    ExecSQL;
+  end;
+  vQry.Free;
 end;
 
 function TdmDB.GetAnimaisPostPropriedade(DataSet: TDataSet;
@@ -236,19 +441,38 @@ var
  vJoInsert,vJoItemO,vJoItemO1 : TJSONObject;
  vJoItem,vJoItem1: TJSONArray;
  vidPropriedade:string;
- IStatus:integer;
+ IStatus,vQtd:integer;
 begin
    vJsonString      := Obj.ToString;
    vJoInsert        := TJSONObject.ParseJSONValue(vJsonString) as TJSONObject;
    vJoItem          := vJoInsert.GetValue('IDPROPRIEDADE') as TJSONArray;
    vJoItemO         := vJoItem.Items[0] as TJSONObject;
    vidPropriedade   :=  vJoItemO.GetValue('id').value;
-   DataSet.Filtered := false;
-   DataSet.Close;
-   DataSet.Open;
-   DataSet.Filter   := 'ID_PROPRIEDADE='+vidPropriedade;
-   DataSet.Filtered := true;
-   Result := GetDataSetAsJSON(DataSet);
+   if DataSet.Name='BEBEDOURO' then
+   begin
+    with BEBEDOURO,BEBEDOURO.SQL do
+    begin
+      Clear;
+      Add('SELECT a.*,b.ID_PROPRIEDADE FROM bebedouro A');
+      Add('JOIN currais B ON A.id_pasto=B.id');
+      Add('WHERE B.status=1 and a.status=1');
+      Add('AND B.ID_PROPRIEDADE='+vidPropriedade);
+      BEBEDOURO.SQL.Text;
+      Open;
+      vQtd := BEBEDOURO.RecordCount;
+      Result := GetDataSetAsJSON(BEBEDOURO);
+    end;
+   end
+   else
+   begin
+    DataSet.Filtered := false;
+    DataSet.Close;
+    DataSet.Open;
+    DataSet.Filter   := 'ID_PROPRIEDADE='+vidPropriedade;
+    DataSet.Filtered := true;
+    vQtd := DataSet.RecordCount;
+    Result := GetDataSetAsJSON(DataSet);
+   end;
 end;
 
 end.

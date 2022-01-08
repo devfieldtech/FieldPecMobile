@@ -20,7 +20,21 @@ uses
   UListProdutores in '..\ListProdutores\UListProdutores.pas' {frmListProdutores},
   UFrameProdutores in '..\ListProdutores\UFrameProdutores.pas' {FrameProdutores: TFrame},
   UListRebanho in '..\ListRebanho\UListRebanho.pas' {frmListRebanho},
-  UFrameRebanho in '..\ListRebanho\UFrameRebanho.pas' {FrameRebanho: TFrame};
+  UFrameRebanho in '..\ListRebanho\UFrameRebanho.pas' {FrameRebanho: TFrame},
+  UFrameAnimal in '..\ListAnimal\UFrameAnimal.pas' {FrameAnimal: TFrame},
+  UListAnimal in '..\ListAnimal\UListAnimal.pas' {frmListAnimal},
+  UListBebedouro in '..\ListBebedouro\UListBebedouro.pas' {frmListBebedouro},
+  UFrameBebedouro in '..\ListBebedouro\UFrameBebedouro.pas' {FrameBebedouro: TFrame},
+  UListCocho in '..\ListCocho\UListCocho.pas' {frmListCocho},
+  UFrameCocho in '..\ListCocho\UFrameCocho.pas' {FrameCocho: TFrame},
+  ULimpaBebedouro in '..\LimpaBebedouro\ULimpaBebedouro.pas' {FrmLimpaBebedouro},
+  UFrameLimpaBebedouro in '..\LimpaBebedouro\UFrameLimpaBebedouro.pas' {FrameLimpaBebedouro: TFrame},
+  UnitCamera in '..\Leitor\UnitCamera.pas' {FrmCamera},
+  UdmSyncUp in '..\dmDB\UdmSyncUp.pas' {dmSyncUp: TDataModule},
+  UMovAnimal in '..\MovimentacaoAnimal\UMovAnimal.pas' {frmMovAnimal},
+  UFrameMovAnimal in '..\MovimentacaoAnimal\UFrameMovAnimal.pas' {FrameMovAnimal: TFrame},
+  UListMotivoMov in '..\ListMotivoMovimentacao\UListMotivoMov.pas' {frmListaMotivoMov},
+  UFrameMotivoMov in '..\ListMotivoMovimentacao\UFrameMotivoMov.pas' {FrameMotivoMov: TFrame};
 
 {$R *.res}
 
@@ -35,5 +49,13 @@ begin
   Application.CreateForm(TfrmListCategoria, frmListCategoria);
   Application.CreateForm(TfrmListProdutores, frmListProdutores);
   Application.CreateForm(TfrmListRebanho, frmListRebanho);
+  Application.CreateForm(TfrmListAnimal, frmListAnimal);
+  Application.CreateForm(TfrmListBebedouro, frmListBebedouro);
+  Application.CreateForm(TfrmListCocho, frmListCocho);
+  Application.CreateForm(TFrmLimpaBebedouro, FrmLimpaBebedouro);
+  Application.CreateForm(TFrmCamera, FrmCamera);
+  Application.CreateForm(TdmSyncUp, dmSyncUp);
+  Application.CreateForm(TfrmMovAnimal, frmMovAnimal);
+  Application.CreateForm(TfrmListaMotivoMov, frmListaMotivoMov);
   Application.Run;
 end.

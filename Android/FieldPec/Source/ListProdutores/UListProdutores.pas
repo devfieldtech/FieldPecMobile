@@ -40,6 +40,11 @@ type
     Layout3: TLayout;
     lblTotalRegistro: TLabel;
     StyleBook1: TStyleBook;
+    Layout10: TLayout;
+    btnBuscar: TRectangle;
+    Layout11: TLayout;
+    Label3: TLabel;
+    Image1: TImage;
     procedure btnSelecionarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure btnSelecionarMouseDown(Sender: TObject; Button: TMouseButton;

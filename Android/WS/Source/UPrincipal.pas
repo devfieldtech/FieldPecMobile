@@ -14,7 +14,7 @@ uses
   FireDAC.Phys, FireDAC.Phys.PG, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client,System.Json.writers,System.IniFiles,System.JSON.Types,
   IdBaseComponent, IdComponent, IdIPWatch,Horse.BasicAuthentication,
-  FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.Phys.IBBase;
+  FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.Phys.IBBase, FMX.Memo.Types;
 type
   TfrmPrincipal = class(TForm)
     FCon: TFDConnection;
@@ -135,6 +135,53 @@ begin
      end;
   end);
 
+  THorse.post('/BEBEDOURO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Baixando Bebedouro');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetGenericPostPropriedade(dmDB.BEBEDOURO,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.post('/COCHO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Baixando Cocho');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetGenericPostPropriedade(dmDB.COCHO,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+  THorse.Get('/AUX_MOTIVO_MOVIMENTACAO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Baixando Motivo Movimentação');
+     try
+     Res.Send<TJSONObject>(dmDB.GetGeneric(dmDB.AUX_MOTIVO_MOVIMENTACAO));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+  
   THorse.post('/ANIMAL',
   procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
   var
@@ -235,6 +282,43 @@ begin
        Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
       end;
      end;
+  end);
+
+
+  THorse.Post('/LIMPEZABEBEDOURO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Limpeza Bebedouro');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptLimpezaBebedouro(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/MOVIMENTACAO_ANIMAL',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Movimentacao Animal');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptMovAnimal(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
   end);
 
 end;

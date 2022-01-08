@@ -97,6 +97,49 @@ type
     ShadowEffect9: TShadowEffect;
     Label9: TLabel;
     MediaPlayer8: TMediaPlayer;
+    Layout11: TLayout;
+    btnBebedouro: TRectangle;
+    Image11: TImage;
+    ShadowEffect11: TShadowEffect;
+    Label11: TLabel;
+    MediaPlayer10: TMediaPlayer;
+    Layout12: TLayout;
+    btnCocho: TRectangle;
+    Image12: TImage;
+    ShadowEffect12: TShadowEffect;
+    Label12: TLabel;
+    MediaPlayer11: TMediaPlayer;
+    Layout13: TLayout;
+    btnLimpaBebedouro: TRectangle;
+    Image13: TImage;
+    ShadowEffect13: TShadowEffect;
+    Label13: TLabel;
+    RecMenuAnimais: TRectangle;
+    VertScrollBox2: TVertScrollBox;
+    Layout15: TLayout;
+    Layout16: TLayout;
+    Image15: TImage;
+    Layout17: TLayout;
+    MediaPlayer13: TMediaPlayer;
+    Image16: TImage;
+    Layout10: TLayout;
+    btnBuscaAnimal: TRectangle;
+    Image10: TImage;
+    ShadowEffect10: TShadowEffect;
+    Label10: TLabel;
+    MediaPlayer9: TMediaPlayer;
+    Layout14: TLayout;
+    btnMovAnimal: TRectangle;
+    Image14: TImage;
+    ShadowEffect14: TShadowEffect;
+    Label14: TLabel;
+    MediaPlayer12: TMediaPlayer;
+    Layout18: TLayout;
+    btnAnimais: TRectangle;
+    Image17: TImage;
+    ShadowEffect15: TShadowEffect;
+    Label15: TLabel;
+    MediaPlayer14: TMediaPlayer;
     procedure FormShow(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
     procedure btnConfigMouseUp(Sender: TObject; Button: TMouseButton;
@@ -117,6 +160,13 @@ type
     procedure btnCategoriasClick(Sender: TObject);
     procedure btnProdutoresClick(Sender: TObject);
     procedure btnRebanhoClick(Sender: TObject);
+    procedure btnBuscaAnimalClick(Sender: TObject);
+    procedure btnBebedouroClick(Sender: TObject);
+    procedure btnCochoClick(Sender: TObject);
+    procedure btnLimpaBebedouroClick(Sender: TObject);
+    procedure btnAnimaisClick(Sender: TObject);
+    procedure Image15Click(Sender: TObject);
+    procedure btnMovAnimalClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -133,7 +183,9 @@ implementation
 
 uses UDmDB, UdmSync, UCurrais, UFrameListaAlimentos, UAlimento, UFrameRaca,
   UListRaca, UFrameCategoria, UFrameLista, UListCategoria, UListProdutores,
-  UListRebanho;
+  UListRebanho, UFrameAnimal, UListAnimal, UFrameBebedouro, UListBebedouro,
+  UFrameCocho, UListCocho, UFrameRebanho, UFrameProdutores,
+  UFrameLimpaBebedouro, ULimpaBebedouro, UdmSyncUp, UListMotivoMov, UMovAnimal;
 
 procedure TfrmPrincipal.MostraMenu;
 begin
@@ -174,6 +226,15 @@ begin
    end);
 end;
 
+procedure TfrmPrincipal.btnCochoClick(Sender: TObject);
+begin
+ frmListCocho:= TfrmListCocho.Create(nil);
+ frmListCocho.ShowModal(procedure(ModalResult: TModalResult)
+ begin
+  recSubMnuCad.Visible := false;
+ end);
+end;
+
 procedure TfrmPrincipal.btnConfigClick(Sender: TObject);
 begin
   dmdb.qryConfig.Close;
@@ -193,6 +254,24 @@ procedure TfrmPrincipal.btnConfigMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 begin
     TRectangle(sender).Opacity := 1;
+end;
+
+procedure TfrmPrincipal.btnLimpaBebedouroClick(Sender: TObject);
+begin
+ frmLimpaBebedouro:= TfrmLimpaBebedouro.Create(nil);
+ frmLimpaBebedouro.ShowModal(procedure(ModalResult: TModalResult)
+ begin
+  recSubMnuCad.Visible := false;
+ end);
+end;
+
+procedure TfrmPrincipal.btnMovAnimalClick(Sender: TObject);
+begin
+ frmMovAnimal:= TfrmMovAnimal.Create(nil);
+ frmMovAnimal.ShowModal(procedure(ModalResult: TModalResult)
+ begin
+  recSubMnuCad.Visible := false;
+ end);
 end;
 
 procedure TfrmPrincipal.btnProdutoresClick(Sender: TObject);
@@ -235,6 +314,31 @@ begin
  end);
 end;
 
+procedure TfrmPrincipal.btnAnimaisClick(Sender: TObject);
+begin
+  RecMenuAnimais.Visible := true;
+end;
+
+procedure TfrmPrincipal.btnBebedouroClick(Sender: TObject);
+begin
+ frmListBebedouro:= TfrmListBebedouro.Create(nil);
+ frmListBebedouro.ShowModal(procedure(ModalResult: TModalResult)
+ begin
+  recSubMnuCad.Visible := false;
+ end);
+end;
+
+procedure TfrmPrincipal.btnBuscaAnimalClick(Sender: TObject);
+begin
+ if Not Assigned(frmListAnimal) then
+   Application.CreateForm(TfrmListAnimal, frmListAnimal);
+   frmListAnimal.layBtnSelecionar.Visible := false;
+  frmListAnimal.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+
+  end);
+end;
+
 procedure TfrmPrincipal.btnCadastrosClick(Sender: TObject);
 begin
  recSubMnuCad.Visible := true;
@@ -242,6 +346,15 @@ end;
 
 procedure TfrmPrincipal.btnSyncClick(Sender: TObject);
 begin
+ FrameSync1.btnEnviar.Width := (FrameSync1.Width-20)/2;
+ FrameSync1.btnBaixar.Width := (FrameSync1.Width-20)/2;
+ dmSyncUP.LIMPEZABEBEDOURO.Close;
+ dmSyncUP.LIMPEZABEBEDOURO.Open;
+ FrameSync1.lblLimpezaSync.Text :='Limpeza Bebedouro:'+intToStr(dmSyncUP.LIMPEZABEBEDOURO.RecordCount);
+
+ dmSyncUP.MOVIMENTACAO_ANIMAL.Close;
+ dmSyncUP.MOVIMENTACAO_ANIMAL.Open;
+ FrameSync1.lblMovAnimal.Text :='Mov. Animal:'+intToStr(dmSyncUP.MOVIMENTACAO_ANIMAL.RecordCount);
  FrameSync1.Visible := true;
 end;
 
@@ -259,8 +372,9 @@ end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
- recSubMnuCad.Visible := false;
- RecPrincipal.Visible := false;
+ RecMenuAnimais.Visible := false;
+ recSubMnuCad.Visible   := false;
+ RecPrincipal.Visible   := false;
  dmdb.qryConfig.Close;
  dmdb.qryConfig.Open;
    if dmDB.VerificaTabelaVazia('users') then
@@ -295,6 +409,11 @@ begin
      frmeLogin1.edtUsuario.SetFocus;
 
    end;
+end;
+
+procedure TfrmPrincipal.Image15Click(Sender: TObject);
+begin
+ RecMenuAnimais.Visible := false;
 end;
 
 procedure TfrmPrincipal.imgFechaMnuCadClick(Sender: TObject);

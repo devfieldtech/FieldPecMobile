@@ -25,7 +25,7 @@ type
     ListaCards: TListBox;
     Layout1: TLayout;
     Rectangle3: TRectangle;
-    Layout2: TLayout;
+    V: TLayout;
     Layout4: TLayout;
     Layout6: TLayout;
     Layout7: TLayout;
@@ -40,6 +40,11 @@ type
     Layout3: TLayout;
     lblTotalRegistro: TLabel;
     StyleBook1: TStyleBook;
+    Layout10: TLayout;
+    btnBuscar: TRectangle;
+    Layout11: TLayout;
+    Label3: TLabel;
+    Image1: TImage;
     procedure btnSelecionarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure btnSelecionarMouseDown(Sender: TObject; Button: TMouseButton;
@@ -48,6 +53,7 @@ type
     procedure btnSelecionarClick(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnBuscarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -155,6 +161,11 @@ begin
 end;
 
 procedure TfrmListCategoria.SearchEditButton1Click(Sender: TObject);
+begin
+   GeraListaCards('nome like '+QuotedStr('%'+edtNomeF.Text+'%'))
+end;
+
+procedure TfrmListCategoria.btnBuscarClick(Sender: TObject);
 begin
    GeraListaCards('nome like '+QuotedStr('%'+edtNomeF.Text+'%'))
 end;

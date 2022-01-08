@@ -36,6 +36,11 @@ type
     btnCloseAll: TImage;
     Layout3: TLayout;
     lblTotalRegistro: TLabel;
+    Layout10: TLayout;
+    btnBuscar: TRectangle;
+    Layout11: TLayout;
+    Label3: TLabel;
+    Image1: TImage;
     procedure FormShow(Sender: TObject);
     procedure SearchEditButton1Click(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
@@ -44,6 +49,7 @@ type
       Shift: TShiftState; X, Y: Single);
     procedure btnSelecionarMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
+    procedure btnBuscarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +70,11 @@ implementation
 uses UDmDB;
 
 { TfrmListaAlimentos }
+
+procedure TfrmListaAlimentos.btnBuscarClick(Sender: TObject);
+begin
+   GeraListaCards('nome like '+QuotedStr('%'+edtNomeF.Text+'%'))
+end;
 
 procedure TfrmListaAlimentos.btnCloseAllClick(Sender: TObject);
 begin
