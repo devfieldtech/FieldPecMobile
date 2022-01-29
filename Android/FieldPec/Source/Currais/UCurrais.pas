@@ -56,7 +56,6 @@ type
     LaybtnEntrar: TLayout;
     Label4: TLabel;
     Image4: TImage;
-    ListaCards: TListBox;
     Layout5: TLayout;
     Rectangle6: TRectangle;
     rdConfinamento: TRadioButton;
@@ -67,6 +66,14 @@ type
     Layout11: TLayout;
     Label3: TLabel;
     Image1: TImage;
+    lista: TListView;
+    imgData: TImage;
+    imgSyncOf: TImage;
+    imgSyncOn: TImage;
+    imgStatus: TImage;
+    imgFinalizar: TImage;
+    imgCurral: TImage;
+    imgBoi: TImage;
     procedure btnCloseAllClick(Sender: TObject);
     procedure SearchEditButton1Click(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
@@ -77,6 +84,8 @@ type
       Shift: TShiftState; X, Y: Single);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnBuscarClick(Sender: TObject);
+    procedure listaItemClickEx(const Sender: TObject; ItemIndex: Integer;
+      const LocalClickPos: TPointF; const ItemObject: TListItemDrawable);
   private
     procedure FrameMouseUp(Sender: TObject; Button: TMouseButton;
      Shift: TShiftState; X, Y: Single);
@@ -84,10 +93,9 @@ type
     Shift: TShiftState; X, Y: Single);
   public
     vFiltro,vIdCurral,vNomeCurral,vTipo:string;
-    FFrame: TFItemListaAbastecimento;
+    FFrame: TFItemListaCurrais;
     procedure GeraListaCards(vFiltro:string);
     procedure DestroiFrames;
-    procedure ItemClick(Sender: TObject);
 
  end;
 
@@ -106,6 +114,18 @@ procedure TfrmListaCurrais.ListaCardsCanFocus(Sender: TObject;
   var ACanFocus: Boolean);
 begin
  ShowMessage('oia')
+end;
+
+procedure TfrmListaCurrais.listaItemClickEx(const Sender: TObject;
+  ItemIndex: Integer; const LocalClickPos: TPointF;
+  const ItemObject: TListItemDrawable);
+begin
+ vIdCurral:= TAppearanceListViewItem(Lista.Selected).Objects.FindObjectT<TListItemText>
+  ('Text1').TagString;
+ vNomeCurral        := TAppearanceListViewItem(Lista.Selected).Objects.FindObjectT<TListItemText>
+  ('Text1').Text;
+ vTipo              := FloatToStr(TAppearanceListViewItem(Lista.Selected).Objects.FindObjectT<TListItemText>
+  ('Text1').TagFloat);
 end;
 
 procedure TfrmListaCurrais.btnBuscarClick(Sender: TObject);
@@ -156,9 +176,6 @@ end;
 
 procedure TfrmListaCurrais.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
- if ListaCards=nil then
-  FreeAndNil(ListaCards);
- DestroiFrames;
  edtNomeF.Text :='';
 end;
 
@@ -176,72 +193,47 @@ end;
 
 procedure TfrmListaCurrais.GeraListaCards(vFiltro: string);
 var
-  item: TListBoxItem;
+ item   : TListViewItem;
+ txt    : TListItemText;
+ txtH   : TListItemPurpose;
+ img    : TListItemImage;
 begin
-   if ListaCards=nil then
-    FreeAndNil(ListaCards);
-   DestroiFrames;
-   ListaCards        := TListBox.Create(self);
-   ListaCards.Parent := layListCards;
-   ListaCards.Align  := TAlignLayout.Client;
-
-   dmDB.AbreCurrais(dmdb.vIdPropriedade,vFiltro);
+ dmDB.AbreCurrais(dmdb.vIdPropriedade,vFiltro);
    dmDB.CURRAIS.First;
-   TThread.CreateAnonymousThread(procedure
+ Lista.Items.Clear;
+ while not dmDB.CURRAIS.eof do
+ begin
+   item := Lista.Items.Add;
+   with frmListaCurrais do
    begin
-    TThread.Synchronize(nil, procedure
-    begin
-     while not dmDB.CURRAIS.eof do
+     with item  do
      begin
-      ListaCards.BeginUpdate;
-      item := TListBoxItem.Create(self);
-      FFrame := TFItemListaAbastecimento.Create(self);
-      FFrame.Name:= 'Item_'+dmDB.CURRAISID.AsString;
+       txt      := TListItemText(Objects.FindDrawable('Text1'));
+       txt.Text := dmDB.CURRAISCODIGO.AsString;
+       txt.TagString := dmDB.CURRAISID.AsString;
+       txt.TagFloat  := dmDB.CURRAISTIPO.AsFloat;
 
-      FFrame.Parent          := item;
-      FFrame.Align           := TAlignLayout.Client;
-      FFrame.HitTest         := false;
-      FFrame.Opacity         := 1;
+       img := TListItemImage(Objects.FindDrawable('Image2'));
+       img.Bitmap     := imgCurral.Bitmap;
+       txt      := TListItemText(Objects.FindDrawable('Text4'));
+       txt.Text := dmDB.CURRAISCODIGO.AsString;
 
-      item.HitTest           := true;
-      item.Height            := 210;
-      item.Margins.Left      := 10;
-      item.Margins.Right     := 10;
-      item.Margins.Top       := 10;
-      item.Margins.Bottom    := 10;
-      item.TagString         := dmDB.CURRAISId.AsString;
-      item.OnClick           := ItemClick;
-      item.OnMouseDown       := FrameMouseDown;
-      item.OnMouseUp         := FrameMouseUp;
-      item.Tag               := dmDB.CURRAISId.AsInteger;
-      item.TagString         := dmDB.CURRAISCODIGO.AsString;
-      item.TagFloat          := dmDB.CURRAISTIPO.AsFloat;
+       img := TListItemImage(Objects.FindDrawable('Image7'));
+       img.Bitmap     := imgBoi.Bitmap;
+       txt      := TListItemText(Objects.FindDrawable('Text6'));
+       txt.Text := 'Lotação: '+dmDB.CURRAISLOTACAO.AsString;
 
-      FFrame.lblCurral.Text      := dmDB.CURRAISCODIGO.AsString;
-      FFrame.lblCurral.TagString := dmDB.CURRAISId.AsString;
-
-      FFrame.lblTipo.Text        := dmDB.CURRAISTIPOSTR.AsString;
-
-      FFrame.lblCapacidade.Text        := dmDB.CURRAISCAPACIDADE.AsString;
-      FFrame.lblCapacidade.TagString   := dmDB.CURRAISLOTACAO.AsString;
-
-      item.Parent                      := ListaCards;
-
-      ListaCards.EndUpdate;
-      dmDB.CURRAIS.Next;
+       img := TListItemImage(Objects.FindDrawable('Image3'));
+       img.Bitmap     := imgBoi.Bitmap;
+       txt      := TListItemText(Objects.FindDrawable('Text5'));
+       txt.Text := 'Tipo: '+dmDB.CURRAISTIPOSTR.AsString;
+       dmDB.CURRAIS.Next;
      end;
-     lblTotalRegistro.Text := intToStr(ListaCards.Items.Count);
-    end);
-   end).Start;
+   end;
+   lblTotalRegistro.Text := intToStr(Lista.Items.Count);
+ end;
 end;
 
-procedure TfrmListaCurrais.ItemClick(Sender: TObject);
-begin
- vIdCurral          := intToStr(TListBoxItem(sender).Tag);
- vNomeCurral        := TListBoxItem(sender).TagString;
- vTipo              := FloatToStr(TListBoxItem(sender).TagFloat);
- TListBoxItem(sender).IsSelected := true;
-end;
 
 procedure TfrmListaCurrais.SearchEditButton1Click(Sender: TObject);
 var

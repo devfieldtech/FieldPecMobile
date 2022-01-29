@@ -9,7 +9,8 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, UFrameBebedouro;
+  FireDAC.Comp.Client, UFrameBebedouro, FMX.ListView.Types,
+  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView;
 
 type
   TfrmListBebedouro = class(TForm)
@@ -22,7 +23,6 @@ type
     LaybtnEntrar: TLayout;
     Label4: TLabel;
     Image4: TImage;
-    ListaCards: TListBox;
     Layout1: TLayout;
     Rectangle3: TRectangle;
     Layout2: TLayout;
@@ -45,6 +45,16 @@ type
     Layout11: TLayout;
     Label3: TLabel;
     Image1: TImage;
+    imgFrequencia: TImage;
+    imgDaata: TImage;
+    lista: TListView;
+    imgData: TImage;
+    imgSyncOf: TImage;
+    imgSyncOn: TImage;
+    imgStatus: TImage;
+    imgFinalizar: TImage;
+    imgCurral: TImage;
+    imgBoi: TImage;
     procedure btnSelecionarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure btnSelecionarMouseDown(Sender: TObject; Button: TMouseButton;
@@ -52,6 +62,8 @@ type
     procedure SearchEditButton1Click(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
+    procedure listaItemClickEx(const Sender: TObject; ItemIndex: Integer;
+      const LocalClickPos: TPointF; const ItemObject: TListItemDrawable);
   private
     { Private declarations }
   public
@@ -64,8 +76,6 @@ type
      Shift: TShiftState; X, Y: Single);
     procedure GeraListaCards(vFiltro:string);
     procedure DestroiFrames;
-    procedure ItemClick(Sender: TObject);
-
 end;
 
 var
@@ -91,61 +101,53 @@ end;
 
 procedure TfrmListBebedouro.GeraListaCards(vFiltro: string);
 var
-  item: TListBoxItem;
+ item   : TListViewItem;
+ txt    : TListItemText;
+ txtH   : TListItemPurpose;
+ img    : TListItemImage;
 begin
-   if ListaCards=nil then
-    FreeAndNil(ListaCards);
-   DestroiFrames;
-   ListaCards        := TListBox.Create(self);
-   ListaCards.Parent := layListCards;
-   ListaCards.Align  := TAlignLayout.Client;
-
-   dmDB.AbreBebedouro(dmdb.vIdPropriedade,vFiltro);
-   dmDB.BEBEDOURO.First;
-     while not dmDB.BEBEDOURO.eof do
+ dmDB.AbreBebedouro(dmdb.vIdPropriedade,vFiltro);
+ dmDB.BEBEDOURO.First;
+ Lista.Items.Clear;
+ while not dmDB.BEBEDOURO.eof do
+ begin
+   item := Lista.Items.Add;
+   with frmListBebedouro do
+   begin
+     with item  do
      begin
-      ListaCards.BeginUpdate;
-      item := TListBoxItem.Create(self);
-      FFrame := TFrameBebedouro.Create(self);
-      FFrame.Name:= 'Item_'+dmDB.BEBEDOUROID.AsString;
+       txt      := TListItemText(Objects.FindDrawable('Text1'));
+       txt.Text      := dmDB.BEBEDOUROPasto.AsString;
+       txt.TagString := dmDB.BEBEDOUROID.AsString;
 
-      FFrame.Parent          := item;
-      FFrame.Align           := TAlignLayout.Client;
-      FFrame.HitTest         := false;
-      FFrame.Opacity         := 1;
+       img := TListItemImage(Objects.FindDrawable('Image2'));
+       img.Bitmap     := imgFrequencia.Bitmap;
+       txt      := TListItemText(Objects.FindDrawable('Text4'));
+       txt.Text :=  'Frequencia de  Limpeza: '+dmDB.BEBEDOUROFREQ_LIMPEZA.AsString+' dias';
 
-      item.HitTest           := true;
-      item.Height            := 160;
-      item.Margins.Left      := 10;
-      item.Margins.Right     := 10;
-      item.Margins.Top       := 10;
-      item.Margins.Bottom    := 10;
-      item.OnClick           := ItemClick;
-      item.OnMouseDown       := FrameMouseDown;
-      item.OnMouseUp         := FrameMouseUp;
-      item.Tag               := dmDB.BEBEDOUROID.AsInteger;
-      item.TagString         := dmDB.BEBEDOUROPasto.AsString;
-      item.Hint              := dmDB.BEBEDOUROULTIMA_LIMPEZA.AsString;
+       img := TListItemImage(Objects.FindDrawable('Image7'));
+       img.Bitmap     := imgDaata.Bitmap;
+       txt      := TListItemText(Objects.FindDrawable('Text6'));
+       txt.Text := 'Última Limpeza: '+dmDB.BEBEDOUROULTIMA_LIMPEZA.AsString;
 
-      FFrame.lblBEBEDOURO.Text      := dmDB.BEBEDOUROPasto.AsString;
-      FFrame.lblBEBEDOURO.TagString := dmDB.BEBEDOUROID.AsString;
-      FFrame.lblUltimaLimpeza.Text  := dmDB.BEBEDOUROULTIMA_LIMPEZA.AsString;
-      FFrame.lblFrequencia.Text     := dmDB.BEBEDOUROFREQ_LIMPEZA.AsString;
-
-      item.Parent                      := ListaCards;
-
-      ListaCards.EndUpdate;
-      dmDB.BEBEDOURO.Next;
+       dmDB.BEBEDOURO.Next;
      end;
-     lblTotalRegistro.Text := intToStr(ListaCards.Items.Count);
+   end;
+   lblTotalRegistro.Text := intToStr(Lista.Items.Count);
+ end;
 end;
 
-procedure TfrmListBebedouro.ItemClick(Sender: TObject);
+
+procedure TfrmListBebedouro.listaItemClickEx(const Sender: TObject;
+  ItemIndex: Integer; const LocalClickPos: TPointF;
+  const ItemObject: TListItemDrawable);
 begin
- vIdBebedouro             := intToStr(TListBoxItem(sender).Tag);
- vNomeBebedouro           := TListBoxItem(sender).TagString;
- vUltimaLimpeza           := TListBoxItem(sender).Hint;
- TListBoxItem(sender).IsSelected := true;
+ vIdBebedouro             := TAppearanceListViewItem(Lista.Selected).Objects.FindObjectT<TListItemText>
+  ('Text1').TagString;
+ vNomeBebedouro           := TAppearanceListViewItem(Lista.Selected).Objects.FindObjectT<TListItemText>
+  ('Text1').Text;
+ vUltimaLimpeza           := TAppearanceListViewItem(Lista.Selected).Objects.FindObjectT<TListItemText>
+  ('Text6').Text;
 end;
 
 procedure TfrmListBebedouro.SearchEditButton1Click(Sender: TObject);

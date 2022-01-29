@@ -55,7 +55,7 @@ type
   private
     { Private declarations }
   public
-    vNomeCocho,vIdCocho : string;
+    vNomeCocho,vIdCocho,vIdPasto,vLotacao : string;
     FFrame     : TFrameCocho;
     procedure FrameMouseDown(Sender: TObject; Button: TMouseButton;
      Shift: TShiftState; X, Y: Single);
@@ -128,8 +128,10 @@ begin
       item.OnMouseUp         := FrameMouseUp;
       item.Tag               := dmDB.COCHOID.AsInteger;
       item.TagString         := dmDB.COCHOPasto.AsString;
+      item.hint              := dmDB.COCHOlotacao.AsString;
+      item.TagFloat          := dmDB.COCHOID_PASTO.AsFloat;
 
-      FFrame.lblCocho.Text       := dmDB.COCHOPasto.AsString;
+      FFrame.lblCocho.Text       := dmDB.COCHOPasto.AsString+'-'+dmDB.COCHOTAG.AsString;
       FFrame.lblCocho.TagString  := dmDB.COCHOID.AsString;
       item.Parent                := ListaCards;
 
@@ -143,7 +145,10 @@ end;
 
 procedure TfrmListCocho.ItemClick(Sender: TObject);
 begin
-
+ vIdCocho    := intToStr(TListBoxItem(sender).Tag);
+ vNomeCocho  := TListBoxItem(sender).TagString;
+ vIdPasto    := FloatToStr(TListBoxItem(sender).TagFloat);
+ vLotacao    := TListBoxItem(sender).Hint;
 end;
 
 procedure TfrmListCocho.SearchEditButton1Click(Sender: TObject);

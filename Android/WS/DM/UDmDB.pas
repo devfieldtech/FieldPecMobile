@@ -53,6 +53,181 @@ type
     AUX_MOTIVO_MOVIMENTACAO: TFDQuery;
     MOVIMENTACAO_ANIMAL: TFDQuery;
     qryInsert: TFDQuery;
+    SUPLEMENTO_MINERAL: TFDQuery;
+    FORNECIMENTO: TFDQuery;
+    FORNECIMENTOID: TIntegerField;
+    FORNECIMENTOID_PASTO: TIntegerField;
+    FORNECIMENTOID_PRODUTO: TIntegerField;
+    FORNECIMENTODATA_FORNECIMENTO: TDateField;
+    FORNECIMENTOPREVISAO_KG: TFMTBCDField;
+    FORNECIMENTOPREVISTO_SACO: TFMTBCDField;
+    FORNECIMENTOREALIZADO_COCHO_KG: TFMTBCDField;
+    FORNECIMENTOREALIZADO_COCHO_SACO: TFMTBCDField;
+    FORNECIMENTOREALIZADO_ESTOQUE_KG: TFMTBCDField;
+    FORNECIMENTOREALIZADO_ESTOQUE_SACO: TFMTBCDField;
+    FORNECIMENTOID_USUARIO: TIntegerField;
+    FORNECIMENTODATA_REG: TSQLTimeStampField;
+    FORNECIMENTOSTATUS: TIntegerField;
+    FORNECIMENTOTIPO_FORNE: TStringField;
+    FORNECIMENTOTAG_COCHO: TStringField;
+    FORNECIMENTOLATITUDE: TStringField;
+    FORNECIMENTOLONGITUDE: TStringField;
+    FORNECIMENTOID_RESPONSAVEL: TIntegerField;
+    FORNECIMENTOID_COCHO: TIntegerField;
+    FORNECIMENTOQTD_ANIMAIS: TIntegerField;
+    FORNECIMENTOVALOR_KG: TFMTBCDField;
+    FORNECIMENTOESTOQUE_ORIGEM: TIntegerField;
+    HIST_LEITURA_COCHO: TFDQuery;
+    LEITURA_COCHO: TFDQuery;
+    LOTE_NUTRICIONAL: TFDQuery;
+    HIST_LEITURA_COCHOID_LOTE: TIntegerField;
+    HIST_LEITURA_COCHOID_CURRAL: TIntegerField;
+    HIST_LEITURA_COCHODATA_LEITURA: TDateField;
+    HIST_LEITURA_COCHONOTA: TFMTBCDField;
+    HIST_LEITURA_COCHOAJUSTE: TFMTBCDField;
+    HIST_LEITURA_COCHOID_PROPRIEDADE: TIntegerField;
+    HIST_LEITURA_COCHOID: TIntegerField;
+    AUX_NOTAS_LEITURA: TFDQuery;
+    AUX_NOTAS_LEITURAID: TIntegerField;
+    AUX_NOTAS_LEITURANOTA: TFMTBCDField;
+    AUX_NOTAS_LEITURAAJUSTE: TFMTBCDField;
+    HIST_CONSUMO: TFDQuery;
+    HIST_CONSUMOID_LOTE: TIntegerField;
+    HIST_CONSUMODATA_CONSUMO: TDateField;
+    HIST_CONSUMOMN: TFMTBCDField;
+    HIST_CONSUMOMS: TFMTBCDField;
+    LEITURA_COCHOID: TIntegerField;
+    LEITURA_COCHOID_LOTE: TIntegerField;
+    LEITURA_COCHOID_CURRAL: TIntegerField;
+    LEITURA_COCHODATA_LEITURA: TDateField;
+    LEITURA_COCHONOTA: TFMTBCDField;
+    LEITURA_COCHOAJUSTE: TFMTBCDField;
+    LEITURA_COCHOID_USUARIO: TIntegerField;
+    LEITURA_COCHOID_USUARIO_ALTERCAO: TIntegerField;
+    LEITURA_COCHODATA_ALTERACAO: TSQLTimeStampField;
+    LEITURA_COCHODATAREG: TSQLTimeStampField;
+    LEITURA_COCHOSTATUS: TIntegerField;
+    RACAO: TFDQuery;
+    RACAOINSUMOS: TFDQuery;
+    FABRICACAO: TFDQuery;
+    FABRICACAO_INSUMOS: TFDQuery;
+    FORNECIMENTO_CONF: TFDQuery;
+    FORNECIMENTO_PREVISTO: TFDQuery;
+    FORNECIMENTO_CONFID: TIntegerField;
+    FORNECIMENTO_CONFID_LOTE: TIntegerField;
+    FORNECIMENTO_CONFID_LOCAL: TIntegerField;
+    FORNECIMENTO_CONFQTD_CAB: TIntegerField;
+    FORNECIMENTO_CONFMEDIA_PESO: TFMTBCDField;
+    FORNECIMENTO_CONFDATA_FORN: TDateField;
+    FORNECIMENTO_CONFHORA_FORN: TTimeField;
+    FORNECIMENTO_CONFTRATO: TIntegerField;
+    FORNECIMENTO_CONFID_RACAO: TIntegerField;
+    FORNECIMENTO_CONFMS_RACAO: TFMTBCDField;
+    FORNECIMENTO_CONFVALOR_KG_RACAO: TFMTBCDField;
+    FORNECIMENTO_CONFPREVISTO_MN_KG: TIntegerField;
+    FORNECIMENTO_CONFREALIZADO_MN_KG: TIntegerField;
+    FORNECIMENTO_CONFCUSTO_TOTAL_TRATO: TFMTBCDField;
+    FORNECIMENTO_CONFID_MOTORISTA: TIntegerField;
+    FORNECIMENTO_CONFID_USUARIO: TIntegerField;
+    FORNECIMENTO_CONFDATAREG: TSQLTimeStampField;
+    FORNECIMENTO_CONFSTATUS: TIntegerField;
+    FORNECIMENTO_CONFLOTE_FABRICACAO: TStringField;
+    FORNECIMENTO_CONFID_USUARIO_ALTERACAO: TIntegerField;
+    FORNECIMENTO_CONFDATA_ALTERACAO: TSQLTimeStampField;
+    RACAOID: TIntegerField;
+    RACAOTIPO: TIntegerField;
+    RACAONOME: TStringField;
+    RACAOGMD: TFMTBCDField;
+    RACAOMATERIASECA: TFMTBCDField;
+    RACAOSTATUS: TIntegerField;
+    RACAODATAREGISTRO: TSQLTimeStampField;
+    RACAOIDUSUARIO: TIntegerField;
+    RACAODATAALTERACAO: TSQLTimeStampField;
+    RACAOIDUSUARIOALTERACAO: TIntegerField;
+    RACAOVALORKG: TFMTBCDField;
+    RACAODATAFORMULACAO: TDateField;
+    RACAOID_PROPRIEDADE: TIntegerField;
+    RACAOIMS_PV: TFMTBCDField;
+    RACAOTEMPO_MISTURA: TIntegerField;
+    RACAOINSUMOSID: TIntegerField;
+    RACAOINSUMOSIDRACAO: TIntegerField;
+    RACAOINSUMOSIDINSUMOALIMENTO: TIntegerField;
+    RACAOINSUMOSPERCENTMATERIASECA: TFMTBCDField;
+    RACAOINSUMOSKGMATERIASECA: TFMTBCDField;
+    RACAOINSUMOSINCLUSAOMATERIASECA: TFMTBCDField;
+    RACAOINSUMOSINCLUSAOMATERIANATURAL: TFMTBCDField;
+    RACAOINSUMOSVALORKG: TFMTBCDField;
+    RACAOINSUMOSVALORINCLUSAO: TFMTBCDField;
+    RACAOINSUMOSSTATUS: TIntegerField;
+    RACAOINSUMOSDATAREGISTRO: TSQLTimeStampField;
+    RACAOINSUMOSIDUSUARIO: TIntegerField;
+    RACAOINSUMOSDATAALTERACAO: TSQLTimeStampField;
+    RACAOINSUMOSIDUSUARIOALTERACAO: TIntegerField;
+    RACAOINSUMOSKGMATERIANATURAL: TFMTBCDField;
+    RACAOINSUMOSORDEM_FABRICACAO: TIntegerField;
+    RACAOINSUMOSID_PREMISTURA: TIntegerField;
+    RACAOINSUMOSTOLERANCIA_FAB: TFMTBCDField;
+    FABRICACAOID: TIntegerField;
+    FABRICACAOIDRACAO: TIntegerField;
+    FABRICACAODATA_FAB: TDateField;
+    FABRICACAOKG_PREVISTO: TBCDField;
+    FABRICACAOKG_REALIZADO: TBCDField;
+    FABRICACAOCUSTO_TOTAL: TBCDField;
+    FABRICACAOHORA_INICIO: TTimeField;
+    FABRICACAOHORA_FIM: TTimeField;
+    FABRICACAODATAREG: TDateField;
+    FABRICACAOID_USUARIO: TIntegerField;
+    FABRICACAOTIPO_BAIXA: TIntegerField;
+    FABRICACAOID_CENTROCUSTO: TIntegerField;
+    FABRICACAOLOTE_FABRICACAO: TStringField;
+    FABRICACAOID_OPERADOR: TIntegerField;
+    FABRICACAOORIGEM_DADOS: TIntegerField;
+    FABRICACAODATA_ALTERACAO: TSQLTimeStampField;
+    FABRICACAOID_USUARIO_ALTERACAO: TIntegerField;
+    FABRICACAOSTATUS: TIntegerField;
+    FABRICACAOID_PROPRIEDADE: TIntegerField;
+    FABRICACAOID_PREMISTURA: TIntegerField;
+    FABRICACAO_INSUMOSID: TIntegerField;
+    FABRICACAO_INSUMOSID_FABRICACAO: TIntegerField;
+    FABRICACAO_INSUMOSID_ALIMENTO: TIntegerField;
+    FABRICACAO_INSUMOSID_CONCENTRADO: TIntegerField;
+    FABRICACAO_INSUMOSDATA_FAB: TDateField;
+    FABRICACAO_INSUMOSHORA_INI: TTimeField;
+    FABRICACAO_INSUMOSHORA_FIM: TTimeField;
+    FABRICACAO_INSUMOSMS_INSUMO: TFMTBCDField;
+    FABRICACAO_INSUMOSKG_PREVISTO: TBCDField;
+    FABRICACAO_INSUMOSKG_FABRICADO: TBCDField;
+    FABRICACAO_INSUMOSDATAREG: TDateField;
+    FABRICACAO_INSUMOSID_USUARIO: TIntegerField;
+    FABRICACAO_INSUMOSID_USUARIO_ALTERACAO: TIntegerField;
+    FABRICACAO_INSUMOSDATA_ALTERACAO: TSQLTimeStampField;
+    FABRICACAO_INSUMOSSTATUS: TIntegerField;
+    FABRICACAO_INSUMOSVALOR_KG: TFMTBCDField;
+    FABRICACAO_INSUMOSCUSTO: TFMTBCDField;
+    qryAux: TFDQuery;
+    FORNECIMENTO_PREVISTOID: TIntegerField;
+    FORNECIMENTO_PREVISTOID_LOTE: TIntegerField;
+    FORNECIMENTO_PREVISTOID_LOCAL: TIntegerField;
+    FORNECIMENTO_PREVISTOQTD_CAB: TIntegerField;
+    FORNECIMENTO_PREVISTOMEDIA_PESO: TFMTBCDField;
+    FORNECIMENTO_PREVISTODATA_FORN: TDateField;
+    FORNECIMENTO_PREVISTOHORA_FORN: TTimeField;
+    FORNECIMENTO_PREVISTOTRATO: TIntegerField;
+    FORNECIMENTO_PREVISTOID_RACAO: TIntegerField;
+    FORNECIMENTO_PREVISTOMS_RACAO: TFMTBCDField;
+    FORNECIMENTO_PREVISTOVALOR_KG_RACAO: TFMTBCDField;
+    FORNECIMENTO_PREVISTOPREVISTO_MN_KG: TIntegerField;
+    FORNECIMENTO_PREVISTOREALIZADO_MN_KG: TIntegerField;
+    FORNECIMENTO_PREVISTOCUSTO_TOTAL_TRATO: TFMTBCDField;
+    FORNECIMENTO_PREVISTOID_MOTORISTA: TIntegerField;
+    FORNECIMENTO_PREVISTOID_USUARIO: TIntegerField;
+    FORNECIMENTO_PREVISTODATAREG: TSQLTimeStampField;
+    FORNECIMENTO_PREVISTOSTATUS: TIntegerField;
+    FORNECIMENTO_PREVISTOLOTE_FABRICACAO: TStringField;
+    FORNECIMENTO_PREVISTOID_USUARIO_ALTERACAO: TIntegerField;
+    FORNECIMENTO_PREVISTODATA_ALTERACAO: TSQLTimeStampField;
+    HIST_CONSUMOID_CURRAL: TIntegerField;
+    HIST_CONSUMOIMSPV: TFMTBCDField;
     procedure LIMPEZABEBEDOUROReconcileError(DataSet: TFDDataSet;
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);
@@ -61,10 +236,28 @@ type
       var Action: TFDDAptReconcileAction);
     procedure qryInsertReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure qryAuxReconcileError(DataSet: TFDDataSet; E: EFDException;
+      UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure FORNECIMENTO_CONFReconcileError(DataSet: TFDDataSet;
+      E: EFDException; UpdateKind: TFDDatSRowState;
+      var Action: TFDDAptReconcileAction);
   private
     function LerIni(Diretorio,Chave1, Chave2, ValorPadrao: String): String;
     function GetDataSetAsJSON(DataSet: TDataSet): TJSONObject;
     procedure AtualizaLocalAnimal(vIdAnimal,vIdLocal:string);
+    function RetornaIDUltimoFornecimento: string;
+    procedure InsereFornecimentoCab(VDATA,ID_PASTO,ID_FORN,ID_MINERAL,QTD_FORN_TOTAL,
+     VALOR_KG, QTD_CAB: string);
+    function  RetornaValorKgMineral(idMineral:string):string;
+    procedure VerificaLeitruraExiste(vIdLote,vData:string);
+    procedure ConfirmaLeituraCocho(ID_USUARIO,vIdLote,vIdCurral,vDataLeitura,vNota,vAjuste:string);
+    procedure InsereLeituraCocho(ID_USUARIO,TIPO,ID_LOTE, ID_CURRAL, DATA_LEITURA,
+     NOTA, AJUSTE,REPLY: string);
+    function RetornaMaxId(Atabela: string): string;
+    function  RetornaValorKgAlimento(idAlimento:string):Double;
+    function  RetornaValorKgRacao(idRacao:string):Double;
+    procedure AtualizaFornecimento(id, idMotorista, hora, qtdCab,
+      MediaPeso, Realizado,VDATA,TRATO,ID_LOTE,id_Racao: string);
   public
     var vDataBaseCampo,vPathBD,vPathBDMaster,vNomeBase,vIdUserLogado,
     vNomeUserLogado,vTipoUser,vDataBase,vServer,vNomePropriedade,
@@ -81,6 +274,13 @@ type
 
     function AcceptLimpezaBebedouro(obj: TJSONObject): TJSONObject;
     function AcceptMovAnimal(obj: TJSONObject): TJSONObject;
+    function AcceptFornecimento(obj: TJSONObject): TJSONObject;
+    function AcceptFornecimentoConf(obj: TJSONObject): TJSONObject;
+    function AcceptLeituraCocho(obj: TJSONObject): TJSONObject;
+    function AcceptFabricacao(obj: TJSONObject): TJSONObject;
+    function AcceptFabricacaoInsumos(obj: TJSONObject): TJSONObject;
+
+
   end;
 
 var
@@ -93,6 +293,79 @@ implementation
 uses UPrincipal;
 
 {$R *.dfm}
+
+function TdmDB.AcceptFabricacao(obj: TJSONObject): TJSONObject;
+var
+  I,X,vEdit: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  FABRICACAO.Connection := frmPrincipal.FCon;
+  FABRICACAO.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    FABRICACAO.Close;
+    FABRICACAO.Open;
+    FABRICACAO.Insert;
+
+    for x := 0 to FABRICACAO.Fields.Count -1 do
+    begin
+     vField  := StringReplace(FABRICACAO.Fields[x].Name,
+      'FABRICACAO','',[rfReplaceAll]);
+     if (vField<>'DATAREG') and (vField<>'ID') and (vQry.FindField(vField) <> nil)
+     and (FABRICACAO.FindField(vField) <> nil) then
+      FABRICACAO.FieldByName(vField).AsString     := vQry.FieldByName(vField).AsString;
+    end;
+    try
+      FABRICACAO.ApplyUpdates(-1);
+      FABRICACAO.Connection.Commit;
+      vIdResult := RetornaMaxId('FABRICACAO');
+      vQry.Next;
+     except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Abastecimento:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
+function TdmDB.RetornaMaxId(Atabela: string): string;
+begin
+ with QryAux,QryAux.SQL do
+ begin
+   Clear;
+   Add('select max(id) max_id from '+Atabela);
+   Open;
+   Result := FieldByName('max_id').AsString;
+ end;
+end;
+
 function TdmDB.GetTestaServidor: TJSONObject;
 var
  LJSon      : TJSONArray;
@@ -156,6 +429,28 @@ begin
   end;
 end;
 
+procedure TdmDB.ConfirmaLeituraCocho(ID_USUARIO,vIdLote, vIdCurral, vDataLeitura, vNota,
+  vAjuste: string);
+begin
+  try
+    InsereLeituraCocho(ID_USUARIO,'1',vIdLote,vIdCurral,
+    vDataLeitura.QuotedString,
+    StringReplace(vNota,',','.',[rfReplaceAll]),
+    vAjuste,
+    '1');
+  except
+  on e : Exception do
+   frmPrincipal.mlog.Lines.Add('Erro ao Atualizar Leitura: '+e.Message)
+  end;
+end;
+
+procedure TdmDB.FORNECIMENTO_CONFReconcileError(DataSet: TFDDataSet;
+  E: EFDException; UpdateKind: TFDDatSRowState;
+  var Action: TFDDAptReconcileAction);
+begin
+ frmPrincipal.mlog.Lines.Add(e.Message)
+end;
+
 function TdmDB.LerIni(Diretorio,Chave1, Chave2, ValorPadrao: String): String;
 var
  FileIni: TIniFile;
@@ -184,10 +479,686 @@ begin
   frmPrincipal.mlog.Lines.Add(e.Message);
 end;
 
+procedure TdmDB.qryAuxReconcileError(DataSet: TFDDataSet; E: EFDException;
+  UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+begin
+ frmPrincipal.mlog.Lines.Add(e.Message);
+end;
+
 procedure TdmDB.qryInsertReconcileError(DataSet: TFDDataSet; E: EFDException;
   UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
 begin
   frmPrincipal.mlog.Lines.Add(e.Message);
+end;
+
+
+function TdmDB.RetornaIDUltimoFornecimento: string;
+var
+ vQryAux :TFDQuery;
+ vMax:string;
+begin
+ vQryAux := TFDQuery.Create(nil);
+ vQryAux.Connection := frmPrincipal.FCon ;
+ with vQryAux,vQryAux.SQL do
+ begin
+   Clear;
+   Add('SELECT  MAX(ID)MAX_ID FROM FORNECIMENTO');
+   Open;
+   Result := FieldByName('MAX_ID').AsString;
+ end;
+ vQryAux.Free;
+end;
+
+
+
+function TdmDB.RetornaValorKgAlimento(idAlimento: string): Double;
+var
+ vQryAux :TFDQuery;
+begin
+ vQryAux := TFDQuery.Create(nil);
+ vQryAux.Connection := frmPrincipal.FCon;
+ with vQryAux,vQryAux.SQL do
+ begin
+   Clear;
+   Add('select COALESCE(CUSTO_MEDIO,0)CUSTO_MEDIO from alimento');
+   Add('where id='+idAlimento);
+   Open;
+   Result := FieldByName('CUSTO_MEDIO').AsFloat;
+ end;
+ vQryAux.Free;
+end;
+
+function TdmDB.RetornaValorKgMineral(idMineral: string): string;
+var
+ vQryAux :TFDQuery;
+begin
+ vQryAux := TFDQuery.Create(nil);
+ vQryAux.Connection := frmPrincipal.FCon;
+ with vQryAux,vQryAux.SQL do
+ begin
+   Clear;
+   Add('select * from suplemento_mineral');
+   Add('where id='+idMineral);
+   Open;
+   Result := formatFloat('0.00',FieldByName('valor_kg').AsFloat);
+ end;
+ vQryAux.Free;
+end;
+
+function TdmDB.RetornaValorKgRacao(idRacao: string): Double;
+var
+ vQryAux :TFDQuery;
+begin
+ vQryAux := TFDQuery.Create(nil);
+ vQryAux.Connection := frmPrincipal.FCon;
+ with vQryAux,vQryAux.SQL do
+ begin
+   Clear;
+   Add('SELECT COALESCE(VALORKG,0) VALOR FROM RACAO');
+   Add('where id='+idRacao);
+   Open;
+   Result := FieldByName('VALOR').AsFloat;
+ end;
+ vQryAux.Free;
+end;
+
+procedure TdmDB.VerificaLeitruraExiste(vIdLote, vData: string);
+begin
+ with LEITURA_COCHO,LEITURA_COCHO.SQL do
+ begin
+   Clear;
+   Add('SELECT * FROM LEITURA_COCHO');
+   Add('where status=1');
+   Add('and data_leitura='+FormatDateTime('mm/dd/yyyy',strToDate(vData)).QuotedString);
+   Add('and id_lote='+vidLote);
+   Open;
+ end;
+end;
+
+function TdmDB.AcceptFabricacaoInsumos(obj: TJSONObject): TJSONObject;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+  vValorKG   : Double;
+  vCustoTotal: Double;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  FABRICACAO_INSUMOS.Connection := frmPrincipal.FCon;
+  FABRICACAO_INSUMOS.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    FABRICACAO_INSUMOS.Close;
+    FABRICACAO_INSUMOS.Open;
+    FABRICACAO_INSUMOS.Insert;
+    for x := 0 to FABRICACAO_INSUMOS.Fields.Count -1 do
+    begin
+     vField  := StringReplace(FABRICACAO_INSUMOS.Fields[x].Name,
+      'FABRICACAO_INSUMOS','',[rfReplaceAll]);
+     if(vField<>'DATAREG') and (vField<>'ID') and (vQry.FindField(vField) <> nil)
+     and (vField<>'VALOR_KG')and (vField<>'CUSTO')
+     then
+      FABRICACAO_INSUMOS.FieldByName(vField).AsString     := vQry.FieldByName(vField).AsString;
+     if(vField='VALOR_KG') then
+     begin
+      vValorKG   := RetornaValorKgAlimento(vQry.FieldByName('ID_ALIMENTO').AsString);
+      vCustoTotal:= vValorKG * vQry.FieldByName('KG_FABRICADO').AsFloat;
+      FABRICACAO_INSUMOS.FieldByName('VALOR_KG').AsFloat := vValorKG;
+     end;
+    end;
+    try
+      FABRICACAO_INSUMOS.ApplyUpdates(-1);
+      FABRICACAO_INSUMOS.Connection.Commit;
+      if vIdResult.Length>0 then
+       vIdResult:=vIdResult+','+vQry.FieldByName('id').AsString
+      else
+       vIdResult:=vQry.FieldByName('id').AsString;
+      vQry.Next;
+     except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Fabricacao Insumos:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
+function TdmDB.AcceptFornecimento(obj: TJSONObject): TJSONObject;
+var
+ VMaxIdFor,vValorMineral:string;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  FORNECIMENTO.Connection := frmPrincipal.FCon;
+  FORNECIMENTO.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    FORNECIMENTO.Close;
+    FORNECIMENTO.Open;
+    FORNECIMENTO.Insert;
+    for x := 0 to FORNECIMENTO.Fields.Count -1 do
+    begin
+     vField  := StringReplace(FORNECIMENTO.Fields[x].Name,
+      'FORNECIMENTO','',[rfReplaceAll]);
+     if (vField<>'DATAREG') and (vField<>'ID') and (vQry.FindField(vField) <> nil)then
+      FORNECIMENTO.FieldByName(vField).AsString     := vQry.FieldByName(vField).AsString;
+    end;
+    try
+      FORNECIMENTO.ApplyUpdates(-1);
+      FORNECIMENTO.Connection.Commit;
+      if vQry.FieldByName('QTD_ANIMAIS').AsInteger>0 then
+      begin
+        VMaxIdFor     := RetornaIDUltimoFornecimento;
+        vValorMineral := RetornaValorKgMineral(
+          vQry.FieldByName('ID_PRODUTO').AsString);
+        InsereFornecimentoCab(
+         FormatDateTime('mm/dd/yyyy',vQry.FieldByName('DATA_FORNECIMENTO').AsDateTime),
+         vQry.FieldByName('ID_PASTO').AsString,
+         VMaxIdFor,
+         vQry.FieldByName('ID_PRODUTO').AsString,
+         formatFloat('0.00',vQry.FieldByName('REALIZADO_COCHO_KG').AsFloat),
+         vValorMineral,
+         vQry.FieldByName('QTD_ANIMAIS').AsString
+         );
+      end;
+
+      if vIdResult.Length>0 then
+       vIdResult:=vIdResult+','+vQry.FieldByName('id').AsString
+      else
+       vIdResult:=vQry.FieldByName('id').AsString;
+      vQry.Next;
+     except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Fornecimento:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
+function TdmDB.AcceptFornecimentoConf(obj: TJSONObject): TJSONObject;
+var
+ VMaxIdFor,vValorMineral:string;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  try
+    AtualizaFornecimento(
+      vQry.FindField('ID').AsString,
+      vQry.FindField('ID_MOTORISTA').AsString,
+      vQry.FindField('HORA_FORN').AsString,
+      vQry.FindField('QTD_CAB').AsString,
+      vQry.FindField('MEDIA_PESO').AsString,
+      vQry.FindField('REALIZADO_MN_KG').AsString,
+      vQry.FindField('DATA_FORN').AsString,
+      vQry.FindField('TRATO').AsString,
+      vQry.FindField('ID_LOTE').AsString,
+      vQry.FindField('ID_RACAO').AsString
+    );
+    vIdResult:=vQry.FieldByName('id').AsString;
+    StrAux  := TStringWriter.Create;
+    txtJson := TJsonTextWriter.Create(StrAux);
+    txtJson.Formatting := TJsonFormatting.Indented;
+    txtJson.WriteStartObject;
+    txtJson.WritePropertyName('OK');
+    txtJson.WriteValue(vIdResult);
+    txtJson.WriteEndObject;
+    Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+   except
+     on E: Exception do
+     begin
+       StrAux  := TStringWriter.Create;
+       txtJson := TJsonTextWriter.Create(StrAux);
+       txtJson.Formatting := TJsonFormatting.Indented;
+       txtJson.WriteStartObject;
+       txtJson.WritePropertyName('Erro');
+       txtJson.WriteValue('Erro Ao Sincronizar Fornecimento:'+E.Message);
+       txtJson.WriteEndObject;
+       Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+     end;
+  end;
+end;
+
+procedure TdmDB.AtualizaFornecimento(id, idMotorista, hora, qtdCab,
+  MediaPeso, Realizado,VDATA,TRATO,ID_LOTE,id_Racao: string);
+var
+ vCustoTotal:Double;
+ vQryTools :TFDQuery;
+begin
+ vQryTools := TFDQuery.Create(nil);
+ vQryTools.Connection := frmPrincipal.FCon ;
+ vCustoTotal := strToFloat(Realizado)*dmDB.RetornaValorKgRacao(id_Racao);
+ with FORNECIMENTO_CONF,FORNECIMENTO_CONF.SQL do
+ begin
+   Clear;
+   Add('SELECT * FROM FORNECIMENTO_CONF WHERE ID='+id);
+   Open;
+ end;
+ if not FORNECIMENTO_CONF.IsEmpty then
+ begin
+   FORNECIMENTO_CONF.Edit;
+   FORNECIMENTO_CONFID_MOTORISTA.AsString         := idMotorista;
+   FORNECIMENTO_CONFHORA_FORN.AsDateTime          := StrToTime(Hora);
+   FORNECIMENTO_CONFQTD_CAB.AsString              := qtdCab;
+   FORNECIMENTO_CONFMEDIA_PESO.AsFloat            := strToFloat(MediaPeso);
+   FORNECIMENTO_CONFCUSTO_TOTAL_TRATO.AsFloat     := vCustoTotal;
+   FORNECIMENTO_CONFREALIZADO_MN_KG.AsFloat       := strToFloat(Realizado);
+   FORNECIMENTO_CONFDATA_ALTERACAO.AsDateTime     := now ;
+   FORNECIMENTO_CONFID_USUARIO_ALTERACAO.AsString := idMotorista;
+   try
+     FORNECIMENTO_CONF.ApplyUpdates(-1);
+     FORNECIMENTO_CONF.Connection.Commit;
+     with vQryTools,vQryTools.SQL do
+     begin
+      Clear;
+      Add('UPDATE DET_LOTE_PLANEJAMENTO SET UTILIZADO=1');
+      Add('WHERE DATA='+FormatDateTime('mm/dd/yyyy',StrToDate(VDATA)).QuotedString+ ' AND TRATO='+TRATO);
+      Add('AND ID_LOTE='+ID_LOTE);
+      try
+        vQryTools.ExecSQL;
+        vQryTools.Connection.Commit;
+      except
+       on E : Exception do
+        frmPrincipal.mlog.Lines.Add(E.ClassName+' error raised, with message : '+E.Message);
+      end;
+
+
+
+      if strToInt(Realizado)>0 then
+      begin
+       with vQryTools,vQryTools.SQL do
+       begin
+         Clear;
+         Add('DELETE FROM ANIMAL_FORNECIMENTO_CONF WHERE ID_FORNECIMENTO='+ID);
+         try
+          ExecSQL;
+          vQryTools.Connection.Commit;
+         except
+          on E : Exception do
+           frmPrincipal.mlog.Lines.Add(E.ClassName+' error raised, with message : '+E.Message);
+         end;
+
+         Clear;
+         Add('INSERT INTO ANIMAL_FORNECIMENTO_CONF(');
+         Add('ID_ANIMAL,');
+         Add('ID_FORNECIMENTO,');
+         Add(' DATA_FORNECIMENTO,');
+         Add(' TRATO,');
+         Add(' ID_LOTE,');
+         Add(' ID_CURRAL,');
+         Add(' CONSUMO_MN,');
+         Add(' CONSUMO_MS,');
+         Add(' IMS_PV,');
+         Add(' CUSTO,');
+         Add(' PESO_MEDIO,');
+         Add(' ID_RACAO');
+         Add(')');
+         Add('SELECT');
+         Add('B.ID,');
+         Add('A.ID,');
+         Add('A.DATA_FORN,');
+         Add('A.TRATO,');
+         Add('A.ID_LOTE,');
+         Add('A.ID_LOCAL,');
+         Add('CAST(A.REALIZADO_MN_KG AS DOUBLE PRECISION)/CAST(A.QTD_CAB AS DOUBLE PRECISION) ConsumoMn,');
+         Add('CAST(A.REALIZADO_MN_KG AS DOUBLE PRECISION)/CAST(A.QTD_CAB AS DOUBLE PRECISION)*(CAST(MS_RACAO AS DOUBLE PRECISION)/100)ConsumoMs,');
+         Add('(((CAST(A.REALIZADO_MN_KG AS DOUBLE PRECISION)/A.QTD_CAB)*(CAST(A.MS_RACAO AS DOUBLE PRECISION)/100)*100)/');
+         Add('CAST(MEDIA_PESO AS DOUBLE PRECISION))IMS_PV,');
+         Add('A.CUSTO_TOTAL_TRATO/A.QTD_CAB,');
+         Add('A.MEDIA_PESO,');
+         Add('A.ID_RACAO');
+         Add('FROM FORNECIMENTO_CONF A');
+         Add('JOIN ANIMAL B ON A.ID_LOCAL=B.ID_LOCAL');
+         Add('WHERE B.STATUS=1 AND A.ID='+ID);
+         try
+          ExecSQL;
+          vQryTools.Connection.Commit;
+         except
+          on E : Exception do
+           frmPrincipal.mlog.Lines.Add(E.ClassName+' error raised, with message : '+E.Message);
+         end;
+       end;
+      end;
+     end;
+    except
+    on E : Exception do
+     frmPrincipal.mlog.Lines.Add(E.ClassName+' error raised, with message : '+E.Message);
+   end;
+ end;
+vQryTools.Free;
+end;
+
+procedure TdmDB.InsereFornecimentoCab(VDATA,ID_PASTO,ID_FORN,ID_MINERAL,QTD_FORN_TOTAL,
+  VALOR_KG, QTD_CAB: string);
+var
+ vQryAux,vQryAuxInsert :TFDQuery;
+ vQtdFornCab,vValorFornCab:Double;
+ vQtdFornCabS,vValorFornCabS,vIdAnimal:String;
+begin
+ vQryAux := TFDQuery.Create(nil);
+ vQryAux.Connection := frmPrincipal.FCon;
+ vQryAuxInsert := TFDQuery.Create(nil);
+ vQryAuxInsert.Connection := frmPrincipal.FCon;
+ vQtdFornCab   := strToFloat(QTD_FORN_TOTAL) / StrToFloat(QTD_CAB);
+ vValorFornCab := vQtdFornCab * strToFloat(VALOR_KG);
+ vQtdFornCabS   := FormatFloat('0.00',vQtdFornCab);
+ vValorFornCabS := FormatFloat('0.00',vValorFornCab);
+ with vQryAux,vQryAux.SQL do
+ begin
+   if VDATA= FormatDateTime('mm/dd/yyyy',date) then
+   begin
+     Clear;
+     Add('SELECT');
+     Add('*');
+     Add('FROM animal A');
+     Add('where A.ID_LOCAL='+ID_PASTO+ ' AND STATUS=1');
+     Add('and a.data_proc<='+VDATA.QuotedString);
+     Open;
+     while not vQryAux.Eof do
+     begin
+       vIdAnimal :=  vQryAux.FieldByName('ID').AsString;
+      with vQryAuxInsert,vQryAuxInsert.SQL do
+      begin
+       Clear;
+       Add('INSERT INTO ANIMAL_FORNECIMENTO(');
+       Add('DATA,');
+       Add('ID_FORNECIMENTO,');
+       Add('KG_CAB,');
+       Add('VALOR_FORN,');
+       Add('ID_MINERAL,');
+       Add('ID_ANIMAL,');
+       Add('ID_PASTO)');
+       Add('VALUES(');
+       Add(':DATA,');
+       Add(':ID_FORNECIMENTO,');
+       Add(':KG_CAB,');
+       Add(':VALOR_FORN,');
+       Add(':ID_MINERAL,');
+       Add(':ID_ANIMAL,');
+       Add(':ID_PASTO)');
+       ParamByName('DATA').AsString            :=VDATA;
+       ParamByName('ID_FORNECIMENTO').AsString :=ID_FORN;
+       ParamByName('KG_CAB').AsString          :=StringReplace(vQtdFornCabS,',','.',[rfReplaceAll]);
+       ParamByName('VALOR_FORN').AsString      :=StringReplace(vValorFornCabS,',','.',[rfReplaceAll]);
+       ParamByName('ID_MINERAL').AsString      :=ID_MINERAL;
+       ParamByName('ID_ANIMAL').AsString       :=vIdAnimal;
+       ParamByName('ID_PASTO').AsString        :=ID_PASTO;
+       try
+        vQryAuxInsert.ExecSQL;
+        vQryAuxInsert.Connection.Commit;
+        vQryAux.Next;
+       except
+       on E : Exception do
+         ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+       end;
+      end;
+     end;
+   end
+   else
+   begin
+     Clear;
+     Add('SELECT * FROM HIST_ANIMAL_LOCAL_DIA');
+     Add('WHERE ID_LOCAL='+ID_PASTO);
+     Add('AND "DATA"='+VDATA.QuotedString);
+     Open;
+     while not vQryAux.Eof do
+     begin
+       vIdAnimal :=  vQryAux.FieldByName('ID_ANIMAL').AsString;
+      with vQryAuxInsert,vQryAuxInsert.SQL do
+      begin
+       Clear;
+       Add('INSERT INTO ANIMAL_FORNECIMENTO(');
+       Add('DATA,');
+       Add('ID_FORNECIMENTO,');
+       Add('KG_CAB,');
+       Add('VALOR_FORN,');
+       Add('ID_MINERAL,');
+       Add('ID_ANIMAL,');
+       Add('ID_PASTO)');
+       Add('VALUES(');
+       Add(':DATA,');
+       Add(':ID_FORNECIMENTO,');
+       Add(':KG_CAB,');
+       Add(':VALOR_FORN,');
+       Add(':ID_MINERAL,');
+       Add(':ID_ANIMAL,');
+       Add(':ID_PASTO)');
+
+       ParamByName('DATA').AsString            :=VDATA;
+       ParamByName('ID_FORNECIMENTO').AsString :=ID_FORN;
+       ParamByName('KG_CAB').AsString          :=StringReplace(vQtdFornCabS,',','.',[rfReplaceAll]);
+       ParamByName('VALOR_FORN').AsString      :=StringReplace(vValorFornCabS,',','.',[rfReplaceAll]);
+       ParamByName('ID_MINERAL').AsString      :=ID_MINERAL;
+       ParamByName('ID_ANIMAL').AsString       :=vIdAnimal;
+       ParamByName('ID_PASTO').AsString        :=ID_PASTO;
+       try
+        vQryAuxInsert.ExecSQL;
+        vQryAuxInsert.Connection.Commit;
+        vQryAux.Next;
+       except
+       on E : Exception do
+         ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+       end;
+      end;
+     end;
+   end;
+ end;
+ vQryAux.Free;
+ vQryAuxInsert.Free;
+end;
+
+
+procedure TdmDB.InsereLeituraCocho(ID_USUARIO,TIPO, ID_LOTE, ID_CURRAL, DATA_LEITURA, NOTA,
+  AJUSTE, REPLY: string);
+var
+ vQry :TFDQuery;
+begin
+ vQry            := TFDQuery.Create(nil);
+ vQry.Connection := frmPrincipal.FCon;
+ with vQry,vQry.SQL do
+ begin
+   Clear;
+   Add('UPDATE LEITURA_COCHO SET STATUS=-1');
+   Add(',ID_USUARIO_ALTERCAO='+ID_USUARIO);
+   Add(',DATA_ALTERACAO=CURRENT_TIMESTAMP');
+   Add('WHERE ID_LOTE='+ID_LOTE);
+   Add('AND ID_CURRAL='+ID_CURRAL);
+   Add('AND DATA_LEITURA='+DATA_LEITURA);
+   ExecSQL;
+   vQry.Connection.Commit;
+   if tipo='1' then
+   begin
+     Clear;
+     Add('INSERT INTO LEITURA_COCHO(ID_LOTE,ID_CURRAL,DATA_LEITURA,NOTA,AJUSTE,ID_USUARIO)');
+     Add('VALUES(');
+     Add(ID_LOTE+',');
+     Add(ID_CURRAL+',');
+     Add(DATA_LEITURA+',');
+     Add(NOTA+',');
+     Add(AJUSTE+',');
+     Add(ID_USUARIO+')');
+     try
+       ExecSQL;
+       vQry.Connection.Commit;
+       Clear;
+       Add('EXECUTE PROCEDURE  GERA_TRATOS_LEITURA('+AJUSTE+','+
+       DATA_LEITURA+','+
+       ID_USUARIO+','+
+       ID_LOTE+','+
+       REPLY+')');
+       ExecSQL;
+       vQry.Connection.Commit;
+     except
+      on e : Exception do
+       frmPrincipal.mlog.Lines.add('Erro ao Atualizar Lotes: '+e.Message)
+     end;
+   end;
+   if tipo='2' then
+   begin
+     Clear;
+     Add('INSERT INTO LEITURA_COCHO(ID_LOTE,ID_CURRAL,DATA_LEITURA,NOTA,AJUSTE,ID_USUARIO)');
+     Add('VALUES(');
+     Add(ID_LOTE+',');
+     Add(ID_CURRAL+',');
+     Add(DATA_LEITURA+',');
+     Add('100,');
+     Add(AJUSTE+',');
+     Add(ID_USUARIO+')');
+     try
+       ExecSQL;
+       vQry.Connection.Commit;
+       Clear;
+       Add('EXECUTE PROCEDURE  GERA_TRATOS_LEITURA_KG('+AJUSTE+','+
+       DATA_LEITURA+','+
+       ID_USUARIO+','+
+       ID_LOTE+','+
+       REPLY+')');
+       ExecSQL;
+       vQry.Connection.Commit;
+     except
+      on e : Exception do
+       frmPrincipal.mlog.Lines.add('Erro ao Atualizar Lotes: '+e.Message)
+     end;
+   end;
+ end;
+ vQry.Free;
+end;
+
+function TdmDB.AcceptLeituraCocho(obj: TJSONObject): TJSONObject;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FCon;
+  LEITURA_COCHO.Connection := frmPrincipal.FCon;
+  LEITURA_COCHO.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    dmDB.VerificaLeitruraExiste(
+     vQry.FieldByName('id_lote').AsString,
+     vQry.FieldByName('data_leitura').AsString);
+    if LEITURA_COCHO.IsEmpty then
+     LEITURA_COCHO.Insert
+    else
+     LEITURA_COCHO.Edit;
+    for x := 0 to LEITURA_COCHO.Fields.Count -1 do
+    begin
+     vField  := StringReplace(LEITURA_COCHO.Fields[x].Name,
+      'LEITURA_COCHO','',[rfReplaceAll]);
+     if (vField<>'DATAREG') and (vField<>'ID') and (vQry.FindField(vField) <> nil)then
+      LEITURA_COCHO.FieldByName(vField).AsString     := vQry.FieldByName(vField).AsString;
+    end;
+    try
+      LEITURA_COCHO.ApplyUpdates(-1);
+      LEITURA_COCHO.Connection.Commit;
+      ConfirmaLeituraCocho(
+       vQry.FieldByName('ID_USUARIO').AsString,
+       vQry.FieldByName('ID_LOTE').AsString,
+       vQry.FieldByName('ID_CURRAL').AsString,
+       FormatDateTime('mm/dd/yyyy',vQry.FieldByName('DATA_LEITURA').AsDateTime),
+       vQry.FieldByName('NOTA').AsString,
+       vQry.FieldByName('AJUSTE').AsString
+      );
+      if vIdResult.Length>0 then
+       vIdResult:=vIdResult+','+vQry.FieldByName('id').AsString
+      else
+       vIdResult:=vQry.FieldByName('id').AsString;
+      vQry.Next;
+     except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Leitura de Cocho:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
 end;
 
 function TdmDB.AcceptLimpezaBebedouro(obj: TJSONObject): TJSONObject;
@@ -222,6 +1193,7 @@ begin
     end;
     try
       LIMPEZABEBEDOURO.ApplyUpdates(-1);
+      LIMPEZABEBEDOURO.Connection.Commit;
       if vIdResult.Length>0 then
        vIdResult:=vIdResult+','+vQry.FieldByName('id').AsString
       else
@@ -296,6 +1268,7 @@ begin
       qryInsert.SQL.Text;
       try
        qryInsert.ExecSQL;
+       qryInsert.Connection.Commit;
        AtualizaLocalAnimal(
         vQry.FieldByName('ID_ANIMAL').AsString,
         vQry.FieldByName('ID_PASTO_DESTINO').AsString
@@ -342,6 +1315,7 @@ begin
     Add('update animal set id_local='+vIdLocal);
     Add('where id='+vIdAnimal);
     ExecSQL;
+    vQry.Connection.Commit;
   end;
   vQry.Free;
 end;
@@ -462,8 +1436,53 @@ begin
       vQtd := BEBEDOURO.RecordCount;
       Result := GetDataSetAsJSON(BEBEDOURO);
     end;
-   end
-   else
+   end;
+   if DataSet.Name='HIST_LEITURA_COCHO' then
+   begin
+    with HIST_LEITURA_COCHO,HIST_LEITURA_COCHO.SQL do
+    begin
+      Clear;
+      Add('SELECT c.id,a.*,c.id_propriedade  FROM HIST_LEITURA_COCHO('+vidPropriedade+') a');
+      Add('JOIN CURRAIS c ON C.ID=ID_CURRAL');
+      HIST_LEITURA_COCHO.SQL.Text;
+      Open;
+      vQtd := HIST_LEITURA_COCHO.RecordCount;
+      Result := GetDataSetAsJSON(HIST_LEITURA_COCHO);
+    end
+   end;
+   if DataSet.Name='HIST_CONSUMO' then
+   begin
+    with HIST_CONSUMO,HIST_CONSUMO.SQL do
+    begin
+      Clear;
+      Add('SELECT * FROM HIST_CONSUMO_LOTE('+vidPropriedade+') a');
+      HIST_LEITURA_COCHO.SQL.Text;
+      Open;
+      vQtd := HIST_CONSUMO.RecordCount;
+      Result := GetDataSetAsJSON(HIST_CONSUMO);
+    end
+   end;
+   if DataSet.Name='FORNECIMENTO_PREVISTO' then
+   begin
+    with FORNECIMENTO_PREVISTO,FORNECIMENTO_PREVISTO.SQL do
+    begin
+      Clear;
+      Add('SELECT');
+      Add(' f.*');
+      Add('FROM FORNECIMENTO_CONF f');
+      Add('JOIN LOTE_NUTRICIONAL L ON L.ID=F.ID_LOTE');
+      Add('WHERE DATA_FORN=(SELECT MAX(DATA_FORN) FROM FORNECIMENTO_CONF fc)');
+      Add('AND f.STATUS >-1');
+      Add('AND l.ID_PROPRIEDADE='+vidPropriedade);
+      FORNECIMENTO_PREVISTO.SQL.Text;
+      Open;
+      vQtd := FORNECIMENTO_PREVISTO.RecordCount;
+      Result := GetDataSetAsJSON(FORNECIMENTO_PREVISTO);
+    end
+   end;
+   if(DataSet.Name<>'BEBEDOURO') and (DataSet.Name<>'HIST_LEITURA_COCHO')and
+   (DataSet.Name<>'FORNECIMENTO_PREVISTO')and(DataSet.Name<>'HIST_CONSUMO')
+   then
    begin
     DataSet.Filtered := false;
     DataSet.Close;

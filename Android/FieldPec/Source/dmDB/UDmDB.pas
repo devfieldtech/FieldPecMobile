@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.SQLite,
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, FireDAC.Comp.DataSet,System.IOUtils,FMX.Dialogs,
-  FireDAC.Phys.SQLiteWrapper.Stat,StrUtils;
+  FireDAC.Phys.SQLiteWrapper.Stat,StrUtils,System.UITypes;
 
 type
   Tdmdb = class(TDataModule)
@@ -194,14 +194,258 @@ type
     MOVIMENTACAO_ANIMALDestino: TWideStringField;
     MOVIMENTACAO_ANIMALMotivo: TStringField;
     MOVIMENTACAO_ANIMALidentificacao: TWideStringField;
+    SUPLEMENTO_MINERAL: TFDQuery;
+    SUPLEMENTO_MINERALID: TIntegerField;
+    SUPLEMENTO_MINERALNOME: TStringField;
+    SUPLEMENTO_MINERALID_FORNECEDOR: TIntegerField;
+    SUPLEMENTO_MINERALGANHO_ESPERADO: TBCDField;
+    SUPLEMENTO_MINERALESTOQUE_MINIMO: TBCDField;
+    SUPLEMENTO_MINERALPESO_EMBALAGEM: TBCDField;
+    SUPLEMENTO_MINERALSTATUS: TIntegerField;
+    SUPLEMENTO_MINERALDATAREG: TSQLTimeStampField;
+    SUPLEMENTO_MINERALID_USUARIO: TSmallintField;
+    SUPLEMENTO_MINERALCONSUMO_ESPERADO: TBCDField;
+    SUPLEMENTO_MINERALVALOR_KG: TBCDField;
+    SUPLEMENTO_MINERALESTOQUE_MINIMO_DIAS: TIntegerField;
+    SUPLEMENTO_MINERALCM_COCHO_INDICADO: TBCDField;
+    SUPLEMENTO_MINERALINGESTAO_PERCENT_PV: TBCDField;
+    SUPLEMENTO_MINERALPADRAO: TIntegerField;
+    SUPLEMENTO_MINERALID_USUARIO_ALTERACAO: TIntegerField;
+    SUPLEMENTO_MINERALDATA_ALTERACAO: TSQLTimeStampField;
+    SUPLEMENTO_MINERALFORMULADO: TIntegerField;
+    SUPLEMENTO_MINERALPRE_MISTURA: TIntegerField;
+    SUPLEMENTO_MINERALMS_TOTAL: TBCDField;
+    SUPLEMENTO_MINERALSALDO_ATUAL: TBCDField;
+    SUPLEMENTO_MINERALDATA_CUSTO_MEDIO: TDateField;
+    FORNECIMENTO: TFDQuery;
+    FORNECIMENTOID_PASTO: TIntegerField;
+    FORNECIMENTOID_PRODUTO: TIntegerField;
+    FORNECIMENTODATA_FORNECIMENTO: TDateField;
+    FORNECIMENTOPREVISAO_KG: TBCDField;
+    FORNECIMENTOPREVISTO_SACO: TBCDField;
+    FORNECIMENTOREALIZADO_COCHO_KG: TBCDField;
+    FORNECIMENTOREALIZADO_COCHO_SACO: TBCDField;
+    FORNECIMENTOREALIZADO_ESTOQUE_KG: TBCDField;
+    FORNECIMENTOREALIZADO_ESTOQUE_SACO: TBCDField;
+    FORNECIMENTOID_USUARIO: TIntegerField;
+    FORNECIMENTODATA_REG: TSQLTimeStampField;
+    FORNECIMENTOSTATUS: TIntegerField;
+    FORNECIMENTOTIPO_FORNE: TStringField;
+    FORNECIMENTOTAG_COCHO: TStringField;
+    FORNECIMENTOLATITUDE: TStringField;
+    FORNECIMENTOLONGITUDE: TStringField;
+    FORNECIMENTOSOBRA_KG: TBCDField;
+    FORNECIMENTOID_RESPONSAVEL: TIntegerField;
+    FORNECIMENTOID_COCHO: TIntegerField;
+    FORNECIMENTOQTD_ANIMAIS: TIntegerField;
+    FORNECIMENTOPREVISAO_DIAS: TIntegerField;
+    FORNECIMENTOCONSUMO_ESTIMADO_CAB_DIA: TBCDField;
+    FORNECIMENTOVALOR_KG: TBCDField;
+    FORNECIMENTOESTOQUE_ORIGEM: TIntegerField;
+    FORNECIMENTOCONSUMO_ESTIMADO_TOTAL_DIA: TBCDField;
+    FORNECIMENTOVALOR_TOTAL_FORN: TBCDField;
+    FORNECIMENTOVALOR_CAB_DIA: TBCDField;
+    FORNECIMENTOVALOR_TOTAL_CAB: TBCDField;
+    FORNECIMENTOOBSERVACAO: TStringField;
+    FORNECIMENTOID_USUARIO_ALTERACAO: TIntegerField;
+    FORNECIMENTODATA_ALTERACAO: TSQLTimeStampField;
+    FORNECIMENTOPasto: TWideStringField;
+    FORNECIMENTOMineral: TStringField;
+    FORNECIMENTOSYNC: TIntegerField;
+    FORNECIMENTOID: TFDAutoIncField;
+    COCHOLOTACAO: TIntegerField;
+    LOTE_NUTRICIONAL: TFDQuery;
+    LEITURA_COCHO: TFDQuery;
+    LEITURA_COCHOID: TFDAutoIncField;
+    LEITURA_COCHOID_LOTE: TIntegerField;
+    LEITURA_COCHOID_CURRAL: TIntegerField;
+    LEITURA_COCHODATA_LEITURA: TDateField;
+    LEITURA_COCHONOTA: TBCDField;
+    LEITURA_COCHOAJUSTE: TBCDField;
+    LEITURA_COCHOID_USUARIO: TIntegerField;
+    LEITURA_COCHOID_USUARIO_ALTERCAO: TIntegerField;
+    LEITURA_COCHODATA_ALTERACAO: TSQLTimeStampField;
+    LEITURA_COCHODATAREG: TSQLTimeStampField;
+    LEITURA_COCHOSTATUS: TIntegerField;
+    LEITURA_COCHOSYNC: TIntegerField;
+    LEITURA_COCHOLote: TIntegerField;
+    LEITURA_COCHOCurral: TWideStringField;
+    HIST_LEITURA_COCHO: TFDQuery;
+    HIST_LEITURA_COCHOLabel: TDateField;
+    HIST_LEITURA_COCHOValue: TBCDField;
+    AUX_NOTAS_LEITURA: TFDQuery;
+    AUX_NOTAS_LEITURAID: TIntegerField;
+    AUX_NOTAS_LEITURANOTA: TFMTBCDField;
+    AUX_NOTAS_LEITURAAJUSTE: TBCDField;
+    HIST_CONSUMO: TFDQuery;
+    HIST_CONSUMOID_LOTE: TIntegerField;
+    HIST_CONSUMODATA_CONSUMO: TDateField;
+    HIST_CONSUMOMN: TBCDField;
+    HIST_CONSUMOMS: TBCDField;
+    HIST_CONSUMO_MN: TFDQuery;
+    HIST_CONSUMO_MS: TFDQuery;
+    LOTE_NUTRICIONALID: TIntegerField;
+    LOTE_NUTRICIONALID_PLANEJAMETO: TIntegerField;
+    LOTE_NUTRICIONALID_PROPRIEDADE: TIntegerField;
+    LOTE_NUTRICIONALID_LOCAL: TIntegerField;
+    LOTE_NUTRICIONALDATA_ENTRADA: TDateField;
+    LOTE_NUTRICIONALDATA_PRIMEIRO_TRATO: TDateField;
+    LOTE_NUTRICIONALQTDE_CAB: TIntegerField;
+    LOTE_NUTRICIONALPESO_MEDIO: TBCDField;
+    LOTE_NUTRICIONALDIAS_MEDIO: TIntegerField;
+    LOTE_NUTRICIONALSTATUS: TIntegerField;
+    LOTE_NUTRICIONALID_USUARIO: TIntegerField;
+    LOTE_NUTRICIONALID_USUARIO_ALTERACAO: TIntegerField;
+    LOTE_NUTRICIONALDATA_ULTIMA_ALTERACAO: TSQLTimeStampField;
+    LOTE_NUTRICIONALPESO_ENTRADA: TBCDField;
+    LOTE_NUTRICIONALCurral: TWideStringField;
+    LOTE_NUTRICIONALUltimaNota: TBCDField;
+    LOTE_NUTRICIONALAJUSTE: TBCDField;
+    RACAOINSUMOS: TFDQuery;
+    RACAOINSUMOSID: TIntegerField;
+    RACAOINSUMOSIDRACAO: TIntegerField;
+    RACAOINSUMOSIDINSUMOALIMENTO: TIntegerField;
+    RACAOINSUMOSPERCENTMATERIASECA: TBCDField;
+    RACAOINSUMOSKGMATERIASECA: TBCDField;
+    RACAOINSUMOSINCLUSAOMATERIASECA: TBCDField;
+    RACAOINSUMOSINCLUSAOMATERIANATURAL: TBCDField;
+    RACAOINSUMOSVALORKG: TBCDField;
+    RACAOINSUMOSVALORINCLUSAO: TBCDField;
+    RACAOINSUMOSSTATUS: TIntegerField;
+    RACAOINSUMOSDATAREGISTRO: TSQLTimeStampField;
+    RACAOINSUMOSIDUSUARIO: TIntegerField;
+    RACAOINSUMOSDATAALTERACAO: TSQLTimeStampField;
+    RACAOINSUMOSIDUSUARIOALTERACAO: TIntegerField;
+    RACAOINSUMOSKGMATERIANATURAL: TBCDField;
+    RACAOINSUMOSORDEM_FABRICACAO: TIntegerField;
+    RACAOINSUMOSID_PREMISTURA: TIntegerField;
+    RACAOINSUMOSTOLERANCIA_FAB: TBCDField;
+    FABRICACAO: TFDQuery;
+    FABRICACAOIDRACAO: TIntegerField;
+    FABRICACAODATA_FAB: TDateField;
+    FABRICACAOKG_PREVISTO: TBCDField;
+    FABRICACAOKG_REALIZADO: TBCDField;
+    FABRICACAOCUSTO_TOTAL: TBCDField;
+    FABRICACAOHORA_INICIO: TTimeField;
+    FABRICACAOHORA_FIM: TTimeField;
+    FABRICACAODATAREG: TDateField;
+    FABRICACAOID_USUARIO: TIntegerField;
+    FABRICACAOTIPO_BAIXA: TIntegerField;
+    FABRICACAOID_CENTROCUSTO: TIntegerField;
+    FABRICACAOLOTE_FABRICACAO: TStringField;
+    FABRICACAOID_OPERADOR: TIntegerField;
+    FABRICACAOORIGEM_DADOS: TIntegerField;
+    FABRICACAODATA_ALTERACAO: TSQLTimeStampField;
+    FABRICACAOID_USUARIO_ALTERACAO: TIntegerField;
+    FABRICACAOSTATUS: TIntegerField;
+    FABRICACAOID_PROPRIEDADE: TIntegerField;
+    FABRICACAOID_PREMISTURA: TIntegerField;
+    FABRICACAORACAO: TStringField;
+    RACAOINSUMOSINSUMO: TStringField;
+    RACAO: TFDQuery;
+    RACAOID: TIntegerField;
+    RACAOTIPO: TIntegerField;
+    RACAONOME: TStringField;
+    RACAOGMD: TBCDField;
+    RACAOMATERIASECA: TBCDField;
+    RACAOSTATUS: TIntegerField;
+    RACAODATAREGISTRO: TSQLTimeStampField;
+    RACAOIDUSUARIO: TIntegerField;
+    RACAODATAALTERACAO: TSQLTimeStampField;
+    RACAOIDUSUARIOALTERACAO: TIntegerField;
+    RACAOVALORKG: TBCDField;
+    RACAODATAFORMULACAO: TDateField;
+    RACAOID_PROPRIEDADE: TIntegerField;
+    RACAOIMS_PV: TBCDField;
+    RACAOTEMPO_MISTURA: TIntegerField;
+    FABRICACAO_INSUMOS: TFDQuery;
+    FABRICACAO_INSUMOSID: TIntegerField;
+    FABRICACAO_INSUMOSID_FABRICACAO: TIntegerField;
+    FABRICACAO_INSUMOSID_ALIMENTO: TIntegerField;
+    FABRICACAO_INSUMOSID_CONCENTRADO: TIntegerField;
+    FABRICACAO_INSUMOSDATA_FAB: TDateField;
+    FABRICACAO_INSUMOSHORA_INI: TTimeField;
+    FABRICACAO_INSUMOSHORA_FIM: TTimeField;
+    FABRICACAO_INSUMOSMS_INSUMO: TBCDField;
+    FABRICACAO_INSUMOSKG_PREVISTO: TBCDField;
+    FABRICACAO_INSUMOSKG_FABRICADO: TBCDField;
+    FABRICACAO_INSUMOSDATAREG: TDateField;
+    FABRICACAO_INSUMOSID_USUARIO: TIntegerField;
+    FABRICACAO_INSUMOSID_USUARIO_ALTERACAO: TIntegerField;
+    FABRICACAO_INSUMOSDATA_ALTERACAO: TSQLTimeStampField;
+    FABRICACAO_INSUMOSSTATUS: TIntegerField;
+    FABRICACAO_INSUMOSVALOR_KG: TBCDField;
+    FABRICACAO_INSUMOSCUSTO: TFMTBCDField;
+    FABRICACAO_INSUMOSSYNC: TIntegerField;
+    FABRICACAO_INSUMOSInsumo: TStringField;
+    USERS: TFDQuery;
+    USERSID: TIntegerField;
+    USERSDT_REGISTER: TSQLTimeStampField;
+    USERSSTATUS: TIntegerField;
+    USERSLOGIN: TStringField;
+    USERSPASSWORD: TStringField;
+    USERSNAME: TStringField;
+    USERSTIPO: TIntegerField;
+    USERSID_PROPRIEDADE: TIntegerField;
+    USERSID_CARGO: TIntegerField;
+    FABRICACAOSYNC: TIntegerField;
+    FABRICACAOID: TIntegerField;
+    FORNECIMENTO_CONF: TFDQuery;
+    FORNECIMENTO_CONFID_LOTE: TIntegerField;
+    FORNECIMENTO_CONFID_LOCAL: TIntegerField;
+    FORNECIMENTO_CONFQTD_CAB: TIntegerField;
+    FORNECIMENTO_CONFMEDIA_PESO: TBCDField;
+    FORNECIMENTO_CONFDATA_FORN: TDateField;
+    FORNECIMENTO_CONFHORA_FORN: TTimeField;
+    FORNECIMENTO_CONFTRATO: TIntegerField;
+    FORNECIMENTO_CONFID_RACAO: TIntegerField;
+    FORNECIMENTO_CONFMS_RACAO: TBCDField;
+    FORNECIMENTO_CONFVALOR_KG_RACAO: TBCDField;
+    FORNECIMENTO_CONFPREVISTO_MN_KG: TIntegerField;
+    FORNECIMENTO_CONFREALIZADO_MN_KG: TIntegerField;
+    FORNECIMENTO_CONFCUSTO_TOTAL_TRATO: TBCDField;
+    FORNECIMENTO_CONFID_MOTORISTA: TIntegerField;
+    FORNECIMENTO_CONFID_USUARIO: TIntegerField;
+    FORNECIMENTO_CONFDATAREG: TSQLTimeStampField;
+    FORNECIMENTO_CONFSTATUS: TIntegerField;
+    FORNECIMENTO_CONFLOTE_FABRICACAO: TStringField;
+    FORNECIMENTO_CONFID_USUARIO_ALTERACAO: TIntegerField;
+    FORNECIMENTO_CONFDATA_ALTERACAO: TSQLTimeStampField;
+    FORNECIMENTO_CONFSYNC: TIntegerField;
+    FORNECIMENTO_CONFCURRAL: TWideStringField;
+    FORNECIMENTO_CONFRACAO: TStringField;
+    FORNECIMENTO_CONFMOTORISTA: TStringField;
+    LISTA_LOTE_FRAME: TFDQuery;
+    qryLinhaConfinamento: TFDQuery;
+    qryLinhaConfinamentolinha: TWideStringField;
+    LISTA_LOTE_FRAMEDATA_FORN: TDateField;
+    LISTA_LOTE_FRAMETRATO: TIntegerField;
+    LISTA_LOTE_FRAMECURRAL: TWideStringField;
+    LISTA_LOTE_FRAMERACAO: TStringField;
+    LISTA_LOTE_FRAMEPREVISTO_MN_KG: TIntegerField;
+    LISTA_LOTE_FRAMEREALIZADO_MN_KG: TIntegerField;
+    LISTA_LOTE_FRAMEID_FORNE: TFDAutoIncField;
+    LISTA_LOTE_FRAMEIDCURRAL: TIntegerField;
+    LISTA_LOTE_FRAMEIDLOTE: TIntegerField;
+    LISTA_LOTE_FRAMEQTDE_CAB: TIntegerField;
+    FORNECIMENTO_CONFID: TIntegerField;
+    FORNECIMENTO_CONFQTDE_CAB_LOTE: TIntegerField;
+    FORNECIMENTO_CONFPESO_MEDIO_LOTE: TBCDField;
     procedure FConBeforeConnect(Sender: TObject);
     procedure ReadAccess;
     procedure BEBEDOUROReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure FABRICACAOReconcileError(DataSet: TFDDataSet; E: EFDException;
+      UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure FORNECIMENTO_CONFReconcileError(DataSet: TFDDataSet;
+      E: EFDException; UpdateKind: TFDDatSRowState;
+      var Action: TFDDAptReconcileAction);
   private
     { Private declarations }
   public
-    vIdUser,vIdPropriedade,vLocalAnimalId:string;
+    vIdUser,vIdPropriedade,vLocalAnimalId,vIdPastoCocho,vQtdeCab,
+    vIdPasto:string;
+    vLeituraMinima,vLeituraMaxima,vLeituraRange:Double;
     function VerificaTabelaVazia(AnomeTable: string): Boolean;
     function AutenticaUsuario(Usuario, Senha: string): Boolean;
     procedure SalvarAcesso(vUsuario, Senha: string);
@@ -210,14 +454,36 @@ type
     procedure AbreBuscaAnimal(vFiltro:string);
     procedure AbreCocho(vPropriedade, vFiltro: string);
     procedure AbreLimpezaBebedouro(vPropriedade, vFiltro: string);
-    function RetornaNomeBebedouro(vId:string):string;
+    function  RetornaNomeBebedouro(vId:string):string;
     procedure AbreMovAnimal(vPropriedade, vFiltro: string);
-
+    procedure AbreLotes(vPropriedade, vFiltro,vData: string);
+    procedure AbreLotesFornecimento(vLinha,vTrato,vIdDieta: string);
+    procedure AbreLeituraCocho(vPropriedade, vFiltro: string);
+    procedure AbreHistConsumo(vIdLote: string);
+    procedure AbreFornecimento(vPropriedade, vFiltro: string);
 
     procedure DeletaBebedouroPropriedade;
     procedure DeletaCochoPropriedade;
     procedure DeletaGenerico(vID,vTabela:string);
+    procedure FinalizaBatida(vID:string);
     function  RetornaOrigemAnimalMov(vIdAnimal:string):string;
+    procedure AbreFornecimentoConf(Filtro: string);
+
+    procedure AbreFornMineral(vPropriedade, vFiltro: string);
+    function  RetornaPastoCocho(vId:string):string;
+    procedure AbreGraficoHistLeitura(vIdLote:string);
+    procedure GeraTrackLeitura;
+    procedure AbreFabricacao(vFiltro:string);
+    function  InsereFabricacao(idRacao, idOperador,previsto: string): string;
+    procedure InsereFabricacaoAlimentos(vIdFabricacao,vIdRacao, kgPrevisto: string);
+    procedure AbreFabricacaoInusmo(vFiltro: string);
+    function  RetornaMaxIdFabricacao:string;
+    procedure AtualizaRealizadoIsnumo(vID,vRealizado:String);
+    function  VerificaIDExite(Atabela, AId: string): Boolean;
+    function  RetornaIdFabricacao: integer;
+    procedure AbreFornecimentoLote(IdForn: string);
+    procedure AbreLinhaConfimaneto;
+    function  VerificaFornecimentoExite(vData,vIdCurral,vTrato,vIdDieta:string):Boolean;
   end;
 
 var
@@ -364,6 +630,270 @@ begin
  end;
 end;
 
+procedure Tdmdb.AbreLotes(vPropriedade, vFiltro,vData: string);
+begin
+ with LOTE_NUTRICIONAL,LOTE_NUTRICIONAL.SQL do
+ begin
+   Clear;
+   Add('select ln2.*, c.CODIGO Curral,');
+   Add('(SELECT nota');
+   Add('FROM LEITURA_COCHO lc');
+   Add('WHERE status=1 AND ID_LOTE=ln2.ID AND DATA_LEITURA =:dt_leitura)UltimaNota,');
+   Add('(SELECT AJUSTE');
+   Add('FROM LEITURA_COCHO lc');
+   Add('WHERE status=1 AND ID_LOTE=ln2.ID AND DATA_LEITURA =:dt_leitura)AJUSTE');
+   Add('from currais c');
+   Add('JOIN LOTE_NUTRICIONAL ln2 ON ln2.ID_LOCAL=c.id');
+   Add('where LN2.status>-1');
+   Add('and C.ID_PROPRIEDADE='+vPropriedade);
+   Add(vFiltro);
+   ParamByName('dt_leitura').AsString := vData;
+//   InputBox('','',Text,
+//    procedure(const AResult: TModalResult; const AValue: string)
+//    begin
+//      // This is executed when user closes the input box
+//      // Check result and value here and do whatever is needed
+//    end
+//    );
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreLotesFornecimento(vLinha,vTrato,vIdDieta: string);
+begin
+ with LISTA_LOTE_FRAME,LISTA_LOTE_FRAME.SQL do
+ begin
+   Clear;
+   Add('SELECT');
+   Add('fc.data_FORN DATA_FORN,');
+   Add(' fc.trato TRATO,');
+   Add(' CP.CODIGO CURRAL,');
+   Add(' RR.NOME RACAO,');
+   Add(' fc.PREVISTO_MN_KG,');
+   Add(' fc.REALIZADO_MN_KG,');
+   Add(' fc.ID ID_FORNE,');
+   Add(' fc.ID_LOCAL IDCURRAL,');
+   Add(' fc.ID_LOTE IDLOTE,');
+   Add(' lf.QTDE_CAB');
+   Add('FROM FORNECIMENTO_CONF fc');
+   Add('JOIN RACAO RR on RR.ID=fc.ID_RACAO');
+   Add('join LOTE_NUTRICIONAL LF ON LF.ID=fc.id_lote');
+   Add('JOIN CURRAIS CP on CP.ID=fc.ID_LOCAL');
+   Add('where CP.ID_PROPRIEDADE='+vIdPropriedade);
+   Add('and fc.DATA_FORN='+FormatDateTime('yyyy-mm-dd',date).QuotedString);
+   Add('and fc.TRATO='+vTrato);
+   Add('and fc.ID_RACAO='+vIdDieta);
+   if vLinha.Length>0 then
+    Add('and substr(CP.CODIGO,1 ,(INSTR(CP.CODIGO,''-'')-1)) like '+QuotedStr('%'+vLinha+'%'));
+   Open;
+ end;
+end;
+
+
+function Tdmdb.VerificaFornecimentoExite(vData, vIdCurral, vTrato,
+  vIdDieta: string): Boolean;
+begin
+ with FORNECIMENTO_CONF,FORNECIMENTO_CONF.sql do
+ begin
+  Clear;
+  Add('SELECT');
+  Add(' A.*,');
+  Add(' C.CODIGO CURRAL,');
+  Add(' D.NOME RACAO,');
+  Add(' E.NAME MOTORISTA');
+  Add('FROM FORNECIMENTO_CONF A');
+  Add('JOIN LOTE_NUTRICIONAL B ON A.ID_LOTE=B.ID');
+  Add('JOIN CURRAIS C ON C.ID=A.ID_LOCAL');
+  Add('JOIN RACAO D ON D.ID=A.ID_RACAO');
+  Add('LEFT JOIN USERS E ON E.ID=A.ID_MOTORISTA');
+  Add('where DATA_FORN='+vData);
+  Add('AND A.ID_LOCAL='+vIdCurral);
+  Add('AND A.TRATO='+vTrato);
+  Add('AND A.ID_RACAO='+vIdDieta);
+  Open;
+  result := FORNECIMENTO_CONF.IsEmpty;
+ end;
+end;
+
+function TdmDB.VerificaIDExite(Atabela, AId: string): Boolean;
+begin
+ with qryAux,qryAux.sql do
+ begin
+  Clear;
+  Add('select * from '+Atabela);
+  Add('where id='+AId);
+  Open;
+  result := qryAux.IsEmpty;
+ end;
+end;
+
+function TdmDB.RetornaIdFabricacao: integer;
+var
+ vid:Integer;
+begin
+ repeat
+   vid := Random(900000);
+  until (dmDB.VerificaIDExite('FABRICACAO',intToStr(vid)));
+  Result :=vid;
+end;
+
+procedure Tdmdb.AbreFabricacao(vFiltro: string);
+begin
+ with FABRICACAO,FABRICACAO.SQL do
+ begin
+   Clear;
+   Add('select a.*,b.NOME racao from FABRICACAO a');
+   Add('join racao b on (a.idracao=b.id)');
+   Add('where a.status>-1');
+   Add(vFiltro);
+   Add('order by a.datareg desc');
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreFabricacaoInusmo(vFiltro: string);
+begin
+ with FABRICACAO_INSUMOS,FABRICACAO_INSUMOS.SQL do
+ begin
+   Clear;
+   Add('SELECT b.*,a.nome Insumo FROM FABRICACAO_INSUMOS b');
+   Add('JOIN ALIMENTO A ON A.ID=B.ID_ALIMENTO');
+   Add('WHERE b.status=1');
+   Add(vFiltro);
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreFornMineral(vPropriedade, vFiltro: string);
+begin
+ with FORNECIMENTO,FORNECIMENTO.SQL do
+ begin
+   Clear;
+   Add('SELECT f.*,c.codigo Pasto,s.nome Mineral');
+   Add('FROM fornecimento F');
+   Add('JOIN currais C ON C.id=F.id_pasto');
+   Add('JOIN suplemento_mineral S ON S.id=F.id_produto');
+   Add(vFiltro);
+   Open;
+ end;
+end;
+
+function Tdmdb.InsereFabricacao(idRacao, idOperador,previsto: string): string;
+begin
+ Fabricacao.Close;
+ Fabricacao.Open;
+ Fabricacao.Insert;
+ FABRICACAOIDRACAO.AsString        := idRacao;
+ FABRICACAOID_OPERADOR.AsString    := idOperador;
+ FABRICACAOID_USUARIO.AsString     := vIdUser;
+ FABRICACAOHORA_INICIO.AsDateTime  := now;
+ FABRICACAOKG_PREVISTO.AsString    := previsto;
+ FABRICACAODATA_FAB.AsDateTime     := date;
+ try
+  Fabricacao.ApplyUpdates(-1);
+  Result :='OK';
+ except
+  on E: Exception do
+    Result :='Erro ao salvar Fabricacao:'+E.Message;
+ end;
+end;
+
+procedure Tdmdb.InsereFabricacaoAlimentos(vIdFabricacao,vIdRacao, kgPrevisto: string);
+var
+ vQry,vQryInsert:TFDQuery;
+ vIdAlimento,vData,vPercentMsAlimento:string;
+ vPrevisto :integer;
+begin
+ vQryInsert:=TFDQuery.Create(nil);
+ vQryInsert.Connection := FCon;
+
+ vQry:=TFDQuery.Create(nil);
+ vQry.Connection := FCon;
+
+ with vQry,vQry.SQL do
+ begin
+   Add('SELECT');
+   Add(' b.id idAlimento,');
+   Add(' CURRENT_DATE,');
+   Add(' A.PERCENTMATERIASECA,');
+   Add(kgPrevisto+' *(CAST(a.INCLUSAOMATERIANATURAL AS DOUBLE PRECISION)/100) Previsto');
+   Add('FROM RACAOINSUMOS a');
+   Add('JOIN ALIMENTO b ON a.IDINSUMOALIMENTO=b.ID');
+   Add('WHERE a.STATUS=1 and a.IDRACAO='+vIdRacao);
+   Add('order by ORDEM_FABRICACAO');
+   try
+    Open;
+    while not vQry.eof do
+    begin
+     vIdAlimento := vQry.FieldByName('idAlimento').AsString;
+     vData       := FormatDateTime('yyyy-mm-dd',date).QuotedString;
+     vPercentMsAlimento := StringReplace(vQry.FieldByName('PERCENTMATERIASECA').AsString,',','.',[rfReplaceAll]);
+     vPrevisto          := vQry.FieldByName('Previsto').AsInteger;
+
+     with vQryInsert,vQryInsert.SQL do
+     begin
+       Clear;
+       Add('INSERT INTO FABRICACAO_INSUMOS');
+       Add('(ID_FABRICACAO,');
+       Add(' ID_ALIMENTO,');
+       Add(' DATA_FAB,');
+       Add(' MS_INSUMO,');
+       Add(' KG_PREVISTO,');
+       Add(' KG_FABRICADO,');
+       Add(' ID_USUARIO)');
+       Add('values(');
+       Add(vIdFabricacao+',');
+       Add(vIdAlimento+',');
+       Add(vData+',');
+       Add(vPercentMsAlimento+',');
+       Add(intToStr(vPrevisto)+',');
+       Add('0,');
+       Add(dmdb.vIdUser+')');
+       try
+        ExecSQL;
+        vQry.Next;
+       except
+       on E: Exception do
+        ShowMessage('Erro :'+E.Message);
+       end;
+     end;
+    end;
+   except
+    on E: Exception do
+      ShowMessage('Erro :'+E.Message);
+   end;
+ end;
+ vQry.Free;
+end;
+
+procedure Tdmdb.AbreGraficoHistLeitura(vIdLote: string);
+begin
+ with HIST_LEITURA_COCHO,HIST_LEITURA_COCHO.SQL do
+ begin
+   Clear;
+   Add('SELECT a.data_leitura "Label",a.nota "Value" FROM HIST_LEITURA_COCHO a');
+   Add('JOIN CURRAIS c ON C.ID=ID_CURRAL');
+   Add('WHERE A.ID_LOTE='+vIdLote);
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreHistConsumo(vIdLote: string);
+begin
+ with HIST_CONSUMO_MN,HIST_CONSUMO_MN.SQL do
+ begin
+   Clear;
+   Add('select DATA_CONSUMO "LABEL",MN "VALUE" from HIST_CONSUMO WHERE ID_LOTE='+vIdLote);
+   Open;
+ end;
+ with HIST_CONSUMO_MS,HIST_CONSUMO_MS.SQL do
+ begin
+   Clear;
+   Add('select DATA_CONSUMO "LABEL",MS "VALUE" from HIST_CONSUMO WHERE ID_LOTE='+vIdLote);
+   Open;
+ end;
+end;
+
 procedure Tdmdb.AbreBebedouro(vPropriedade, vFiltro: string);
 begin
  with BEBEDOURO,BEBEDOURO.SQL do
@@ -373,6 +903,83 @@ begin
    Add('left JOIN currais B ON A.id_pasto=B.id');
    Add('where b.ID_PROPRIEDADE='+vPropriedade);
    Add(vFiltro);
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreLeituraCocho(vPropriedade, vFiltro: string);
+begin
+ with LEITURA_COCHO,LEITURA_COCHO.SQL do
+ begin
+   Clear;
+   Add('SELECT lc.*,ln2.ID Lote,c.CODIGO Curral FROM LEITURA_COCHO lc');
+   Add('JOIN LOTE_NUTRICIONAL ln2 ON ln2.ID=lc.ID_LOTE');
+   Add('JOIN CURRAIS c ON lc.ID_CURRAL=c.ID');
+   Add('AND C.ID_PROPRIEDADE='+vPropriedade);
+   Add(vFiltro);
+   Add('order by lc.id desc');
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreFornecimentoConf(Filtro: string);
+begin
+ with FORNECIMENTO_CONF,FORNECIMENTO_CONF.SQL do
+ begin
+   Clear;
+   Add('SELECT');
+   Add(' A.*,');
+   Add(' C.CODIGO CURRAL,');
+   Add(' D.NOME RACAO,');
+   Add(' E.NAME MOTORISTA,');
+   Add(' B.QTDE_CAB QTDE_CAB_LOTE,');
+   Add(' B.PESO_MEDIO PESO_MEDIO_LOTE');
+   Add('FROM FORNECIMENTO_CONF A');
+   Add('JOIN LOTE_NUTRICIONAL B ON A.ID_LOTE=B.ID');
+   Add('JOIN CURRAIS C ON C.ID=A.ID_LOCAL');
+   Add('JOIN RACAO D ON D.ID=A.ID_RACAO');
+   Add('LEFT JOIN USERS E ON E.ID=A.ID_MOTORISTA');
+   Add('WHERE A.STATUS=1');
+   Add('AND C.ID_PROPRIEDADE='+dmdb.vIdPropriedade);
+   Add(Filtro);
+   Add('ORDER BY A.DATA_FORN,D.NOME,substr(c.CODIGO,1 ,(INSTR(c.CODIGO,''-'')-1)),ORDERM_FORN,TRATO');
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreFornecimentoLote(IdForn: string);
+begin
+  with FORNECIMENTO_CONF,FORNECIMENTO_CONF.SQL do
+  begin
+    Clear;
+    Add('SELECT');
+    Add(' A.*,');
+    Add(' C.CODIGO CURRAL,');
+    Add(' D.NOME RACAO,');
+    Add(' E.NAME MOTORISTA,');
+    Add(' B.QTDE_CAB QTDE_CAB_LOTE,');
+    Add(' B.PESO_MEDIO PESO_MEDIO_LOTE');
+    Add('FROM FORNECIMENTO_CONF A');
+    Add('JOIN LOTE_NUTRICIONAL B ON A.ID_LOTE=B.ID');
+    Add('JOIN CURRAIS C ON C.ID=A.ID_LOCAL');
+    Add('JOIN RACAO D ON D.ID=A.ID_RACAO');
+    Add('LEFT JOIN USERS E ON E.ID=A.ID_MOTORISTA');
+    Add('WHERE A.ID='+IdForn);
+    Open;
+  end;
+end;
+
+procedure Tdmdb.AbreFornecimento(vPropriedade, vFiltro: string);
+begin
+ with LEITURA_COCHO,LEITURA_COCHO.SQL do
+ begin
+   Clear;
+   Add('SELECT lc.*,ln2.ID Lote,c.CODIGO Curral FROM LEITURA_COCHO lc');
+   Add('JOIN LOTE_NUTRICIONAL ln2 ON ln2.ID=lc.ID_LOTE');
+   Add('JOIN CURRAIS c ON lc.ID_CURRAL=c.ID');
+   Add('AND C.ID_PROPRIEDADE='+vPropriedade);
+   Add(vFiltro);
+   Add('order by lc.id desc');
    Open;
  end;
 end;
@@ -388,6 +995,21 @@ begin
    Add('where c.ID_PROPRIEDADE='+vPropriedade);
    Add(vFiltro);
    Add('order by a.id desc');
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreLinhaConfimaneto;
+begin
+ with qryLinhaConfinamento,qryLinhaConfinamento.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' substr(CP.CODIGO,1 ,(INSTR(CP.CODIGO,''-'')-1)) linha');
+   Add('from currais cp');
+   Add('where status=1 and tipo=0 and ID_PROPRIEDADE='+vIdPropriedade);
+   Add('group by substr(CP.CODIGO,1 ,(INSTR(CP.CODIGO,''-'')-1))');
+   Add('order by substr(CP.CODIGO,1 ,(INSTR(CP.CODIGO,''-'')-1))');
    Open;
  end;
 end;
@@ -419,12 +1041,28 @@ begin
  end;
 end;
 
+procedure Tdmdb.AtualizaRealizadoIsnumo(vID,vRealizado: String);
+var
+ qryAux : TFDQuery;
+begin
+ qryAux := TFDQuery.Create(nil);
+ qryAux.Connection := FCon;
+ with qryAux,qryAux.sql do
+ begin
+  Clear;
+  Add('UPDATE FABRICACAO_INSUMOS SET KG_FABRICADO='+vRealizado);
+  Add('WHERE ID='+vID);
+  ExecSQL;
+ end;
+ qryAux.Free;
+end;
+
 procedure Tdmdb.AbreCocho(vPropriedade, vFiltro: string);
 begin
  with COCHO,COCHO.SQL do
  begin
    Clear;
-   Add('select A.*,B.codigo Pasto from cocho A');
+   Add('select A.*,B.codigo Pasto,B.LOTACAO from cocho A');
    Add('left JOIN currais B ON A.id_pasto=B.id');
    Add('where b.ID_PROPRIEDADE='+vPropriedade);
    Add(vFiltro);
@@ -498,6 +1136,17 @@ begin
 end;
 
 
+function Tdmdb.RetornaMaxIdFabricacao: string;
+begin
+ with qryAux,qryAux.SQL do
+ begin
+  Clear;
+  Add('select max(id)max_id from  FABRICACAO b');
+  Open;
+  Result := FieldByName('max_id').AsString;
+ end;
+end;
+
 function Tdmdb.RetornaNomeBebedouro(vId: string): string;
 begin
  with qryAux,qryAux.SQL do
@@ -525,6 +1174,39 @@ begin
  end;
 end;
 
+function Tdmdb.RetornaPastoCocho(vId: string): string;
+begin
+ COCHO.Filtered := false;
+ COCHO.Close;
+ COCHO.Open;
+ COCHO.Filter :='ID='+vId.QuotedString;
+ COCHO.Filtered := true;
+ vIdPastoCocho := COCHOID.AsString;
+ vIdPasto      := COCHOID_PASTO.AsString;
+ vQtdeCab      := COCHOLOTACAO.AsString;
+ Result        := COCHOPasto.AsString;
+// with qryAux,qryAux.SQL do
+// begin
+//   Clear;
+//   Add('select a.id,b.codigo,b.id IdPasto,b.lotacao from cocho a');
+//   Add('join currais b on a.id_pasto=b.id');
+//   Add('where a.tag='+vId.QuotedString);
+//   //Add('and b.id_propriedade='+dmdb.vIdPropriedade);
+//   inputbox('','',text);
+//   Open;
+//   vIdPastoCocho := FieldByName('id').AsString;
+//   vIdPasto      := FieldByName('IdPasto').AsString;
+//   vQtdeCab      := FieldByName('LOTACAO').AsString;
+//   Result        := FieldByName('codigo').AsString;
+// end;
+end;
+
+procedure Tdmdb.FABRICACAOReconcileError(DataSet: TFDDataSet; E: EFDException;
+  UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+begin
+ ShowMessage(e.Message)
+end;
+
 procedure Tdmdb.FConBeforeConnect(Sender: TObject);
 var
  vPath:string;
@@ -532,7 +1214,7 @@ begin
  {$IF DEFINED(iOS) or DEFINED(ANDROID)}
    FCon.Params.DriverID :='SQLite';
    FCon.Params.Values['Database'] :=
-   TPath.Combine(TPath.GetDocumentsPath,'FieldA.db');
+   TPath.Combine(TPath.GetDocumentsPath,'FP2.db');
  {$ENDIF}
  {$IFDEF MSWINDOWS}
    vPath := 'E:\Projetos2021\Field\FieldPecMobile\Android\FieldPec\db\Fieldw.db3';
@@ -544,6 +1226,36 @@ begin
    else
     ShowMessage('BD Não localizado!!');
  {$ENDIF}
+end;
+
+procedure Tdmdb.FinalizaBatida(vID: string);
+begin
+ with qryAux,qryAux.SQL do
+ begin
+   Clear;
+   Add('UPDATE FABRICACAO SET STATUS=2, HORA_FIM=CURRENT_TIME');
+   Add('WHERE ID='+vID);
+   ExecSQL;
+ end;
+end;
+
+procedure Tdmdb.FORNECIMENTO_CONFReconcileError(DataSet: TFDDataSet;
+  E: EFDException; UpdateKind: TFDDatSRowState;
+  var Action: TFDDAptReconcileAction);
+begin
+ ShowMessage(e.Message);
+end;
+
+procedure Tdmdb.GeraTrackLeitura;
+begin
+ with qryAux,qryAux.SQL do
+ begin
+   Clear;
+   Add('SELECT min(NOTA) min,max(nota) max FROM AUX_NOTAS_LEITURA anl');
+   Open;
+   vLeituraMinima := FieldByName('min').AsInteger;
+   vLeituraMaxima := FieldByName('max').AsInteger;
+ end;
 end;
 
 end.

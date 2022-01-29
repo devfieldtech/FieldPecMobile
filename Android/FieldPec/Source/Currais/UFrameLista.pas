@@ -8,7 +8,7 @@ uses
   FMX.Controls.Presentation, FMX.Objects, FMX.Layouts;
 
 type
-  TFItemListaAbastecimento = class(TFrame)
+  TFItemListaCurrais = class(TFrame)
     RecBack: TRectangle;
     Layout1: TLayout;
     Image1: TImage;

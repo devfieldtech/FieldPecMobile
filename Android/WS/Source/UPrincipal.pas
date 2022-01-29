@@ -284,7 +284,132 @@ begin
      end;
   end);
 
+  THorse.Get('/SUPLEMENTO_MINERAL',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Suplemento Mineral');
+     try
+     Res.Send<TJSONObject>(dmDB.GetGeneric(dmDB.SUPLEMENTO_MINERAL));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
 
+  THorse.Get('/AUX_NOTAS_LEITURA',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Nota de Leitura');
+     try
+     Res.Send<TJSONObject>(dmDB.GetGeneric(dmDB.AUX_NOTAS_LEITURA));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.post('/LOTE_NUTRICIONAL',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : LOTE NUTRICIONAL');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetGenericPostPropriedade(dmDB.LOTE_NUTRICIONAL,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+
+  THorse.post('/HIST_LEITURA_COCHO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : HISTORICO LEITURA');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetGenericPostPropriedade(dmDB.HIST_LEITURA_COCHO,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.post('/HIST_CONSUMO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : HISTORICO CONSUMO');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetGenericPostPropriedade(dmDB.HIST_CONSUMO,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.Get('/RACAO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' :  RACAO');
+     try
+     Res.Send<TJSONObject>(dmDB.GetGeneric(dmDB.RACAO));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.Get('/RACAOINSUMOS',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' :  RACAO INSUMOS');
+     try
+     Res.Send<TJSONObject>(dmDB.GetGeneric(dmDB.RACAOINSUMOS));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.post('/FORNECIMENTO_PREVISTO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : FORNECIMENTO PREVISTO');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetGenericPostPropriedade(dmDB.FORNECIMENTO_PREVISTO,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+//****************Post********************************************************
   THorse.Post('/LIMPEZABEBEDOURO',
   procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
   var
@@ -312,6 +437,96 @@ begin
     LBody := Req.Body<TJSONObject>;
     try
      LBodyRed:=dmDB.AcceptMovAnimal(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/FORNECIMENTO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Fornecimento Mineral');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptFornecimento(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/LEITURA_COCHO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Leitura de Cocho');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptLeituraCocho(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/FABRICACAO',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Fabricacao');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptFabricacao(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/FABRICACAO_INSUMOS',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Fabricacao');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptFabricacaoInsumos(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/FORNECIMENTO_CONF',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Fornecimento');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmDB.AcceptFornecimentoConf(LBody);
      Res.Send(LBodyRed).Status(200)
      except on ex:exception do
      begin

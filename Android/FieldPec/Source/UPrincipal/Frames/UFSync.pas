@@ -17,7 +17,7 @@ uses
   ,AndroidApi.helpers,AndroidApi.JNI.JavaTypes,AndroidApi.JNI.GraphicsContentViewText,
   Androidapi.JNI.Os,Androidapi.JNIBridge,Androidapi.JNI.Telephony,Androidapi.JNI.Provider,
   FMX.Helpers.Android,FMX.Platform.Android,System.PushNotification,System.Permissions,
-  FMX.VirtualKeyboard
+  FMX.VirtualKeyboard, FMX.Media
   {$ENDIF}
 
  {$IFDEF MSWINDOWS}
@@ -60,6 +60,38 @@ type
     Image4: TImage;
     ShadowEffect3: TShadowEffect;
     lblMovAnimal: TLabel;
+    Layout2: TLayout;
+    Rectangle2: TRectangle;
+    Image5: TImage;
+    ShadowEffect4: TShadowEffect;
+    lblFornConfinamento: TLabel;
+    Layout3: TLayout;
+    Rectangle4: TRectangle;
+    Image6: TImage;
+    ShadowEffect6: TShadowEffect;
+    lblFornMineral: TLabel;
+    Layout4: TLayout;
+    Rectangle5: TRectangle;
+    Image7: TImage;
+    ShadowEffect7: TShadowEffect;
+    lblLeituraCocho: TLabel;
+    Layout5: TLayout;
+    Rectangle7: TRectangle;
+    Image8: TImage;
+    ShadowEffect8: TShadowEffect;
+    lblFabricacao: TLabel;
+    layOpcBaixar: TLayout;
+    Rectangle8: TRectangle;
+    Layout6: TLayout;
+    btnBaixaAll: TRectangle;
+    Image11: TImage;
+    ShadowEffect10: TShadowEffect;
+    Label3: TLabel;
+    btnAnimais: TRectangle;
+    Image9: TImage;
+    ShadowEffect15: TShadowEffect;
+    Label15: TLabel;
+    chkBaixaAnimais: TButton;
     procedure btnFechaSyncClick(Sender: TObject);
     procedure btnEnviarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -68,6 +100,9 @@ type
     procedure btnEnviarClick(Sender: TObject);
     procedure Rectangle19Click(Sender: TObject);
     procedure btnBaixarClick(Sender: TObject);
+    procedure chkBaixaAnimaisClick(Sender: TObject);
+    procedure btnBaixaAllClick(Sender: TObject);
+    procedure btnAnimaisClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -80,9 +115,18 @@ implementation
 
 uses UPrincipal, UdmSync, UDmDB, UdmSyncUp;
 
-procedure TFrameSync.btnBaixarClick(Sender: TObject);
+procedure TFrameSync.btnAnimaisClick(Sender: TObject);
 begin
- if dmSync.TestaServidor<>'Erro' THEN
+  if chkBaixaAnimais.Text='' then
+   chkBaixaAnimais.Text :='X'
+  else
+   chkBaixaAnimais.Text :='';
+end;
+
+procedure TFrameSync.btnBaixaAllClick(Sender: TObject);
+begin
+  layOpcBaixar.Visible := false;
+  if dmSync.TestaServidor<>'Erro' THEN
   begin
    Animacao.Start;
    TThread.CreateAnonymousThread(procedure
@@ -173,9 +217,75 @@ begin
 
     TThread.Synchronize(nil, procedure
     begin
-     mlog.text :=('Baixando Animais...');
+     mlog.text :=('Baixando Suplemento Mineral...');
     end);
-    mlog.text :=(dmSync.GetAnimais);
+    mlog.text :=(dmSync.GetGenerico(dmSync.SUPLEMENTO_MINERAL));
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando Nota de Leitura...');
+    end);
+    mlog.text :=(dmSync.GetGenerico(dmSync.AUX_NOTAS_LEITURA));
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando LOTE NUTRICIONAL');
+    end);
+    mlog.text :=(dmSync.GetGenericoPostIdPropriedade(dmSync.LOTE_NUTRICIONAL));
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando HISTORICO LEITURA DE COCHO');
+    end);
+    mlog.text :=(dmSync.GetGenericoPostIdPropriedade(dmSync.HIST_LEITURA_COCHO));
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando Historico Consumo...');
+    end);
+    mlog.text :=(dmSync.GetGenericoPostIdPropriedade(dmSync.HIST_CONSUMO));
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando Ração...');
+    end);
+    mlog.text :=(dmSync.GetGenerico(dmSync.RACAO));
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando Ração Insumos...');
+    end);
+    mlog.text :=(dmSync.GetGenerico(dmSync.RACAOINSUMOS));
+    Sleep(1000);
+    if chkBaixaAnimais.Text='X' then
+    begin
+      TThread.Synchronize(nil, procedure
+      begin
+       mlog.text :=('Baixando Animais...');
+      end);
+      mlog.text :=(dmSync.GetAnimais);
+      Sleep(1000);
+    end;
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Enviando Fornecimento Conf');
+    end);
+    mlog.text :=(dmSyncUp.PostFornecimentoConf);
+    Sleep(1000);
+
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Baixando Previsto Fornecimento...');
+    end);
+    mlog.text :=(dmSync.GetGenericoPostIdPropriedade(dmSync.FORNECIMENTO_PREVISTO));
     Sleep(1000);
 
     TThread.Synchronize(nil, procedure
@@ -196,6 +306,11 @@ begin
     ShowMessage('Erro ao se conectar com servidor!');
     Animacao.Stop;
   end;
+end;
+
+procedure TFrameSync.btnBaixarClick(Sender: TObject);
+begin
+  layOpcBaixar.Visible := true;
 end;
 
 procedure TFrameSync.btnEnviarClick(Sender: TObject);
@@ -221,6 +336,35 @@ begin
 
     TThread.Synchronize(nil, procedure
     begin
+     mlog.text :=('Enviando Fornecimento');
+    end);
+    mlog.text :=(dmSyncUp.PostForneMineral);
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Enviando Fornecimento Conf');
+    end);
+    mlog.text :=(dmSyncUp.PostFornecimentoConf);
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Enviando Leitura Cocho');
+    end);
+    mlog.text :=(dmSyncUp.PostLeituraCocho);
+    Sleep(1000);
+
+    TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Enviando Fabricacao');
+    end);
+    mlog.text :=(dmSyncUp.PostFabricacao);
+    Sleep(1000);
+
+
+    TThread.Synchronize(nil, procedure
+    begin
      dmdb.FCon.Commit;
      dmdb.FCon.Connected := false;
      dmdb.FCon.Connected := True;
@@ -236,7 +380,7 @@ begin
        [System.UITypes.TMsgDlgBtn.mbYes], 0,
        procedure(const AResult: System.UITypes.TModalResult)
        begin
-//         Application.Terminate;
+         Application.Terminate;
        end);
     end);
   end).Start;
@@ -263,6 +407,14 @@ end;
 procedure TFrameSync.btnFechaSyncClick(Sender: TObject);
 begin
  Visible := false;
+end;
+
+procedure TFrameSync.chkBaixaAnimaisClick(Sender: TObject);
+begin
+  if chkBaixaAnimais.Text='' then
+   chkBaixaAnimais.Text :='X'
+  else
+   chkBaixaAnimais.Text :='';
 end;
 
 procedure TFrameSync.Rectangle19Click(Sender: TObject);

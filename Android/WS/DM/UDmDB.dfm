@@ -1,7 +1,7 @@
 object dmDB: TdmDB
   OldCreateOrder = False
-  Height = 410
-  Width = 583
+  Height = 413
+  Width = 930
   object USERS: TFDQuery
     Connection = frmPrincipal.FCon
     SQL.Strings = (
@@ -87,7 +87,7 @@ object dmDB: TdmDB
         ' PESO_ESTIMADO, ID_LOCAL, ID_LOTE, ID_RACA,'#39'||'
       
         #39'ID_CATEGORIA, ID_REBANHO, ID_PROPRIEDADE, ID_PRODUTOR, ID_CONTR' +
-        'ATO,DATA_PROC,IDADE_MESES) VALUES('#39'||'
+        'ATO,DATA_PROC,IDADE_MESES,DIAS) VALUES('#39'||'
       ' ID||'#39','#39'||'
       ' ID_USUARIO||'#39','#39'||'
       ' '#39#39#39#39'||COALESCE(IDENTIFICACAO_1,'#39#39')||'#39#39#39#39'||'#39','#39'||'
@@ -102,12 +102,15 @@ object dmDB: TdmDB
       ' ID_PROPRIEDADE||'#39','#39'||'
       ' ID_PRODUTOR||'#39','#39'||'
       ' COALESCE(ID_CONTRATO,0)||'#39','#39'||'
-      ' '#39#39#39#39'||CAST(DATA_PROC AS DATE)||'#39#39#39#39'||'#39','#39'||'
-      ' IDADE_MESES||'#39');'#39' as InsertInto,'
+      ' '#39#39#39#39'||CAST(DATA_PROC AS DATE)||'#39#39#39#39'||'#39','#39
+      ' ||IDADE_MESES||'#39','#39'||'
+      
+        ' datediff(DAY FROM A.DATA_PROC TO CURRENT_DATE)||'#39');'#39' as InsertI' +
+        'nto,'
       'ID_PROPRIEDADE'
       'FROM ANIMAL a '
       'where status=1')
-    Left = 336
+    Left = 344
     Top = 48
     object ANIMALINSERTINTO: TStringField
       AutoGenerateValue = arDefault
@@ -147,7 +150,7 @@ object dmDB: TdmDB
     SQL.Strings = (
       'select * from LIMPEZABEBEDOURO a'
       '')
-    Left = 480
+    Left = 608
     Top = 40
     object LIMPEZABEBEDOUROID: TFDAutoIncField
       FieldName = 'ID'
@@ -213,14 +216,922 @@ object dmDB: TdmDB
       'select'
       ' a.*'
       'from movimentacao_animal a')
-    Left = 482
-    Top = 88
+    Left = 610
+    Top = 96
   end
   object qryInsert: TFDQuery
     CachedUpdates = True
     OnReconcileError = qryInsertReconcileError
     Connection = frmPrincipal.FCon
-    Left = 392
-    Top = 304
+    Left = 344
+    Top = 280
+  end
+  object SUPLEMENTO_MINERAL: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM SUPLEMENTO_MINERAL'
+      'WHERE status=1 ')
+    Left = 464
+    Top = 40
+  end
+  object FORNECIMENTO: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT f.*'
+      'FROM fornecimento F')
+    Left = 608
+    Top = 152
+    object FORNECIMENTOID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object FORNECIMENTOID_PASTO: TIntegerField
+      FieldName = 'ID_PASTO'
+      Origin = 'ID_PASTO'
+    end
+    object FORNECIMENTOID_PRODUTO: TIntegerField
+      FieldName = 'ID_PRODUTO'
+      Origin = 'ID_PRODUTO'
+    end
+    object FORNECIMENTODATA_FORNECIMENTO: TDateField
+      FieldName = 'DATA_FORNECIMENTO'
+      Origin = 'DATA_FORNECIMENTO'
+    end
+    object FORNECIMENTOPREVISAO_KG: TFMTBCDField
+      FieldName = 'PREVISAO_KG'
+      Origin = 'PREVISAO_KG'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOPREVISTO_SACO: TFMTBCDField
+      FieldName = 'PREVISTO_SACO'
+      Origin = 'PREVISTO_SACO'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOREALIZADO_COCHO_KG: TFMTBCDField
+      FieldName = 'REALIZADO_COCHO_KG'
+      Origin = 'REALIZADO_COCHO_KG'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOREALIZADO_COCHO_SACO: TFMTBCDField
+      FieldName = 'REALIZADO_COCHO_SACO'
+      Origin = 'REALIZADO_COCHO_SACO'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOREALIZADO_ESTOQUE_KG: TFMTBCDField
+      FieldName = 'REALIZADO_ESTOQUE_KG'
+      Origin = 'REALIZADO_ESTOQUE_KG'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOREALIZADO_ESTOQUE_SACO: TFMTBCDField
+      FieldName = 'REALIZADO_ESTOQUE_SACO'
+      Origin = 'REALIZADO_ESTOQUE_SACO'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOID_USUARIO: TIntegerField
+      FieldName = 'ID_USUARIO'
+      Origin = 'ID_USUARIO'
+    end
+    object FORNECIMENTODATA_REG: TSQLTimeStampField
+      FieldName = 'DATA_REG'
+      Origin = 'DATA_REG'
+    end
+    object FORNECIMENTOSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+    end
+    object FORNECIMENTOTIPO_FORNE: TStringField
+      FieldName = 'TIPO_FORNE'
+      Origin = 'TIPO_FORNE'
+      Size = 10
+    end
+    object FORNECIMENTOTAG_COCHO: TStringField
+      FieldName = 'TAG_COCHO'
+      Origin = 'TAG_COCHO'
+      Size = 30
+    end
+    object FORNECIMENTOLATITUDE: TStringField
+      FieldName = 'LATITUDE'
+      Origin = 'LATITUDE'
+      Size = 50
+    end
+    object FORNECIMENTOLONGITUDE: TStringField
+      FieldName = 'LONGITUDE'
+      Origin = 'LONGITUDE'
+      Size = 50
+    end
+    object FORNECIMENTOID_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+    end
+    object FORNECIMENTOID_COCHO: TIntegerField
+      FieldName = 'ID_COCHO'
+      Origin = 'ID_COCHO'
+    end
+    object FORNECIMENTOQTD_ANIMAIS: TIntegerField
+      FieldName = 'QTD_ANIMAIS'
+      Origin = 'QTD_ANIMAIS'
+    end
+    object FORNECIMENTOVALOR_KG: TFMTBCDField
+      FieldName = 'VALOR_KG'
+      Origin = 'VALOR_KG'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTOESTOQUE_ORIGEM: TIntegerField
+      FieldName = 'ESTOQUE_ORIGEM'
+      Origin = 'ESTOQUE_ORIGEM'
+    end
+  end
+  object HIST_LEITURA_COCHO: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT c.id,a.*,c.id_propriedade FROM HIST_LEITURA_COCHO(9001) a'
+      'JOIN CURRAIS c ON C.ID=ID_CURRAL')
+    Left = 464
+    Top = 240
+    object HIST_LEITURA_COCHOID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+    end
+    object HIST_LEITURA_COCHOID_CURRAL: TIntegerField
+      FieldName = 'ID_CURRAL'
+      Origin = 'ID_CURRAL'
+    end
+    object HIST_LEITURA_COCHODATA_LEITURA: TDateField
+      FieldName = 'DATA_LEITURA'
+      Origin = 'DATA_LEITURA'
+    end
+    object HIST_LEITURA_COCHONOTA: TFMTBCDField
+      FieldName = 'NOTA'
+      Origin = 'NOTA'
+      Precision = 18
+      Size = 3
+    end
+    object HIST_LEITURA_COCHOAJUSTE: TFMTBCDField
+      FieldName = 'AJUSTE'
+      Origin = 'AJUSTE'
+      Precision = 18
+      Size = 3
+    end
+    object HIST_LEITURA_COCHOID_PROPRIEDADE: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_PROPRIEDADE'
+      Origin = 'ID_PROPRIEDADE'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object HIST_LEITURA_COCHOID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      Required = True
+    end
+  end
+  object LEITURA_COCHO: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM LEITURA_COCHO'
+      'where status=1')
+    Left = 464
+    Top = 160
+    object LEITURA_COCHOID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object LEITURA_COCHOID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+    end
+    object LEITURA_COCHOID_CURRAL: TIntegerField
+      FieldName = 'ID_CURRAL'
+      Origin = 'ID_CURRAL'
+    end
+    object LEITURA_COCHODATA_LEITURA: TDateField
+      FieldName = 'DATA_LEITURA'
+      Origin = 'DATA_LEITURA'
+    end
+    object LEITURA_COCHONOTA: TFMTBCDField
+      FieldName = 'NOTA'
+      Origin = 'NOTA'
+      Precision = 18
+      Size = 2
+    end
+    object LEITURA_COCHOAJUSTE: TFMTBCDField
+      FieldName = 'AJUSTE'
+      Origin = 'AJUSTE'
+      Precision = 18
+      Size = 2
+    end
+    object LEITURA_COCHOID_USUARIO: TIntegerField
+      FieldName = 'ID_USUARIO'
+      Origin = 'ID_USUARIO'
+    end
+    object LEITURA_COCHOID_USUARIO_ALTERCAO: TIntegerField
+      FieldName = 'ID_USUARIO_ALTERCAO'
+      Origin = 'ID_USUARIO_ALTERCAO'
+    end
+    object LEITURA_COCHODATA_ALTERACAO: TSQLTimeStampField
+      FieldName = 'DATA_ALTERACAO'
+      Origin = 'DATA_ALTERACAO'
+    end
+    object LEITURA_COCHODATAREG: TSQLTimeStampField
+      FieldName = 'DATAREG'
+      Origin = 'DATAREG'
+    end
+    object LEITURA_COCHOSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+    end
+  end
+  object LOTE_NUTRICIONAL: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM LOTE_NUTRICIONAL'
+      'where status=1')
+    Left = 464
+    Top = 104
+  end
+  object AUX_NOTAS_LEITURA: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'select * from AUX_NOTAS_LEITURA')
+    Left = 616
+    Top = 224
+    object AUX_NOTAS_LEITURAID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object AUX_NOTAS_LEITURANOTA: TFMTBCDField
+      FieldName = 'NOTA'
+      Origin = 'NOTA'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object AUX_NOTAS_LEITURAAJUSTE: TFMTBCDField
+      FieldName = 'AJUSTE'
+      Origin = 'AJUSTE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+  end
+  object HIST_CONSUMO: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM HIST_CONSUMO_LOTE(90001)')
+    Left = 608
+    Top = 280
+    object HIST_CONSUMOID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+    end
+    object HIST_CONSUMODATA_CONSUMO: TDateField
+      FieldName = 'DATA_CONSUMO'
+      Origin = 'DATA_CONSUMO'
+    end
+    object HIST_CONSUMOMN: TFMTBCDField
+      FieldName = 'MN'
+      Origin = 'MN'
+      Precision = 18
+      Size = 3
+    end
+    object HIST_CONSUMOMS: TFMTBCDField
+      FieldName = 'MS'
+      Origin = 'MS'
+      Precision = 18
+      Size = 3
+    end
+    object HIST_CONSUMOID_CURRAL: TIntegerField
+      FieldName = 'ID_CURRAL'
+      Origin = 'ID_CURRAL'
+    end
+    object HIST_CONSUMOIMSPV: TFMTBCDField
+      FieldName = 'IMSPV'
+      Origin = 'IMSPV'
+      Precision = 18
+      Size = 3
+    end
+  end
+  object RACAO: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM RACAO'
+      'WHERE STATUS=1')
+    Left = 736
+    Top = 40
+    object RACAOID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object RACAOTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      Required = True
+    end
+    object RACAONOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object RACAOGMD: TFMTBCDField
+      FieldName = 'GMD'
+      Origin = 'GMD'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOMATERIASECA: TFMTBCDField
+      FieldName = 'MATERIASECA'
+      Origin = 'MATERIASECA'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      Required = True
+    end
+    object RACAODATAREGISTRO: TSQLTimeStampField
+      FieldName = 'DATAREGISTRO'
+      Origin = 'DATAREGISTRO'
+      Required = True
+    end
+    object RACAOIDUSUARIO: TIntegerField
+      FieldName = 'IDUSUARIO'
+      Origin = 'IDUSUARIO'
+      Required = True
+    end
+    object RACAODATAALTERACAO: TSQLTimeStampField
+      FieldName = 'DATAALTERACAO'
+      Origin = 'DATAALTERACAO'
+    end
+    object RACAOIDUSUARIOALTERACAO: TIntegerField
+      FieldName = 'IDUSUARIOALTERACAO'
+      Origin = 'IDUSUARIOALTERACAO'
+    end
+    object RACAOVALORKG: TFMTBCDField
+      FieldName = 'VALORKG'
+      Origin = 'VALORKG'
+      Precision = 18
+      Size = 3
+    end
+    object RACAODATAFORMULACAO: TDateField
+      FieldName = 'DATAFORMULACAO'
+      Origin = 'DATAFORMULACAO'
+      Required = True
+    end
+    object RACAOID_PROPRIEDADE: TIntegerField
+      FieldName = 'ID_PROPRIEDADE'
+      Origin = 'ID_PROPRIEDADE'
+      Required = True
+    end
+    object RACAOIMS_PV: TFMTBCDField
+      FieldName = 'IMS_PV'
+      Origin = 'IMS_PV'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOTEMPO_MISTURA: TIntegerField
+      FieldName = 'TEMPO_MISTURA'
+      Origin = 'TEMPO_MISTURA'
+    end
+  end
+  object RACAOINSUMOS: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM RACAOINSUMOS'
+      'WHERE IDRACAO IN(SELECT ID FROM RACAO WHERE STATUS=1)')
+    Left = 736
+    Top = 104
+    object RACAOINSUMOSID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object RACAOINSUMOSIDRACAO: TIntegerField
+      FieldName = 'IDRACAO'
+      Origin = 'IDRACAO'
+      Required = True
+    end
+    object RACAOINSUMOSIDINSUMOALIMENTO: TIntegerField
+      FieldName = 'IDINSUMOALIMENTO'
+      Origin = 'IDINSUMOALIMENTO'
+      Required = True
+    end
+    object RACAOINSUMOSPERCENTMATERIASECA: TFMTBCDField
+      FieldName = 'PERCENTMATERIASECA'
+      Origin = 'PERCENTMATERIASECA'
+      Required = True
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSKGMATERIASECA: TFMTBCDField
+      FieldName = 'KGMATERIASECA'
+      Origin = 'KGMATERIASECA'
+      Required = True
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSINCLUSAOMATERIASECA: TFMTBCDField
+      FieldName = 'INCLUSAOMATERIASECA'
+      Origin = 'INCLUSAOMATERIASECA'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSINCLUSAOMATERIANATURAL: TFMTBCDField
+      FieldName = 'INCLUSAOMATERIANATURAL'
+      Origin = 'INCLUSAOMATERIANATURAL'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSVALORKG: TFMTBCDField
+      FieldName = 'VALORKG'
+      Origin = 'VALORKG'
+      Required = True
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSVALORINCLUSAO: TFMTBCDField
+      FieldName = 'VALORINCLUSAO'
+      Origin = 'VALORINCLUSAO'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      Required = True
+    end
+    object RACAOINSUMOSDATAREGISTRO: TSQLTimeStampField
+      FieldName = 'DATAREGISTRO'
+      Origin = 'DATAREGISTRO'
+      Required = True
+    end
+    object RACAOINSUMOSIDUSUARIO: TIntegerField
+      FieldName = 'IDUSUARIO'
+      Origin = 'IDUSUARIO'
+      Required = True
+    end
+    object RACAOINSUMOSDATAALTERACAO: TSQLTimeStampField
+      FieldName = 'DATAALTERACAO'
+      Origin = 'DATAALTERACAO'
+    end
+    object RACAOINSUMOSIDUSUARIOALTERACAO: TIntegerField
+      FieldName = 'IDUSUARIOALTERACAO'
+      Origin = 'IDUSUARIOALTERACAO'
+    end
+    object RACAOINSUMOSKGMATERIANATURAL: TFMTBCDField
+      FieldName = 'KGMATERIANATURAL'
+      Origin = 'KGMATERIANATURAL'
+      Precision = 18
+      Size = 3
+    end
+    object RACAOINSUMOSORDEM_FABRICACAO: TIntegerField
+      FieldName = 'ORDEM_FABRICACAO'
+      Origin = 'ORDEM_FABRICACAO'
+    end
+    object RACAOINSUMOSID_PREMISTURA: TIntegerField
+      FieldName = 'ID_PREMISTURA'
+      Origin = 'ID_PREMISTURA'
+    end
+    object RACAOINSUMOSTOLERANCIA_FAB: TFMTBCDField
+      FieldName = 'TOLERANCIA_FAB'
+      Origin = 'TOLERANCIA_FAB'
+      Precision = 18
+      Size = 3
+    end
+  end
+  object FABRICACAO: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM FABRICACAO')
+    Left = 744
+    Top = 176
+    object FABRICACAOID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object FABRICACAOIDRACAO: TIntegerField
+      FieldName = 'IDRACAO'
+      Origin = 'IDRACAO'
+    end
+    object FABRICACAODATA_FAB: TDateField
+      FieldName = 'DATA_FAB'
+      Origin = 'DATA_FAB'
+    end
+    object FABRICACAOKG_PREVISTO: TBCDField
+      FieldName = 'KG_PREVISTO'
+      Origin = 'KG_PREVISTO'
+      Precision = 18
+    end
+    object FABRICACAOKG_REALIZADO: TBCDField
+      FieldName = 'KG_REALIZADO'
+      Origin = 'KG_REALIZADO'
+      Precision = 18
+    end
+    object FABRICACAOCUSTO_TOTAL: TBCDField
+      FieldName = 'CUSTO_TOTAL'
+      Origin = 'CUSTO_TOTAL'
+      Precision = 18
+    end
+    object FABRICACAOHORA_INICIO: TTimeField
+      FieldName = 'HORA_INICIO'
+      Origin = 'HORA_INICIO'
+    end
+    object FABRICACAOHORA_FIM: TTimeField
+      FieldName = 'HORA_FIM'
+      Origin = 'HORA_FIM'
+    end
+    object FABRICACAODATAREG: TDateField
+      FieldName = 'DATAREG'
+      Origin = 'DATAREG'
+    end
+    object FABRICACAOID_USUARIO: TIntegerField
+      FieldName = 'ID_USUARIO'
+      Origin = 'ID_USUARIO'
+    end
+    object FABRICACAOTIPO_BAIXA: TIntegerField
+      FieldName = 'TIPO_BAIXA'
+      Origin = 'TIPO_BAIXA'
+    end
+    object FABRICACAOID_CENTROCUSTO: TIntegerField
+      FieldName = 'ID_CENTROCUSTO'
+      Origin = 'ID_CENTROCUSTO'
+    end
+    object FABRICACAOLOTE_FABRICACAO: TStringField
+      FieldName = 'LOTE_FABRICACAO'
+      Origin = 'LOTE_FABRICACAO'
+      Size = 100
+    end
+    object FABRICACAOID_OPERADOR: TIntegerField
+      FieldName = 'ID_OPERADOR'
+      Origin = 'ID_OPERADOR'
+    end
+    object FABRICACAOORIGEM_DADOS: TIntegerField
+      FieldName = 'ORIGEM_DADOS'
+      Origin = 'ORIGEM_DADOS'
+    end
+    object FABRICACAODATA_ALTERACAO: TSQLTimeStampField
+      FieldName = 'DATA_ALTERACAO'
+      Origin = 'DATA_ALTERACAO'
+    end
+    object FABRICACAOID_USUARIO_ALTERACAO: TIntegerField
+      FieldName = 'ID_USUARIO_ALTERACAO'
+      Origin = 'ID_USUARIO_ALTERACAO'
+    end
+    object FABRICACAOSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+    end
+    object FABRICACAOID_PROPRIEDADE: TIntegerField
+      FieldName = 'ID_PROPRIEDADE'
+      Origin = 'ID_PROPRIEDADE'
+    end
+    object FABRICACAOID_PREMISTURA: TIntegerField
+      FieldName = 'ID_PREMISTURA'
+      Origin = 'ID_PREMISTURA'
+    end
+  end
+  object FABRICACAO_INSUMOS: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM FABRICACAO_INSUMOS')
+    Left = 744
+    Top = 248
+    object FABRICACAO_INSUMOSID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object FABRICACAO_INSUMOSID_FABRICACAO: TIntegerField
+      FieldName = 'ID_FABRICACAO'
+      Origin = 'ID_FABRICACAO'
+    end
+    object FABRICACAO_INSUMOSID_ALIMENTO: TIntegerField
+      FieldName = 'ID_ALIMENTO'
+      Origin = 'ID_ALIMENTO'
+    end
+    object FABRICACAO_INSUMOSID_CONCENTRADO: TIntegerField
+      FieldName = 'ID_CONCENTRADO'
+      Origin = 'ID_CONCENTRADO'
+    end
+    object FABRICACAO_INSUMOSDATA_FAB: TDateField
+      FieldName = 'DATA_FAB'
+      Origin = 'DATA_FAB'
+    end
+    object FABRICACAO_INSUMOSHORA_INI: TTimeField
+      FieldName = 'HORA_INI'
+      Origin = 'HORA_INI'
+    end
+    object FABRICACAO_INSUMOSHORA_FIM: TTimeField
+      FieldName = 'HORA_FIM'
+      Origin = 'HORA_FIM'
+    end
+    object FABRICACAO_INSUMOSMS_INSUMO: TFMTBCDField
+      FieldName = 'MS_INSUMO'
+      Origin = 'MS_INSUMO'
+      Precision = 18
+      Size = 3
+    end
+    object FABRICACAO_INSUMOSKG_PREVISTO: TBCDField
+      FieldName = 'KG_PREVISTO'
+      Origin = 'KG_PREVISTO'
+      Precision = 18
+    end
+    object FABRICACAO_INSUMOSKG_FABRICADO: TBCDField
+      FieldName = 'KG_FABRICADO'
+      Origin = 'KG_FABRICADO'
+      Precision = 18
+    end
+    object FABRICACAO_INSUMOSDATAREG: TDateField
+      FieldName = 'DATAREG'
+      Origin = 'DATAREG'
+    end
+    object FABRICACAO_INSUMOSID_USUARIO: TIntegerField
+      FieldName = 'ID_USUARIO'
+      Origin = 'ID_USUARIO'
+    end
+    object FABRICACAO_INSUMOSID_USUARIO_ALTERACAO: TIntegerField
+      FieldName = 'ID_USUARIO_ALTERACAO'
+      Origin = 'ID_USUARIO_ALTERACAO'
+    end
+    object FABRICACAO_INSUMOSDATA_ALTERACAO: TSQLTimeStampField
+      FieldName = 'DATA_ALTERACAO'
+      Origin = 'DATA_ALTERACAO'
+    end
+    object FABRICACAO_INSUMOSSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+    end
+    object FABRICACAO_INSUMOSVALOR_KG: TFMTBCDField
+      FieldName = 'VALOR_KG'
+      Origin = 'VALOR_KG'
+      Precision = 18
+      Size = 3
+    end
+    object FABRICACAO_INSUMOSCUSTO: TFMTBCDField
+      FieldName = 'CUSTO'
+      Origin = 'CUSTO'
+      Precision = 18
+      Size = 7
+    end
+  end
+  object FORNECIMENTO_CONF: TFDQuery
+    CachedUpdates = True
+    OnReconcileError = FORNECIMENTO_CONFReconcileError
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT * FROM FORNECIMENTO_CONF')
+    Left = 840
+    Top = 48
+    object FORNECIMENTO_CONFID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object FORNECIMENTO_CONFID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      Required = True
+    end
+    object FORNECIMENTO_CONFID_LOCAL: TIntegerField
+      FieldName = 'ID_LOCAL'
+      Origin = 'ID_LOCAL'
+      Required = True
+    end
+    object FORNECIMENTO_CONFQTD_CAB: TIntegerField
+      FieldName = 'QTD_CAB'
+      Origin = 'QTD_CAB'
+      Required = True
+    end
+    object FORNECIMENTO_CONFMEDIA_PESO: TFMTBCDField
+      FieldName = 'MEDIA_PESO'
+      Origin = 'MEDIA_PESO'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_CONFDATA_FORN: TDateField
+      FieldName = 'DATA_FORN'
+      Origin = 'DATA_FORN'
+    end
+    object FORNECIMENTO_CONFHORA_FORN: TTimeField
+      FieldName = 'HORA_FORN'
+      Origin = 'HORA_FORN'
+    end
+    object FORNECIMENTO_CONFTRATO: TIntegerField
+      FieldName = 'TRATO'
+      Origin = 'TRATO'
+      Required = True
+    end
+    object FORNECIMENTO_CONFID_RACAO: TIntegerField
+      FieldName = 'ID_RACAO'
+      Origin = 'ID_RACAO'
+      Required = True
+    end
+    object FORNECIMENTO_CONFMS_RACAO: TFMTBCDField
+      FieldName = 'MS_RACAO'
+      Origin = 'MS_RACAO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_CONFVALOR_KG_RACAO: TFMTBCDField
+      FieldName = 'VALOR_KG_RACAO'
+      Origin = 'VALOR_KG_RACAO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_CONFPREVISTO_MN_KG: TIntegerField
+      FieldName = 'PREVISTO_MN_KG'
+      Origin = 'PREVISTO_MN_KG'
+      Required = True
+    end
+    object FORNECIMENTO_CONFREALIZADO_MN_KG: TIntegerField
+      FieldName = 'REALIZADO_MN_KG'
+      Origin = 'REALIZADO_MN_KG'
+    end
+    object FORNECIMENTO_CONFCUSTO_TOTAL_TRATO: TFMTBCDField
+      FieldName = 'CUSTO_TOTAL_TRATO'
+      Origin = 'CUSTO_TOTAL_TRATO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_CONFID_MOTORISTA: TIntegerField
+      FieldName = 'ID_MOTORISTA'
+      Origin = 'ID_MOTORISTA'
+    end
+    object FORNECIMENTO_CONFID_USUARIO: TIntegerField
+      FieldName = 'ID_USUARIO'
+      Origin = 'ID_USUARIO'
+    end
+    object FORNECIMENTO_CONFDATAREG: TSQLTimeStampField
+      FieldName = 'DATAREG'
+      Origin = 'DATAREG'
+      Required = True
+    end
+    object FORNECIMENTO_CONFSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      Required = True
+    end
+    object FORNECIMENTO_CONFLOTE_FABRICACAO: TStringField
+      FieldName = 'LOTE_FABRICACAO'
+      Origin = 'LOTE_FABRICACAO'
+    end
+    object FORNECIMENTO_CONFID_USUARIO_ALTERACAO: TIntegerField
+      FieldName = 'ID_USUARIO_ALTERACAO'
+      Origin = 'ID_USUARIO_ALTERACAO'
+    end
+    object FORNECIMENTO_CONFDATA_ALTERACAO: TSQLTimeStampField
+      FieldName = 'DATA_ALTERACAO'
+      Origin = 'DATA_ALTERACAO'
+    end
+  end
+  object FORNECIMENTO_PREVISTO: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT '
+      ' *'
+      'FROM FORNECIMENTO_CONF f '
+      
+        'WHERE DATA_FORN=(SELECT MAX(DATA_FORN) FROM FORNECIMENTO_CONF fc' +
+        ') '
+      'AND STATUS >-1')
+    Left = 840
+    Top = 128
+    object FORNECIMENTO_PREVISTOID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOID_LOCAL: TIntegerField
+      FieldName = 'ID_LOCAL'
+      Origin = 'ID_LOCAL'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOQTD_CAB: TIntegerField
+      FieldName = 'QTD_CAB'
+      Origin = 'QTD_CAB'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOMEDIA_PESO: TFMTBCDField
+      FieldName = 'MEDIA_PESO'
+      Origin = 'MEDIA_PESO'
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_PREVISTODATA_FORN: TDateField
+      FieldName = 'DATA_FORN'
+      Origin = 'DATA_FORN'
+    end
+    object FORNECIMENTO_PREVISTOHORA_FORN: TTimeField
+      FieldName = 'HORA_FORN'
+      Origin = 'HORA_FORN'
+    end
+    object FORNECIMENTO_PREVISTOTRATO: TIntegerField
+      FieldName = 'TRATO'
+      Origin = 'TRATO'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOID_RACAO: TIntegerField
+      FieldName = 'ID_RACAO'
+      Origin = 'ID_RACAO'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOMS_RACAO: TFMTBCDField
+      FieldName = 'MS_RACAO'
+      Origin = 'MS_RACAO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_PREVISTOVALOR_KG_RACAO: TFMTBCDField
+      FieldName = 'VALOR_KG_RACAO'
+      Origin = 'VALOR_KG_RACAO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_PREVISTOPREVISTO_MN_KG: TIntegerField
+      FieldName = 'PREVISTO_MN_KG'
+      Origin = 'PREVISTO_MN_KG'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOREALIZADO_MN_KG: TIntegerField
+      FieldName = 'REALIZADO_MN_KG'
+      Origin = 'REALIZADO_MN_KG'
+    end
+    object FORNECIMENTO_PREVISTOCUSTO_TOTAL_TRATO: TFMTBCDField
+      FieldName = 'CUSTO_TOTAL_TRATO'
+      Origin = 'CUSTO_TOTAL_TRATO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object FORNECIMENTO_PREVISTOID_MOTORISTA: TIntegerField
+      FieldName = 'ID_MOTORISTA'
+      Origin = 'ID_MOTORISTA'
+    end
+    object FORNECIMENTO_PREVISTOID_USUARIO: TIntegerField
+      FieldName = 'ID_USUARIO'
+      Origin = 'ID_USUARIO'
+    end
+    object FORNECIMENTO_PREVISTODATAREG: TSQLTimeStampField
+      FieldName = 'DATAREG'
+      Origin = 'DATAREG'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      Required = True
+    end
+    object FORNECIMENTO_PREVISTOLOTE_FABRICACAO: TStringField
+      FieldName = 'LOTE_FABRICACAO'
+      Origin = 'LOTE_FABRICACAO'
+    end
+    object FORNECIMENTO_PREVISTOID_USUARIO_ALTERACAO: TIntegerField
+      FieldName = 'ID_USUARIO_ALTERACAO'
+      Origin = 'ID_USUARIO_ALTERACAO'
+    end
+    object FORNECIMENTO_PREVISTODATA_ALTERACAO: TSQLTimeStampField
+      FieldName = 'DATA_ALTERACAO'
+      Origin = 'DATA_ALTERACAO'
+    end
+  end
+  object qryAux: TFDQuery
+    OnReconcileError = qryAuxReconcileError
+    Connection = frmPrincipal.FCon
+    Left = 832
+    Top = 312
   end
 end

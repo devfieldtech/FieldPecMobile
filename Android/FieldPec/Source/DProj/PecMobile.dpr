@@ -10,7 +10,7 @@ uses
   UdmSync in '..\dmDB\UdmSync.pas' {dmSync: TDataModule},
   UFSync in '..\UPrincipal\Frames\UFSync.pas' {FrameSync: TFrame},
   UCurrais in '..\Currais\UCurrais.pas' {frmListaCurrais},
-  UFrameLista in '..\Currais\UFrameLista.pas' {FItemListaAbastecimento: TFrame},
+  UFrameLista in '..\Currais\UFrameLista.pas' {FItemListaCurrais: TFrame},
   UAlimento in '..\Alimentos\UAlimento.pas' {frmListaAlimentos},
   UFrameListaAlimentos in '..\Alimentos\UFrameListaAlimentos.pas' {FItemListaAlimentos: TFrame},
   UListRaca in '..\RACA\UListRaca.pas' {frmListRaca},
@@ -34,7 +34,26 @@ uses
   UMovAnimal in '..\MovimentacaoAnimal\UMovAnimal.pas' {frmMovAnimal},
   UFrameMovAnimal in '..\MovimentacaoAnimal\UFrameMovAnimal.pas' {FrameMovAnimal: TFrame},
   UListMotivoMov in '..\ListMotivoMovimentacao\UListMotivoMov.pas' {frmListaMotivoMov},
-  UFrameMotivoMov in '..\ListMotivoMovimentacao\UFrameMotivoMov.pas' {FrameMotivoMov: TFrame};
+  UFrameMotivoMov in '..\ListMotivoMovimentacao\UFrameMotivoMov.pas' {FrameMotivoMov: TFrame},
+  UListSuplementoMineral in '..\ListSuplementoMineral\UListSuplementoMineral.pas' {frmListaMineral},
+  UFrameSuplementoMineral in '..\ListSuplementoMineral\UFrameSuplementoMineral.pas' {FrameSuplementoMineral: TFrame},
+  UFornMineral in '..\FornecimentoMineral\UFornMineral.pas' {frmFornMineral},
+  UFrameFormMineral in '..\FornecimentoMineral\UFrameFormMineral.pas' {FrameFornMineral: TFrame},
+  ULeituraCocho in '..\LeituraDeCocho\ULeituraCocho.pas' {frmLeituraCocho},
+  UFrameLeituraCocho in '..\LeituraDeCocho\UFrameLeituraCocho.pas' {FrameLeituraCocho: TFrame},
+  UFrameLoteNutricional in '..\LoteNutricao\UFrameLoteNutricional.pas' {FItemListaLoteNutricional: TFrame},
+  UFrameLoteLeitura in '..\LeituraDeCocho\UFrameLoteLeitura.pas' {FrameLoteLeitura: TFrame},
+  uCombobox in '..\LeituraDeCocho\uCombobox.pas',
+  UFabricacao in '..\Fabricacao\UFabricacao.pas' {frmFabricacao},
+  UFrameFabricacao in '..\Fabricacao\UFrameFabricacao.pas' {FrameFabricacao: TFrame},
+  uCbxFabricacao in '..\Fabricacao\uCbxFabricacao.pas',
+  UFrameListaInsumos in '..\Fabricacao\UFrameListaInsumos.pas' {FrameListaInsumos: TFrame},
+  UFornecimento in '..\FornecimentoConf\UFornecimento.pas' {frmFornecimento},
+  UFrameFornecimento in '..\FornecimentoConf\UFrameFornecimento.pas' {FrameFornecimento: TFrame},
+  UFrameLoteFornecimento in '..\FornecimentoConf\UFrameLoteFornecimento.pas' {FrameLoteFornecimento: TFrame},
+  UTeclado in '..\Teclado\UTeclado.pas' {frmTeclado},
+  UDMDashBoard in '..\dmDB\UDMDashBoard.pas' {dmDash: TDataModule},
+  UDashBoard in '..\DashBoard\UDashBoard.pas' {frmDashBoard};
 
 {$R *.res}
 
@@ -57,5 +76,13 @@ begin
   Application.CreateForm(TdmSyncUp, dmSyncUp);
   Application.CreateForm(TfrmMovAnimal, frmMovAnimal);
   Application.CreateForm(TfrmListaMotivoMov, frmListaMotivoMov);
+  Application.CreateForm(TfrmListaMineral, frmListaMineral);
+  Application.CreateForm(TfrmFornMineral, frmFornMineral);
+  Application.CreateForm(TfrmLeituraCocho, frmLeituraCocho);
+  Application.CreateForm(TfrmFabricacao, frmFabricacao);
+  Application.CreateForm(TfrmFornecimento, frmFornecimento);
+  Application.CreateForm(TfrmTeclado, frmTeclado);
+  Application.CreateForm(TdmDash, dmDash);
+  Application.CreateForm(TfrmDashBoard, frmDashBoard);
   Application.Run;
 end.

@@ -41,6 +41,102 @@ type
     COCHOCREEPFEED: TIntegerField;
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
     AUX_MOTIVO_MOVIMENTACAO: TFDQuery;
+    SUPLEMENTO_MINERAL: TFDQuery;
+    LOTE_NUTRICIONAL: TFDQuery;
+    LEITURA_COCHO: TFDQuery;
+    HIST_LEITURA_COCHO: TFDQuery;
+    AUX_NOTAS_LEITURA: TFDQuery;
+    AUX_NOTAS_LEITURAID: TIntegerField;
+    AUX_NOTAS_LEITURANOTA: TFMTBCDField;
+    AUX_NOTAS_LEITURAAJUSTE: TBCDField;
+    HIST_CONSUMO: TFDQuery;
+    HIST_CONSUMOID_LOTE: TIntegerField;
+    HIST_CONSUMODATA_CONSUMO: TDateField;
+    HIST_CONSUMOMN: TBCDField;
+    HIST_CONSUMOMS: TBCDField;
+    RACAO: TFDQuery;
+    RACAOINSUMOS: TFDQuery;
+    FORNECIMENTO_CONF: TFDQuery;
+    FORNECIMENTO_PREVISTO: TFDQuery;
+    RACAOID: TIntegerField;
+    RACAOTIPO: TIntegerField;
+    RACAONOME: TStringField;
+    RACAOGMD: TBCDField;
+    RACAOMATERIASECA: TBCDField;
+    RACAOSTATUS: TIntegerField;
+    RACAODATAREGISTRO: TSQLTimeStampField;
+    RACAOIDUSUARIO: TIntegerField;
+    RACAODATAALTERACAO: TSQLTimeStampField;
+    RACAOIDUSUARIOALTERACAO: TIntegerField;
+    RACAOVALORKG: TBCDField;
+    RACAODATAFORMULACAO: TDateField;
+    RACAOID_PROPRIEDADE: TIntegerField;
+    RACAOIMS_PV: TBCDField;
+    RACAOTEMPO_MISTURA: TIntegerField;
+    RACAOINSUMOSID: TIntegerField;
+    RACAOINSUMOSIDRACAO: TIntegerField;
+    RACAOINSUMOSIDINSUMOALIMENTO: TIntegerField;
+    RACAOINSUMOSPERCENTMATERIASECA: TBCDField;
+    RACAOINSUMOSKGMATERIASECA: TBCDField;
+    RACAOINSUMOSINCLUSAOMATERIASECA: TBCDField;
+    RACAOINSUMOSINCLUSAOMATERIANATURAL: TBCDField;
+    RACAOINSUMOSVALORKG: TBCDField;
+    RACAOINSUMOSVALORINCLUSAO: TBCDField;
+    RACAOINSUMOSSTATUS: TIntegerField;
+    RACAOINSUMOSDATAREGISTRO: TSQLTimeStampField;
+    RACAOINSUMOSIDUSUARIO: TIntegerField;
+    RACAOINSUMOSDATAALTERACAO: TSQLTimeStampField;
+    RACAOINSUMOSIDUSUARIOALTERACAO: TIntegerField;
+    RACAOINSUMOSKGMATERIANATURAL: TBCDField;
+    RACAOINSUMOSORDEM_FABRICACAO: TIntegerField;
+    RACAOINSUMOSID_PREMISTURA: TIntegerField;
+    RACAOINSUMOSTOLERANCIA_FAB: TBCDField;
+    FORNECIMENTO_CONFID_LOTE: TIntegerField;
+    FORNECIMENTO_CONFID_LOCAL: TIntegerField;
+    FORNECIMENTO_CONFQTD_CAB: TIntegerField;
+    FORNECIMENTO_CONFMEDIA_PESO: TBCDField;
+    FORNECIMENTO_CONFDATA_FORN: TDateField;
+    FORNECIMENTO_CONFHORA_FORN: TTimeField;
+    FORNECIMENTO_CONFTRATO: TIntegerField;
+    FORNECIMENTO_CONFID_RACAO: TIntegerField;
+    FORNECIMENTO_CONFMS_RACAO: TBCDField;
+    FORNECIMENTO_CONFVALOR_KG_RACAO: TBCDField;
+    FORNECIMENTO_CONFPREVISTO_MN_KG: TIntegerField;
+    FORNECIMENTO_CONFREALIZADO_MN_KG: TIntegerField;
+    FORNECIMENTO_CONFCUSTO_TOTAL_TRATO: TBCDField;
+    FORNECIMENTO_CONFID_MOTORISTA: TIntegerField;
+    FORNECIMENTO_CONFID_USUARIO: TIntegerField;
+    FORNECIMENTO_CONFDATAREG: TSQLTimeStampField;
+    FORNECIMENTO_CONFSTATUS: TIntegerField;
+    FORNECIMENTO_CONFLOTE_FABRICACAO: TStringField;
+    FORNECIMENTO_CONFID_USUARIO_ALTERACAO: TIntegerField;
+    FORNECIMENTO_CONFDATA_ALTERACAO: TSQLTimeStampField;
+    QryAuxLoop: TFDQuery;
+    FORNECIMENTO_PREVISTOID_LOTE: TIntegerField;
+    FORNECIMENTO_PREVISTOID_LOCAL: TIntegerField;
+    FORNECIMENTO_PREVISTOQTD_CAB: TIntegerField;
+    FORNECIMENTO_PREVISTOMEDIA_PESO: TBCDField;
+    FORNECIMENTO_PREVISTODATA_FORN: TDateField;
+    FORNECIMENTO_PREVISTOHORA_FORN: TTimeField;
+    FORNECIMENTO_PREVISTOTRATO: TIntegerField;
+    FORNECIMENTO_PREVISTOID_RACAO: TIntegerField;
+    FORNECIMENTO_PREVISTOMS_RACAO: TBCDField;
+    FORNECIMENTO_PREVISTOVALOR_KG_RACAO: TBCDField;
+    FORNECIMENTO_PREVISTOPREVISTO_MN_KG: TIntegerField;
+    FORNECIMENTO_PREVISTOREALIZADO_MN_KG: TIntegerField;
+    FORNECIMENTO_PREVISTOCUSTO_TOTAL_TRATO: TBCDField;
+    FORNECIMENTO_PREVISTOID_MOTORISTA: TIntegerField;
+    FORNECIMENTO_PREVISTOID_USUARIO: TIntegerField;
+    FORNECIMENTO_PREVISTODATAREG: TSQLTimeStampField;
+    FORNECIMENTO_PREVISTOSTATUS: TIntegerField;
+    FORNECIMENTO_PREVISTOLOTE_FABRICACAO: TStringField;
+    FORNECIMENTO_PREVISTOID_USUARIO_ALTERACAO: TIntegerField;
+    FORNECIMENTO_PREVISTODATA_ALTERACAO: TSQLTimeStampField;
+    FORNECIMENTO_CONFID: TIntegerField;
+    FORNECIMENTO_PREVISTOID: TIntegerField;
+    HIST_CONSUMOID_CURRAL: TIntegerField;
+    HIST_CONSUMOIMSPV: TBCDField;
+    FORNECIMENTO_PREVISTOSYNC: TIntegerField;
   private
 
   public
@@ -50,7 +146,11 @@ type
     function  GetAnimais: string;
     procedure DeletaTabelaSync(Atabela:string);
     procedure DeletaTabelaSyncPropriedade(Atabela,vIDProp:string);
+    procedure DeletaHistConsumoSyncPropriedade(vIDProp:string);
+    procedure DeletaFornePrevSyncPropriedade(vIDProp:string);
     function  TestaServidor: string;
+    procedure AtualizaIdSyncFabricacao(AIdOld, AidNew: string);
+    procedure AlteraFlagSync(Atabela, AFlag,Aid: string);
   end;
 
 var
@@ -69,6 +169,96 @@ uses UDmDB, UPrincipal, UFSync;
 
 
 { TdmSync }
+
+procedure TdmSync.AlteraFlagSync(Atabela, AFlag,Aid: string);
+begin
+  with qryAux,qryAux.SQL do
+  begin
+    Clear;
+    Add('update '+Atabela+' set sync='+AFlag);
+    Add('where id='+Aid);
+    try
+     ExecSQL;
+    except
+     on E: Exception do
+      TThread.Synchronize(nil, procedure
+      begin
+       ShowMessage(e.Message);
+      end);
+    end;
+  end;
+end;
+
+procedure TdmSync.AtualizaIdSyncFabricacao(AIdOld, AidNew: string);
+begin
+ with qryAux,qryAux.SQL do
+ begin
+   Clear;
+   Add('update FABRICACAO set id='+AidNew);
+   Add('where id='+AIdOld);
+   try
+    ExecSQL;
+   except
+     on E: Exception do
+      TThread.Synchronize(nil, procedure
+      begin
+       ShowMessage(e.Message);
+      end);
+   end;
+
+   Clear;
+   Add('update FABRICACAO_INSUMOS set ID_FABRICACAO='+AidNew);
+   Add('where ID_FABRICACAO='+AIdOld);
+   try
+    ExecSQL;
+   except
+     on E: Exception do
+      TThread.Synchronize(nil, procedure
+      begin
+       ShowMessage(e.Message);
+      end);
+   end
+ end;
+end;
+
+procedure TdmSync.DeletaFornePrevSyncPropriedade(vIDProp: string);
+begin
+  with qryAux,qryAux.SQL do
+ begin
+   Clear;
+   Add('delete from FORNECIMENTO_CONF');
+   Add('where ID_LOCAL in(select id from CURRAIS where ID_PROPRIEDADE='+vIDProp+')');
+   try
+    ExecSQL;
+   except
+     on E: Exception do
+      TThread.Synchronize(nil, procedure
+      begin
+       ShowMessage(e.Message);
+      end);
+   end
+ end;
+end;
+
+procedure TdmSync.DeletaHistConsumoSyncPropriedade(vIDProp: string);
+begin
+ with qryAux,qryAux.SQL do
+ begin
+   Clear;
+   Add('delete from HIST_CONSUMO');
+   Add('where id_lote in(select id from LOTE_NUTRICIONAL where ID_PROPRIEDADE='+vIDProp+')');
+   try
+    ExecSQL;
+   except
+     on E: Exception do
+      TThread.Synchronize(nil, procedure
+      begin
+       ShowMessage(e.Message);
+      end);
+   end
+ end;
+end;
+
 procedure TdmSync.DeletaTabelaSync(Atabela: string);
 begin
  with qryAux,qryAux.SQL do
@@ -252,7 +442,6 @@ begin
          for i := 0 to vJoGet.Count-1 do
          begin
             vJoGetJ         := vJoGet.Items[i] as TJSONObject;
-            vId               := vJoGetJ.GetValue('ID').value;
             DataSet.Close;
             DataSet.Open;
             DataSet.Insert;
@@ -342,7 +531,12 @@ begin
          dmdb.DeletaCochoPropriedade;
         if (DataSet.Name='BEBEDOURO') then
          dmdb.DeletaBebedouroPropriedade;
-        if (DataSet.Name<>'COCHO')and(DataSet.Name<>'BEBEDOURO') then
+        if (DataSet.Name='HIST_CONSUMO') then
+          DeletaHistConsumoSyncPropriedade(dmdb.vIdPropriedade);
+        if (DataSet.Name='FORNECIMENTO_PREVISTO') then
+          DeletaFornePrevSyncPropriedade(dmdb.vIdPropriedade);
+        if (DataSet.Name<>'COCHO')and(DataSet.Name<>'BEBEDOURO')
+         and(DataSet.Name<>'HIST_CONSUMO')and(DataSet.Name<>'FORNECIMENTO_PREVISTO') then
          DeletaTabelaSyncPropriedade(DataSet.Name,dmdb.vIdPropriedade);
 
         DataSet.Close;
@@ -352,7 +546,6 @@ begin
          for i := 0 to vJoGet.Count-1 do
          begin
             vJoGetJ         := vJoGet.Items[i] as TJSONObject;
-            vId               := vJoGetJ.GetValue('ID').value;
             DataSet.Close;
             DataSet.Open;
             DataSet.Insert;
@@ -365,8 +558,13 @@ begin
                 DataSet.FieldByName(vField).AsString := vJoGetJ.GetValue(vField).value;
               end
               else
-               DataSet.FieldByName(vField).AsString := vJoGetJ.GetValue(vField).value;
+              begin
+               if vField<>'SYNC' then
+                DataSet.FieldByName(vField).AsString := vJoGetJ.GetValue(vField).value;
+              end;
              end;
+             if (DataSet.Name='FORNECIMENTO_PREVISTO') then
+              DataSet.FieldByName('SYNC').AsInteger :=1;
             try
              DataSet.ApplyUpdates(-1);
              TThread.Synchronize(nil, procedure
@@ -386,11 +584,11 @@ begin
      end
      else
        Result :=vJsonString;
-     except
-     on E: Exception do
-       begin
-         result:='Erro ao comunicar com Servidor:'+E.Message;
-       end;
-     end;
+ except
+ on E: Exception do
+   begin
+     result:='Erro ao comunicar com Servidor:'+E.Message;
+   end;
+ end;
 end;
 end.

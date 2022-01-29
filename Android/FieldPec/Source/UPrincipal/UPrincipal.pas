@@ -140,6 +140,77 @@ type
     ShadowEffect15: TShadowEffect;
     Label15: TLabel;
     MediaPlayer14: TMediaPlayer;
+    Layout19: TLayout;
+    btnNutricao: TRectangle;
+    Image18: TImage;
+    ShadowEffect16: TShadowEffect;
+    Label16: TLabel;
+    MediaPlayer15: TMediaPlayer;
+    recNutricaoAnimal: TRectangle;
+    VertScrollBox3: TVertScrollBox;
+    recNutricaoAnimalSub: TLayout;
+    Layout21: TLayout;
+    Image19: TImage;
+    Layout22: TLayout;
+    MediaPlayer16: TMediaPlayer;
+    Image20: TImage;
+    Layout23: TLayout;
+    btnFornecimetoSal: TRectangle;
+    Image21: TImage;
+    ShadowEffect17: TShadowEffect;
+    Label17: TLabel;
+    MediaPlayer17: TMediaPlayer;
+    Layout20: TLayout;
+    btnLeituraCocho: TRectangle;
+    Image22: TImage;
+    ShadowEffect18: TShadowEffect;
+    Label18: TLabel;
+    MediaPlayer18: TMediaPlayer;
+    Layout24: TLayout;
+    btnFabricacao: TRectangle;
+    Image23: TImage;
+    ShadowEffect19: TShadowEffect;
+    Label19: TLabel;
+    MediaPlayer19: TMediaPlayer;
+    imgEdit: TImage;
+    Layout25: TLayout;
+    btnFornecimento: TRectangle;
+    Image24: TImage;
+    ShadowEffect20: TShadowEffect;
+    Label20: TLabel;
+    MediaPlayer20: TMediaPlayer;
+    Layout26: TLayout;
+    btnDash: TRectangle;
+    Image25: TImage;
+    ShadowEffect21: TShadowEffect;
+    Label21: TLabel;
+    MediaPlayer21: TMediaPlayer;
+    RecDashBoard: TRectangle;
+    VertScrollBox4: TVertScrollBox;
+    Layout27: TLayout;
+    Layout28: TLayout;
+    Image26: TImage;
+    Layout29: TLayout;
+    MediaPlayer22: TMediaPlayer;
+    Image27: TImage;
+    Layout30: TLayout;
+    btnResumoGeral: TRectangle;
+    Image28: TImage;
+    ShadowEffect22: TShadowEffect;
+    Label22: TLabel;
+    MediaPlayer23: TMediaPlayer;
+    Layout31: TLayout;
+    btnDadosConsumo: TRectangle;
+    Image29: TImage;
+    ShadowEffect23: TShadowEffect;
+    Label23: TLabel;
+    MediaPlayer24: TMediaPlayer;
+    Layout32: TLayout;
+    btnPrevRelForn: TRectangle;
+    Image30: TImage;
+    ShadowEffect24: TShadowEffect;
+    Label24: TLabel;
+    MediaPlayer25: TMediaPlayer;
     procedure FormShow(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
     procedure btnConfigMouseUp(Sender: TObject; Button: TMouseButton;
@@ -167,6 +238,17 @@ type
     procedure btnAnimaisClick(Sender: TObject);
     procedure Image15Click(Sender: TObject);
     procedure btnMovAnimalClick(Sender: TObject);
+    procedure btnFornecimetoSalClick(Sender: TObject);
+    procedure btnNutricaoClick(Sender: TObject);
+    procedure Image19Click(Sender: TObject);
+    procedure btnLeituraCochoClick(Sender: TObject);
+    procedure btnFabricacaoClick(Sender: TObject);
+    procedure btnDadosConsumoClick(Sender: TObject);
+    procedure Image26Click(Sender: TObject);
+    procedure btnDashClick(Sender: TObject);
+    procedure btnFornecimentoClick(Sender: TObject);
+    procedure btnResumoGeralClick(Sender: TObject);
+    procedure btnPrevRelFornClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -185,7 +267,9 @@ uses UDmDB, UdmSync, UCurrais, UFrameListaAlimentos, UAlimento, UFrameRaca,
   UListRaca, UFrameCategoria, UFrameLista, UListCategoria, UListProdutores,
   UListRebanho, UFrameAnimal, UListAnimal, UFrameBebedouro, UListBebedouro,
   UFrameCocho, UListCocho, UFrameRebanho, UFrameProdutores,
-  UFrameLimpaBebedouro, ULimpaBebedouro, UdmSyncUp, UListMotivoMov, UMovAnimal;
+  UFrameLimpaBebedouro, ULimpaBebedouro, UdmSyncUp, UListMotivoMov, UMovAnimal,
+  UFornMineral, UFrameLeituraCocho, ULeituraCocho, UFabricacao, UFornecimento,
+  UDMDashBoard, UDashBoard;
 
 procedure TfrmPrincipal.MostraMenu;
 begin
@@ -256,6 +340,61 @@ begin
     TRectangle(sender).Opacity := 1;
 end;
 
+procedure TfrmPrincipal.btnDadosConsumoClick(Sender: TObject);
+begin
+ if Not Assigned(frmDashBoard) then
+   Application.CreateForm(TfrmDashBoard, frmDashBoard);
+   frmDashBoard.vTabInex :=1;
+  frmDashBoard.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+  end);
+end;
+
+procedure TfrmPrincipal.btnDashClick(Sender: TObject);
+begin
+ RecDashBoard.Visible   := true;
+end;
+
+procedure TfrmPrincipal.btnFabricacaoClick(Sender: TObject);
+begin
+  if Not Assigned(frmFabricacao) then
+   Application.CreateForm(TfrmFabricacao,frmFabricacao);
+  frmFabricacao.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+     recNutricaoAnimal.Visible := false;
+  end);
+end;
+
+procedure TfrmPrincipal.btnFornecimentoClick(Sender: TObject);
+begin
+  if Not Assigned(frmFornecimento) then
+   Application.CreateForm(TfrmFornecimento,frmFornecimento);
+  frmFornecimento.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+     recNutricaoAnimal.Visible := false;
+  end);
+end;
+
+procedure TfrmPrincipal.btnFornecimetoSalClick(Sender: TObject);
+begin
+ if Not Assigned(frmFornMineral) then
+   Application.CreateForm(TfrmFornMineral, frmFornMineral);
+  frmFornMineral.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+     recNutricaoAnimal.Visible := false;
+  end);
+end;
+
+procedure TfrmPrincipal.btnLeituraCochoClick(Sender: TObject);
+begin
+  if Not Assigned(frmLeituraCocho) then
+   Application.CreateForm(TfrmLeituraCocho,frmLeituraCocho);
+  frmLeituraCocho.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+     recNutricaoAnimal.Visible := false;
+  end);
+end;
+
 procedure TfrmPrincipal.btnLimpaBebedouroClick(Sender: TObject);
 begin
  frmLimpaBebedouro:= TfrmLimpaBebedouro.Create(nil);
@@ -272,6 +411,21 @@ begin
  begin
   recSubMnuCad.Visible := false;
  end);
+end;
+
+procedure TfrmPrincipal.btnNutricaoClick(Sender: TObject);
+begin
+   recNutricaoAnimal.Visible := true;
+end;
+
+procedure TfrmPrincipal.btnPrevRelFornClick(Sender: TObject);
+begin
+  if Not Assigned(frmDashBoard) then
+   Application.CreateForm(TfrmDashBoard, frmDashBoard);
+   frmDashBoard.vTabInex :=2;
+  frmDashBoard.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+  end);
 end;
 
 procedure TfrmPrincipal.btnProdutoresClick(Sender: TObject);
@@ -304,6 +458,16 @@ begin
  end);
 end;
 
+procedure TfrmPrincipal.btnResumoGeralClick(Sender: TObject);
+begin
+if Not Assigned(frmDashBoard) then
+   Application.CreateForm(TfrmDashBoard, frmDashBoard);
+   frmDashBoard.vTabInex :=0;
+  frmDashBoard.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+  end);
+end;
+
 procedure TfrmPrincipal.btnAlimentosClick(Sender: TObject);
 begin
  frmListaAlimentos:= TfrmListaAlimentos.Create(nil);
@@ -330,12 +494,10 @@ end;
 
 procedure TfrmPrincipal.btnBuscaAnimalClick(Sender: TObject);
 begin
- if Not Assigned(frmListAnimal) then
+  if Not Assigned(frmListAnimal) then
    Application.CreateForm(TfrmListAnimal, frmListAnimal);
-   frmListAnimal.layBtnSelecionar.Visible := false;
   frmListAnimal.ShowModal(procedure(ModalResult: TModalResult)
   begin
-
   end);
 end;
 
@@ -355,6 +517,23 @@ begin
  dmSyncUP.MOVIMENTACAO_ANIMAL.Close;
  dmSyncUP.MOVIMENTACAO_ANIMAL.Open;
  FrameSync1.lblMovAnimal.Text :='Mov. Animal:'+intToStr(dmSyncUP.MOVIMENTACAO_ANIMAL.RecordCount);
+
+ dmSyncUP.FORNECIMENTO.Close;
+ dmSyncUP.FORNECIMENTO.Open;
+ FrameSync1.lblFornMineral.Text :='Fornecimento Sal:'+intToStr(dmSyncUP.FORNECIMENTO.RecordCount);
+
+ dmSyncUP.FORNECIMENTO_CONF.Close;
+ dmSyncUP.FORNECIMENTO_CONF.Open;
+ FrameSync1.lblFornConfinamento.Text :='Fornecimento Conf.:'+intToStr(dmSyncUP.FORNECIMENTO_CONF.RecordCount);
+
+ dmSyncUP.FABRICACAO.Close;
+ dmSyncUP.FABRICACAO.Open;
+ FrameSync1.lblFabricacao.Text :='Fabricação :'+intToStr(dmSyncUP.FABRICACAO_INSUMOS.RecordCount);
+
+ dmSyncUP.LEITURA_COCHO.Close;
+ dmSyncUP.LEITURA_COCHO.Open;
+ FrameSync1.lblLeituraCocho.Text :='Leitura de Cocho :'+intToStr(dmSyncUP.LEITURA_COCHO.RecordCount);
+
  FrameSync1.Visible := true;
 end;
 
@@ -372,9 +551,11 @@ end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
+ recNutricaoAnimal.Visible := false;
  RecMenuAnimais.Visible := false;
  recSubMnuCad.Visible   := false;
  RecPrincipal.Visible   := false;
+ RecDashBoard.Visible   := false;
  dmdb.qryConfig.Close;
  dmdb.qryConfig.Open;
    if dmDB.VerificaTabelaVazia('users') then
@@ -414,6 +595,16 @@ end;
 procedure TfrmPrincipal.Image15Click(Sender: TObject);
 begin
  RecMenuAnimais.Visible := false;
+end;
+
+procedure TfrmPrincipal.Image19Click(Sender: TObject);
+begin
+  recNutricaoAnimal.Visible := false;
+end;
+
+procedure TfrmPrincipal.Image26Click(Sender: TObject);
+begin
+ RecDashBoard.Visible := false;
 end;
 
 procedure TfrmPrincipal.imgFechaMnuCadClick(Sender: TObject);
