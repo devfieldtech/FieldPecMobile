@@ -27,7 +27,7 @@ uses
    Androidapi.JNI.GraphicsContentViewText,System.Permissions,FMX.DialogService
    {$ENDIF}
     ,Soap.EncdDecd,UFrameLimpaBebedouro, FMX.Memo.Types,uCbxFabricacao,
-    UFrameFabricacao,UFrameListaInsumos,System.Math;
+    UFrameFabricacao,UFrameListaInsumos,System.Math, UTeclado;
 
 type
   TfrmFabricacao = class(TForm)
@@ -187,9 +187,15 @@ type
     procedure Image5Click(Sender: TObject);
     procedure btnFinalizaFabricacaoClick(Sender: TObject);
     procedure Image7Click(Sender: TObject);
+    procedure edtRealizadoInsumoClick(Sender: TObject);
   private
     c : TCustomCombo;
     {$IFDEF ANDROID}
+    procedure DisplayRationale(Sender: TObject;
+      const APermissions: TArray<string>; const APostRationaleProc: TProc);
+    procedure LocationPermissionRequestResult(Sender: TObject;
+      const APermissions: TArray<string>;
+      const AGrantResults: TArray<TPermissionStatus>);
     Location: TLocationCoord2D;
     FGeocoder: TGeocoder;
     Access_Fine_Location, Access_Coarse_Location : string;
@@ -218,8 +224,15 @@ type
     procedure FrameGesture(Sender: TObject;
      const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure GeraComboRacao;
-    procedure ItemRacaoClick(Sender: TObject; const Point: TPointF);
-    procedure ItemOperadorClick(Sender: TObject; const Point: TPointF);
+    {$IFDEF ANDROID}
+     procedure ItemRacaoClick(Sender: TObject; const Point: TPointF);
+     procedure ItemOperadorClick(Sender: TObject; const Point: TPointF);
+    {$ENDIF}
+    {$IFDEF MSWINDOWS}
+     procedure ItemRacaoClick(Sender: TObject);
+     procedure ItemOperadorClick(Sender: TObject);
+    {$ENDIF}
+
     procedure GeraComboOperador;
     procedure btnEditar(Sender: TObject);
     procedure edtRealizadoExit(Sender: TObject);
@@ -485,15 +498,7 @@ begin
  vIDInsumo          := TListBoxItem(sender).TagString;
  TListBoxItem(sender).IsSelected := true;
 end;
-
-procedure TfrmFabricacao.ItemOperadorClick(Sender: TObject;
-  const Point: TPointF);
-begin
- c.HideMenu;
- edtOperadorPa.Text     := c.NomeItem;
- vIdOperador            := c.CodItem;
-end;
-
+{$IFDEF ANDROID}
 procedure TfrmFabricacao.ItemRacaoClick(Sender: TObject; const Point: TPointF);
 begin
  c.HideMenu;
@@ -501,6 +506,29 @@ begin
  vIdRacao          := c.CodItem;
  vMsRacao          := c.DescricaoItem;
 end;
+procedure TfrmFabricacao.ItemOperadorClick(Sender: TObject;
+  const Point: TPointF);
+begin
+ c.HideMenu;
+ edtOperadorPa.Text     := c.NomeItem;
+ vIdOperador            := c.CodItem;
+end;
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+procedure TfrmFabricacao.ItemRacaoClick(Sender: TObject);
+begin
+ c.HideMenu;
+ edtRacao.Text     := c.NomeItem;
+ vIdRacao          := c.CodItem;
+ vMsRacao          := c.DescricaoItem;
+end;
+procedure TfrmFabricacao.ItemOperadorClick(Sender: TObject);
+begin
+ c.HideMenu;
+ edtOperadorPa.Text     := c.NomeItem;
+ vIdOperador            := c.CodItem;
+end;
+{$ENDIF}
 
 procedure TfrmFabricacao.ListaInsumosItemClickEx(const Sender: TObject;
   ItemIndex: Integer; const LocalClickPos: TPointF;
@@ -534,7 +562,7 @@ begin
     end;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmFabricacao.LocationPermissionRequestResult(Sender: TObject;
   const APermissions: TArray<string>;
   const AGrantResults: TArray<TPermissionStatus>);
@@ -553,7 +581,7 @@ begin
       ('Não é possível acessar o GPS porque o app não possui acesso');
   end;
 end;
-
+{$ENDIF}
 procedure TfrmFabricacao.btnBuscarClick(Sender: TObject);
 var
  vFiltro:string;
@@ -725,7 +753,7 @@ begin
      TFrame(Components[i]).Destroy;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmFabricacao.DisplayRationale(Sender: TObject;
   const APermissions: TArray<string>; const APostRationaleProc: TProc);
 var
@@ -743,7 +771,7 @@ begin
       APostRationaleProc;
     end)
 end;
-
+{$ENDIF}
 procedure TfrmFabricacao.edtOperadorPaClick(Sender: TObject);
 begin
  GeraComboOperador;
@@ -760,6 +788,18 @@ procedure TfrmFabricacao.edtRealizadoExit(Sender: TObject);
 begin
   vIDInsumo        :=TEdit(sender).TagString;
   vRealizadoSender :=TEdit(sender).Text;
+end;
+
+procedure TfrmFabricacao.edtRealizadoInsumoClick(Sender: TObject);
+begin
+ if Not Assigned(frmTeclado) then
+   Application.CreateForm(TfrmTeclado,frmTeclado);
+  frmTeclado.lbl_valorPrev.Text := edtPrevistoInsumo.Text;
+  frmTeclado.lbl_valor.Text     := edtRealizadoInsumo.Text;
+  frmTeclado.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+    edtRealizadoInsumo.Text := frmTeclado.vValorFim;
+  end);
 end;
 
 end.

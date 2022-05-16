@@ -298,7 +298,7 @@ begin
  vFlagSync           := FloatToStr(TListBoxItem(sender).TagFloat);
  TListBoxItem(sender).IsSelected := true;
 end;
-
+{$IFDEF ANDROID}
 procedure TFrmLimpaBebedouro.LocationPermissionRequestResult(Sender: TObject;
   const APermissions: TArray<string>;
   const AGrantResults: TArray<TPermissionStatus>);
@@ -317,6 +317,7 @@ begin
       ('Não é possível acessar o GPS porque o app não possui acesso');
   end;
 end;
+{$ENDIF}
 
 procedure TFrmLimpaBebedouro.LocationSensor1LocationChanged(Sender: TObject;
   const OldLocation, NewLocation: TLocationCoord2D);
@@ -470,7 +471,7 @@ begin
      TFrame(Components[i]).Destroy;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TFrmLimpaBebedouro.DisplayRationale(Sender: TObject;
   const APermissions: TArray<string>; const APostRationaleProc: TProc);
 var
@@ -488,6 +489,6 @@ begin
       APostRationaleProc;
     end)
 end;
-
+{$ENDIF}
 end.
 

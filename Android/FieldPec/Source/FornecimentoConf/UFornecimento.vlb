@@ -337,9 +337,6 @@ Coordinates=1143,1177,42,58
 [dmdb.LIMPEZABEBEDOURO]
 Coordinates=173,717,186,344
 
-[ListaCardsLotes]
-Coordinates=1646,717,139,212
-
 [laycharts]
 Coordinates=703,1254,66,36
 
@@ -429,7 +426,7 @@ Coordinates=10,1180,180,36
 Visible=False
 
 []
-Coordinates=1504,717,116,177
+Coordinates=1646,717,139,212
 Visible=True
 
 [BindSourceDB1]

@@ -100,7 +100,6 @@ type
     Rectangle9: TRectangle;
     Rectangle11: TRectangle;
     layListaCardsLotes: TLayout;
-    ListaCardsLotes: TListBox;
     laycharts: TLayout;
     WebCharts1: TWebCharts;
     Layout14: TLayout;
@@ -183,8 +182,6 @@ type
     {$IFDEF ANDROID}
     Location: TLocationCoord2D;
     FGeocoder: TGeocoder;
-    Access_Fine_Location, Access_Coarse_Location,vIdFornecimento,vMediaPeso : string;
-    PermissaoCamera, PermissaoReadStorage, PermissaoWriteStorage,vAjuste : string;
      procedure LocationPermissionRequestResult
                 (Sender: TObject; const APermissions: TArray<string>;
                 const AGrantResults: TArray<TPermissionStatus>);
@@ -192,11 +189,14 @@ type
               const APermissions: TArray<string>; const APostRationaleProc: TProc);
     {$ENDIF}
   public
+    ListaCardsLotes :TListBox;
     c          : TCustomCombo;
     FFrame     : TFrameFornecimento;
     FFrameLote : TFrameLoteFornecimento;
     vIdLeitura,vIdBebedouro,vFlagSync,vIdLote,vIdCurral,vQdtCab,
     vMsRacao,vIdRacao : string;
+    Access_Fine_Location, Access_Coarse_Location,vIdFornecimento,vMediaPeso : string;
+    PermissaoCamera, PermissaoReadStorage, PermissaoWriteStorage,vAjuste : string;
     vListBoxIdex:single;
     vIndexLoteLista,vIndexLote,vBtnBuscar,vFiltroRacao:integer;
     procedure FrameMouseDown(Sender: TObject; Button: TMouseButton;
@@ -208,8 +208,13 @@ type
     procedure DestroiFrames;
     procedure ItemLoteClick(Sender: TObject);
     procedure FrameGesture(Sender: TObject;
-     const EventInfo: TGestureEventInfo; var Handled: Boolean);
-    procedure ItemNotaClick(Sender: TObject; const Point: TPointF);
+      const EventInfo: TGestureEventInfo; var Handled: Boolean);
+    {$IFDEF ANDROID}
+     procedure ItemNotaClick(Sender: TObject; const Point: TPointF);
+    {$ENDIF}
+    {$IFDEF MSWINDOWS}
+      procedure ItemNotaClick(Sender: TObject);
+    {$ENDIF}
     procedure GeraComboDietas;
     procedure ProximoItemLote;
 
@@ -372,8 +377,15 @@ begin
   ShowMessage('Selecione a Dieta!');
   Exit;
  end;
+ if ListaCardsLotes<>nil then
+  ListaCardsLotes.DisposeOf;
+  ListaCardsLotes := TListBox.Create(self);
+  ListaCardsLotes.Parent    := layListaCardsLotes;
+  ListaCardsLotes.Align     := TAlignLayout.Client;
+  ListaCardsLotes.ListStyle := TListStyle.Horizontal;
 
- ListaCardsLotes.Items.Clear;
+ if ListaCardsLotes.Items.Count>0 then
+   ListaCardsLotes.Items.Clear;
  DestroiFrames;
  dmDB.AbreLotesFornecimento(
   edtLinhaF.Text,
@@ -436,7 +448,7 @@ begin
  end;
 end;
 
-
+{$IFDEF ANDROID}
 procedure TfrmFornecimento.ItemNotaClick(Sender: TObject; const Point: TPointF);
 begin
  c.HideMenu;
@@ -447,6 +459,19 @@ begin
  vMsRacao          := c.DescricaoItem;
  vIdRacao          := c.CodItem;
 end;
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+procedure TfrmFornecimento.ItemNotaClick(Sender: TObject);
+begin
+ c.HideMenu;
+ if vFiltroRacao=1 then
+  edtFiltraRacao.Text :=c.NomeItem
+ else
+  lblDieta.Text     := c.NomeItem;
+ vMsRacao          := c.DescricaoItem;
+ vIdRacao          := c.CodItem;
+end;
+{$ENDIF}
 
 
 procedure TfrmFornecimento.ItemLoteClick(Sender: TObject);
@@ -482,7 +507,7 @@ begin
  vFlagSync             := FloatToStr(TAppearanceListViewItem(ListaCards.Selected).Objects.FindObjectT<TListItemText>
    ('Text3').TagFloat);
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmFornecimento.LocationPermissionRequestResult(Sender: TObject;
   const APermissions: TArray<string>;
   const AGrantResults: TArray<TPermissionStatus>);
@@ -501,7 +526,7 @@ begin
       ('Não é possível acessar o GPS porque o app não possui acesso');
   end;
 end;
-
+{$ENDIF}
 procedure TfrmFornecimento.ProximoItemLote;
 begin
 end;
@@ -561,7 +586,15 @@ begin
   dmdb.FORNECIMENTO_CONF.ApplyUpdates(-1);
   ShowMessage('Fornecimento Lançada com Sucesso!');
   GeraListaCardLotes('');
-  ListaCardsLotes.ItemIndex  := vIndexLote + 1;
+  if vIndexLote<ListaCardsLotes.Items.Count then
+  begin
+   try
+    ListaCardsLotes.ItemIndex  := vIndexLote + 1;
+   except
+    on E : Exception do
+     ShowMessage('Fim da Listas');
+   end;
+  end;
   edtPrevisto.Text  :='';
   edtRealizado.Text :='0';
  except
@@ -631,7 +664,7 @@ begin
      TFrame(Components[i]).Destroy;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmFornecimento.DisplayRationale(Sender: TObject;
   const APermissions: TArray<string>; const APostRationaleProc: TProc);
 var
@@ -649,7 +682,7 @@ begin
       APostRationaleProc;
     end)
 end;
-
+{$ENDIF}
 procedure TfrmFornecimento.edtdataClosePicker(Sender: TObject);
 begin
   GeraListaCardLotes('');

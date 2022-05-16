@@ -1,6 +1,6 @@
 object dmDB: TdmDB
   OldCreateOrder = False
-  Height = 413
+  Height = 453
   Width = 930
   object USERS: TFDQuery
     Connection = frmPrincipal.FCon
@@ -616,7 +616,9 @@ object dmDB: TdmDB
     Connection = frmPrincipal.FCon
     SQL.Strings = (
       'SELECT * FROM RACAOINSUMOS'
-      'WHERE IDRACAO IN(SELECT ID FROM RACAO WHERE STATUS=1)')
+      
+        'WHERE STATUS=1 AND IDRACAO IN(SELECT ID FROM RACAO WHERE STATUS=' +
+        '1)')
     Left = 736
     Top = 104
     object RACAOINSUMOSID: TIntegerField
@@ -1133,5 +1135,36 @@ object dmDB: TdmDB
     Connection = frmPrincipal.FCon
     Left = 832
     Top = 312
+  end
+  object HIST_SANIDADE: TFDQuery
+    Connection = frmPrincipal.FCon
+    SQL.Strings = (
+      'SELECT  '
+      #39'INSERT INTO HIST_SANIDADE'#39'||'
+      
+        #39'(ID_ANIMAL, ID_PROPRIEDADE, DATA_APLICACAO, PRODUTO, DOSE_ML, C' +
+        'ARENCIA_DIAS, CARENCIA_DATA) VALUES('#39'||'
+      ' a.ID_ANIMAL||'#39','#39'||'
+      ' a.ID_PROPRIEDAE ||'#39','#39'||'
+      ' '#39#39#39#39'||CAST(DATA_PROC AS DATE)||'#39#39#39#39'||'#39','#39'||'
+      ' '#39#39#39#39'||b.NOME ||'#39#39#39#39'||'#39','#39'||'
+      ' a.DOSE_ML||'#39','#39'||'
+      ' a.CARENCIA_DIAS||'#39','#39'||'
+      ' '#39#39#39#39'||a.CARENCIA_DATA||'#39#39#39#39'||'#39');'#39' as InsertInto,'
+      'c.ID_PROPRIEDADE'
+      'from animal_sanidade a'
+      'join animal c on a.id_animal=c.id'
+      'join farmaco b on a.id_farmaco=b.id'
+      'where c.status=1 ')
+    Left = 464
+    Top = 352
+    object HIST_SANIDADEINSERTINTO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'INSERTINTO'
+      Origin = 'INSERTINTO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 312
+    end
   end
 end

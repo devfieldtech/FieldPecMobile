@@ -149,7 +149,7 @@ type
     Location: TLocationCoord2D;
     FGeocoder: TGeocoder;
     Access_Fine_Location, Access_Coarse_Location : string;
-    PermissaoCamera, PermissaoReadStorage, PermissaoWriteStorage,vAjuste : string;
+    PermissaoCamera, PermissaoReadStorage, PermissaoWriteStorage : string;
      procedure LocationPermissionRequestResult
                 (Sender: TObject; const APermissions: TArray<string>;
                 const AGrantResults: TArray<TPermissionStatus>);
@@ -160,7 +160,7 @@ type
     c          : TCustomCombo;
     FFrame     : TFrameLeituraCocho;
     FFrameLote : TFrameLoteLeitura;
-    vIdLeitura,vIdBebedouro,vFlagSync,vIdLote,vIdCurral : string;
+    vIdLeitura,vIdBebedouro,vFlagSync,vIdLote,vIdCurral,vAjuste : string;
     vListBoxIdex:single;
     procedure FrameMouseDown(Sender: TObject; Button: TMouseButton;
      Shift: TShiftState; X, Y: Single);
@@ -174,7 +174,12 @@ type
     procedure ItemLoteClick(Sender: TObject);
     procedure FrameGesture(Sender: TObject;
      const EventInfo: TGestureEventInfo; var Handled: Boolean);
-    procedure ItemNotaClick(Sender: TObject; const Point: TPointF);
+    {$IFDEF ANDROID}
+     procedure ItemNotaClick(Sender: TObject; const Point: TPointF);
+    {$ENDIF}
+    {$IFDEF MSWINDOWS}
+     procedure ItemNotaClick(Sender: TObject);
+    {$ENDIF}
     procedure GeraComboNotas;
 
 end;
@@ -504,7 +509,7 @@ begin
  ListaCardsLotes.EndUpdate;
 end;
 
-
+{$IFDEF ANDROID}
 procedure TfrmLeituraCocho.ItemNotaClick(Sender: TObject; const Point: TPointF);
 begin
  c.HideMenu;
@@ -512,6 +517,16 @@ begin
  vAjuste          := c.DescricaoItem;
  tbCharts.Visible := true;
 end;
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+procedure TfrmLeituraCocho.ItemNotaClick(Sender: TObject);
+begin
+ c.HideMenu;
+ lblNota.Text     := c.NomeItem;
+ vAjuste          := c.DescricaoItem;
+ tbCharts.Visible := true;
+end;
+{$ENDIF}
 
 
 procedure TfrmLeituraCocho.ItemClick(Sender: TObject);
@@ -527,7 +542,7 @@ begin
  vIdCurral    := intToStr(TListBoxItem(sender).Tag);
  GeraGrafico(vIdLote);
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmLeituraCocho.LocationPermissionRequestResult(Sender: TObject;
   const APermissions: TArray<string>;
   const AGrantResults: TArray<TPermissionStatus>);
@@ -546,7 +561,7 @@ begin
       ('Não é possível acessar o GPS porque o app não possui acesso');
   end;
 end;
-
+{$ENDIF}
 procedure TfrmLeituraCocho.btnBuscaFiltroClick(Sender: TObject);
 begin
  GeraListaCardLotes('');
@@ -579,7 +594,8 @@ begin
    ShowMessage('Selecione a Nota!');
    Exit;
  end;
- vListBoxIdex := ListaCardsLotes.ViewportPosition.X;
+ if vListBoxIdex<ListaCardsLotes.Items.Count then
+  vListBoxIdex := ListaCardsLotes.ViewportPosition.X;
  dmdb.AbreLeituraCocho(dmdb.vIdPropriedade,' and lc.id_lote='+vIdLote+
   ' and lc.data_leitura='+FormatDateTime('yyyy-mm-dd',edtdata.Date).QuotedString);
  if dmdb.LEITURA_COCHO.IsEmpty then
@@ -666,7 +682,7 @@ begin
      TFrame(Components[i]).Destroy;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmLeituraCocho.DisplayRationale(Sender: TObject;
   const APermissions: TArray<string>; const APostRationaleProc: TProc);
 var
@@ -684,7 +700,7 @@ begin
       APostRationaleProc;
     end)
 end;
-
+{$ENDIF}
 procedure TfrmLeituraCocho.edtdataClosePicker(Sender: TObject);
 begin
   GeraListaCardLotes('');

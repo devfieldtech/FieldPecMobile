@@ -17,12 +17,12 @@ uses
   ,AndroidApi.helpers,AndroidApi.JNI.JavaTypes,AndroidApi.JNI.GraphicsContentViewText,
   Androidapi.JNI.Os,Androidapi.JNIBridge,Androidapi.JNI.Telephony,Androidapi.JNI.Provider,
   FMX.Helpers.Android,FMX.Platform.Android,System.PushNotification,System.Permissions,
-  FMX.VirtualKeyboard,
+  FMX.VirtualKeyboard
   {$ENDIF}
-  FMX.Media,System.IOUtils, UFLogin, UFConfig, IdBaseComponent, IdComponent,
+  ,FMX.Media,System.IOUtils, UFLogin, UFConfig, IdBaseComponent, IdComponent,
   IdTCPConnection, IdTCPClient, IdHTTP, UFSync
  {$IFDEF MSWINDOWS}
-  ,Winapi.Windows
+  ,Winapi.Windows, UHistSanidade
  {$ENDIF}
   ;
 
@@ -211,6 +211,12 @@ type
     ShadowEffect24: TShadowEffect;
     Label24: TLabel;
     MediaPlayer25: TMediaPlayer;
+    Layout33: TLayout;
+    btnHistSanidade: TRectangle;
+    Image31: TImage;
+    ShadowEffect25: TShadowEffect;
+    Label25: TLabel;
+    MediaPlayer26: TMediaPlayer;
     procedure FormShow(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
     procedure btnConfigMouseUp(Sender: TObject; Button: TMouseButton;
@@ -249,6 +255,7 @@ type
     procedure btnFornecimentoClick(Sender: TObject);
     procedure btnResumoGeralClick(Sender: TObject);
     procedure btnPrevRelFornClick(Sender: TObject);
+    procedure btnHistSanidadeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -385,6 +392,15 @@ begin
   end);
 end;
 
+procedure TfrmPrincipal.btnHistSanidadeClick(Sender: TObject);
+begin
+ if Not Assigned(frmHistSanidade) then
+   Application.CreateForm(TfrmHistSanidade, frmHistSanidade);
+  frmHistSanidade.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+  end);
+end;
+
 procedure TfrmPrincipal.btnLeituraCochoClick(Sender: TObject);
 begin
   if Not Assigned(frmLeituraCocho) then
@@ -510,6 +526,7 @@ procedure TfrmPrincipal.btnSyncClick(Sender: TObject);
 begin
  FrameSync1.btnEnviar.Width := (FrameSync1.Width-20)/2;
  FrameSync1.btnBaixar.Width := (FrameSync1.Width-20)/2;
+ FrameSync1.layOpcBaixar.Visible := false;
  dmSyncUP.LIMPEZABEBEDOURO.Close;
  dmSyncUP.LIMPEZABEBEDOURO.Open;
  FrameSync1.lblLimpezaSync.Text :='Limpeza Bebedouro:'+intToStr(dmSyncUP.LIMPEZABEBEDOURO.RecordCount);

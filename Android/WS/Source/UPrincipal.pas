@@ -56,8 +56,8 @@ begin
   on E : Exception do
       mlog.Lines.Add('Erro ao Conectar ao banco : '+E.Message);
  end;
- THorse.Use(Jhonson);
-  THorse.Use(HorseBasicAuthentication(
+   THorse.Use(Jhonson);
+   THorse.Use(HorseBasicAuthentication(
    function(const AUsername, APassword: string): Boolean
     begin
       Result := AUsername.Equals('fuelmanage') and APassword.Equals('991528798');
@@ -71,7 +71,7 @@ begin
   end);
   THorse.Listen(8089, procedure(Horse: THorse)
   begin
-    lblWS.Text := ('WS Fuel Manje Rodando no ip:'+
+    lblWS.Text := ('FieldPec Mobile Rodando no ip:'+
      IdIPWatch1.LocalIP+' na porta: ' + Horse.Port.ToString+' Versão:'+
       GetVersaoArq);
     Application.ProcessMessages;
@@ -191,6 +191,23 @@ begin
      LBody := Req.Body<TJSONObject>;
      try
       Res.Send<TJSONObject>(dmDB.GetAnimaisPostPropriedade(dmDB.ANIMAL,LBody));
+     except on ex:exception do
+      begin
+       mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);
+       Res.Send(tjsonobject.Create.AddPair('Erro',ex.Message)).Status(201);
+      end;
+     end;
+  end);
+
+  THorse.post('/HIST_SANIDADE',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody: TJSONObject;
+  begin
+     mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Baixando HIST SANIDADE');
+     LBody := Req.Body<TJSONObject>;
+     try
+      Res.Send<TJSONObject>(dmDB.GetHistSanidadePostPropriedade(dmDB.HIST_SANIDADE,LBody));
      except on ex:exception do
       begin
        mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' : Error '+ex.Message);

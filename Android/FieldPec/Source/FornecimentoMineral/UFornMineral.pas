@@ -295,6 +295,8 @@ begin
       FFrame.lblmineral.Text        := dmDB.FORNECIMENTOMineral.AsString;
       FFrame.lblRealizadoCocho.Text := dmDB.FORNECIMENTOREALIZADO_COCHO_SACO.AsString;
       FFrame.lblEstoqueCasinha.Text := dmDB.FORNECIMENTOREALIZADO_ESTOQUE_SACO.AsString;
+      FFrame.lblRealizadoCochoKG.Text := dmDB.FORNECIMENTOREALIZADO_COCHO_KG.AsString;
+      FFrame.lblEstoqueCasinhaKG.Text := dmDB.FORNECIMENTOREALIZADO_ESTOQUE_KG.AsString;
 
       if dmDB.FORNECIMENTOSYNC.AsInteger=0 then
       begin
@@ -336,7 +338,7 @@ begin
   lblLongitude.Text          :='';
   rdSaco.IsChecked           :=true;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmFornMineral.LocationPermissionRequestResult(Sender: TObject;
   const APermissions: TArray<string>;
   const AGrantResults: TArray<TPermissionStatus>);
@@ -355,7 +357,7 @@ begin
       ('Não é possível acessar o GPS porque o app não possui acesso');
   end;
 end;
-
+{$ENDIF}
 procedure TfrmFornMineral.LocationSensor1LocationChanged(Sender: TObject;
   const OldLocation, NewLocation: TLocationCoord2D);
 begin
@@ -578,7 +580,7 @@ begin
      TFrame(Components[i]).Destroy;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmFornMineral.DisplayRationale(Sender: TObject;
   const APermissions: TArray<string>; const APostRationaleProc: TProc);
 var
@@ -596,6 +598,7 @@ begin
       APostRationaleProc;
     end)
 end;
+{$ENDIF}
 
 end.
 

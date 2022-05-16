@@ -431,6 +431,15 @@ type
     FORNECIMENTO_CONFID: TIntegerField;
     FORNECIMENTO_CONFQTDE_CAB_LOTE: TIntegerField;
     FORNECIMENTO_CONFPESO_MEDIO_LOTE: TBCDField;
+    HIST_SANIDADE: TFDQuery;
+    HIST_SANIDADEID: TFDAutoIncField;
+    HIST_SANIDADEID_ANIMAL: TIntegerField;
+    HIST_SANIDADEID_PROPRIEDADE: TIntegerField;
+    HIST_SANIDADEDATA_APLICACAO: TDateField;
+    HIST_SANIDADEPRODUTO: TStringField;
+    HIST_SANIDADEDOSE_ML: TBCDField;
+    HIST_SANIDADECARENCIA_DIAS: TIntegerField;
+    HIST_SANIDADECARENCIA_DATA: TDateField;
     procedure FConBeforeConnect(Sender: TObject);
     procedure ReadAccess;
     procedure BEBEDOUROReconcileError(DataSet: TFDDataSet; E: EFDException;
@@ -452,6 +461,7 @@ type
     procedure AbreCurrais(vPropriedade, vFiltro: string);
     procedure AbreBebedouro(vPropriedade, vFiltro: string);
     procedure AbreBuscaAnimal(vFiltro:string);
+    function  RetornaIdAnimal(vFiltro: string):string;
     procedure AbreCocho(vPropriedade, vFiltro: string);
     procedure AbreLimpezaBebedouro(vPropriedade, vFiltro: string);
     function  RetornaNomeBebedouro(vId:string):string;
@@ -483,6 +493,7 @@ type
     function  RetornaIdFabricacao: integer;
     procedure AbreFornecimentoLote(IdForn: string);
     procedure AbreLinhaConfimaneto;
+    procedure AbreSanidadeAnimal(IdAnimal:string);
     function  VerificaFornecimentoExite(vData,vIdCurral,vTrato,vIdDieta:string):Boolean;
   end;
 
@@ -580,6 +591,22 @@ begin
       ShowMessage('Erro ao inserir Controle de Acesso : '+E.Message);
   end;
 end;
+
+function Tdmdb.RetornaIdAnimal(vFiltro: string):string;
+begin
+ with qryAux,qryAux.SQL do
+ begin
+   Clear;
+   Add('SELECT');
+   Add(' *');
+   Add('FROM ANIMAL a');
+   Add('WHERE a.STATUS =1');
+   Add(vFiltro);
+   Open;
+   Result := FieldByName('ID').AsString;
+ end;
+end;
+
 
 procedure Tdmdb.AbreBuscaAnimal(vFiltro: string);
 begin
@@ -1041,6 +1068,18 @@ begin
  end;
 end;
 
+procedure Tdmdb.AbreSanidadeAnimal(IdAnimal: string);
+begin
+ with HIST_SANIDADE,HIST_SANIDADE.SQL do
+ begin
+   Clear;
+   Add('SELECT * FROM HIST_SANIDADE');
+   Add('WHERE ID_ANIMAL='+IdAnimal);
+   Add('order by DATA_APLICACAO desc');
+   Open;
+ end;
+end;
+
 procedure Tdmdb.AtualizaRealizadoIsnumo(vID,vRealizado: String);
 var
  qryAux : TFDQuery;
@@ -1214,10 +1253,10 @@ begin
  {$IF DEFINED(iOS) or DEFINED(ANDROID)}
    FCon.Params.DriverID :='SQLite';
    FCon.Params.Values['Database'] :=
-   TPath.Combine(TPath.GetDocumentsPath,'FP2.db');
+   TPath.Combine(TPath.GetDocumentsPath,'FPecMobile.db');
  {$ENDIF}
  {$IFDEF MSWINDOWS}
-   vPath := 'E:\Projetos2021\Field\FieldPecMobile\Android\FieldPec\db\Fieldw.db3';
+   vPath := ExtractFilePath(ParamStr(0))+'db\FPecMobile.db';
    if FileExists(vPath) then
    begin
     FCon.Params.DriverID :='SQLite';

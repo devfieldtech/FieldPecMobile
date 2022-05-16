@@ -129,8 +129,14 @@ type
     vTabInex:integer;
     c          : TCustomCombo;
     procedure GeraCombo;
-    procedure ItemLoteClick(Sender: TObject; const Point: TPointF);
-    procedure ItemRacaoClick(Sender: TObject; const Point: TPointF);
+    {$IFDEF ANDROID}
+     procedure ItemLoteClick(Sender: TObject; const Point: TPointF);
+     procedure ItemRacaoClick(Sender: TObject; const Point: TPointF);
+    {$ENDIF}
+    {$IFDEF MSWINDOWS}
+     procedure ItemLoteClick(Sender: TObject);
+     procedure ItemRacaoClick(Sender: TObject);
+    {$ENDIF}
     procedure GeraGrafico(IdLocal: string);
     procedure GeraComboRacao;
   end;
@@ -316,7 +322,7 @@ begin
  c.ShowMenu;
  WebBrowser3.Visible := false;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmDashBoard.ItemRacaoClick(Sender: TObject; const Point: TPointF);
 begin
  c.HideMenu;
@@ -324,7 +330,16 @@ begin
  vIdRacao          := c.CodItem;
  WebBrowser3.Visible := true;
 end;
-
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+procedure TfrmDashBoard.ItemRacaoClick(Sender: TObject);
+begin
+ c.HideMenu;
+ edtRacao.Text     := c.NomeItem;
+ vIdRacao          := c.CodItem;
+ WebBrowser3.Visible := true;
+end;
+{$ENDIF}
 procedure TfrmDashBoard.GeraComboRacao;
 begin
   c := TCustomCombo.Create(frmDashBoard);
@@ -675,7 +690,7 @@ begin
     dmDash.CurraisCombo.Next;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmDashBoard.ItemLoteClick(Sender: TObject; const Point: TPointF);
 begin
  c.HideMenu;
@@ -687,5 +702,19 @@ begin
  WebBrowser2.Visible   := false;
  GeraGrafico(vIdCurral);
 end;
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+procedure TfrmDashBoard.ItemLoteClick(Sender: TObject);
+begin
+ c.HideMenu;
+ lblCurral.Text        := c.NomeItem;
+ vIdCurral             := c.CodItem;
+ lblTotalAnimais.Text  := c.DescricaoItem;
+ lblDiasMedio.Text     := c.DescricaoItem2;
+ lblPesoMedio.Text     := Formatfloat('0.00',c.DescricaoItem1);
+ WebBrowser2.Visible   := false;
+ GeraGrafico(vIdCurral);
+end;
+{$ENDIF}
 
 end.

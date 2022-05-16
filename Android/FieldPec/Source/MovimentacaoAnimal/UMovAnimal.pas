@@ -319,7 +319,7 @@ begin
  edtDestino.Text :='';
  edtMotivo.Text  :='';
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmMovAnimal.LocationPermissionRequestResult(Sender: TObject;
   const APermissions: TArray<string>;
   const AGrantResults: TArray<TPermissionStatus>);
@@ -338,7 +338,7 @@ begin
       ('Não é possível acessar o GPS porque o app não possui acesso');
   end;
 end;
-
+{$ENDIF}
 procedure TfrmMovAnimal.BuscaOrigemClick(Sender: TObject);
 begin
  frmListAnimal:= TfrmListAnimal.Create(nil);
@@ -504,7 +504,7 @@ begin
      TFrame(Components[i]).Destroy;
   end;
 end;
-
+{$IFDEF ANDROID}
 procedure TfrmMovAnimal.DisplayRationale(Sender: TObject;
   const APermissions: TArray<string>; const APostRationaleProc: TProc);
 var
@@ -522,6 +522,6 @@ begin
       APostRationaleProc;
     end)
 end;
-
+{$ENDIF}
 end.
 

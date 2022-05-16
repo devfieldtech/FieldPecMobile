@@ -363,9 +363,9 @@ begin
         begin
          TThread.Synchronize(nil, procedure
          begin
-           ShowMessage('Erro ao sioncronizar Start Diario : '+e.Message);
+           ShowMessage('Erro ao sioncronizar Limpeza de Bebedouro : '+e.Message);
          end);
-         Result:='Erro ao sioncronizar Start Diario : '+e.Message;
+         Result:='Erro ao sioncronizar Limpeza de Bebedouro : '+e.Message;
          Break;
         end;
        end;

@@ -228,6 +228,8 @@ type
     FORNECIMENTO_PREVISTODATA_ALTERACAO: TSQLTimeStampField;
     HIST_CONSUMOID_CURRAL: TIntegerField;
     HIST_CONSUMOIMSPV: TFMTBCDField;
+    HIST_SANIDADE: TFDQuery;
+    HIST_SANIDADEINSERTINTO: TStringField;
     procedure LIMPEZABEBEDOUROReconcileError(DataSet: TFDDataSet;
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);
@@ -266,10 +268,12 @@ type
     vLic,vSenhaUserLogado,vNomeProdutorEmbarque,vTotalAnimais :string;
     vCadPedido,vGeraAnexoSaida,vCadGTA,vSyncBC: integer;
     function ConectaBD:Boolean;
+    procedure AbreSanidade(idPropriedade:string);
 
     function GetGeneric(DataSet: TDataSet):TJSONObject;
     function GetGenericPostPropriedade(DataSet: TDataSet;obj: TJSONObject):TJSONObject;
     function GetAnimaisPostPropriedade(DataSet: TDataSet;obj: TJSONObject):TJSONObject;
+    function GetHistSanidadePostPropriedade(DataSet: TDataSet;obj: TJSONObject):TJSONObject;
     function GetTestaServidor: TJSONObject;
 
     function AcceptLimpezaBebedouro(obj: TJSONObject): TJSONObject;
@@ -293,6 +297,11 @@ implementation
 uses UPrincipal;
 
 {$R *.dfm}
+
+procedure TdmDB.AbreSanidade(idPropriedade: string);
+begin
+
+end;
 
 function TdmDB.AcceptFabricacao(obj: TJSONObject): TJSONObject;
 var
@@ -1491,6 +1500,62 @@ begin
     DataSet.Filtered := true;
     vQtd := DataSet.RecordCount;
     Result := GetDataSetAsJSON(DataSet);
+   end;
+end;
+
+function TdmDB.GetHistSanidadePostPropriedade(DataSet: TDataSet;
+  obj: TJSONObject): TJSONObject;
+var
+ LJSon      : TJSONArray;
+ StrAux     : TStringWriter;
+ txtJson    : TJsonTextWriter;
+ InsertInto : string;
+ vJsonString :string;
+ vJoInsert,vJoItemO,vJoItemO1 : TJSONObject;
+ vJoItem,vJoItem1: TJSONArray;
+ vidPropriedade:string;
+ IStatus:integer;
+begin
+   vJsonString      := Obj.ToString;
+   vJoInsert        := TJSONObject.ParseJSONValue(vJsonString) as TJSONObject;
+   vJoItem          := vJoInsert.GetValue('IDPROPRIEDADE') as TJSONArray;
+   vJoItemO         := vJoItem.Items[0] as TJSONObject;
+   vidPropriedade   :=  vJoItemO.GetValue('id').value;
+   HIST_SANIDADE.Filtered := false;
+   HIST_SANIDADE.Close;
+   HIST_SANIDADE.Open;
+   HIST_SANIDADE.Filter   := 'ID_PROPRIEDADE='+vidPropriedade;
+   HIST_SANIDADE.Filtered := true;
+   if not HIST_SANIDADE.IsEmpty then
+   begin
+    StrAux  := TStringWriter.Create;
+     txtJson := TJsonTextWriter.Create(StrAux);
+     txtJson.Formatting := TJsonFormatting.Indented;
+     TxtJSON.WriteStartObject; //Objeto maior
+     TxtJSON.WritePropertyName('HIST_SANIDADE');
+     TxtJSON.WriteStartArray; //Objeto pedido
+     while not HIST_SANIDADE.Eof do
+     begin
+      txtJson.WriteStartObject;
+      txtJson.WritePropertyName('INSERT');
+      txtJson.WriteValue(HIST_SANIDADE.FieldByName('InsertInto').AsString);
+      txtJson.WriteEndObject;
+      HIST_SANIDADE.Next;
+     end;
+     TxtJSON.WriteEndArray; //Fecha Array dos Itens
+     TxtJSON.WriteEndObject;  //Fecha Cabecalho do pedido
+     Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+   end
+   else
+   begin
+    StrAux  := TStringWriter.Create;
+    txtJson := TJsonTextWriter.Create(StrAux);
+    txtJson.Formatting := TJsonFormatting.Indented;
+    txtJson.WriteStartObject;
+     txtJson.WritePropertyName('Mensagem');
+     txtJson.WriteValue('Nenhum HIST_SANIDADE encontrado!');
+    txtJson.WriteEndObject;
+    Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
    end;
 end;
 

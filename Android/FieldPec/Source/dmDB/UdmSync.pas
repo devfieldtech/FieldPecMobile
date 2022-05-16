@@ -144,6 +144,7 @@ type
     function  GetGenerico(DataSet: TFDQuery): string;
     function  GetGenericoPostIdPropriedade(DataSet: TFDQuery): string;
     function  GetAnimais: string;
+    function  GetHistSanidade: string;
     procedure DeletaTabelaSync(Atabela:string);
     procedure DeletaTabelaSyncPropriedade(Atabela,vIDProp:string);
     procedure DeletaHistConsumoSyncPropriedade(vIDProp:string);
@@ -399,10 +400,90 @@ begin
  except
  on E: Exception do
    begin
-     Raise exception.Create(E.Message);
+     frmPrincipal.FrameSync1.mlog.text :=(E.Message);
    end;
  end;
 end;
+
+function TdmSync.GetHistSanidade: string;
+var
+ Url,vJsonString,vID:string;
+ vJoInsert,vJoItemO,vJoItemO1,jSubObj,vJoGetJ : TJSONObject;
+ vJoItem,vJoItem1,vJoGet  : TJSONArray;
+ JsonValue,JsonId:TJSONValue;
+ I,J:integer;
+ joName,objJson,joItem : TJSONObject;
+ joItems: TJSONArray;
+ StrAux      : TStringWriter;
+ txtJson     : TJsonTextWriter;
+ LJsonObj    : TJSONObject;
+ JsonToSend  : TStringStream;
+begin
+ if (Host.Length=0) or (Porta.Length=0) then
+  begin
+   dmdb.qryConfig.Close;
+   dmdb.qryConfig.Open;
+   Host  := dmdb.qryConfigIP_SERVIDOR.AsString;
+   Porta := dmdb.qryConfigPOTA_SERVIDOR.AsString;
+  end;
+
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  TxtJSON.WriteStartObject;
+  TxtJSON.WritePropertyName('IDPROPRIEDADE');
+  TxtJSON.WriteStartArray;
+    txtJson.WriteStartObject;
+    txtJson.WritePropertyName('id');
+    txtJson.WriteValue(dmdb.vIdPropriedade);
+  TxtJSON.WriteEndArray;
+  TxtJSON.WriteEndObject;
+  LJsonObj := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+  JsonToSend := TStringStream.Create(LJsonObj.ToJSON);
+ Url :='http://'+Host+':'+Porta+'/HIST_SANIDADE';
+ frmPrincipal.IdHTTP1.Request.CustomHeaders.Clear;
+ try
+  vJsonString        := frmPrincipal.IdHTTP1.Post(URL,JsonToSend);
+  DeletaTabelaSyncPropriedade('HIST_SANIDADE',dmdb.vIdPropriedade);
+  if(vJsonString<>'{"Mensagem":"Nenhum Historico Sanidade encontrado!"}') then
+  begin
+    jSubObj  := TJSONObject.ParseJSONValue(vJsonString) as TJSONObject;
+     vJoGet := jSubObj.GetValue<TJSONArray>('HIST_SANIDADE') as TJSONArray;
+     for i := 0 to vJoGet.Count-1 do
+     begin
+        vJoGetJ         := vJoGet.Items[i] as TJSONObject;
+        vID             := vJoGetJ.GetValue('INSERT').value;
+        if vID.Length>0 then
+        begin
+          with qryAux,qryAux.SQL do
+          begin
+            Clear;
+            Add(vID);
+            try
+              ExecSQL;
+              TThread.Synchronize(nil, procedure
+               begin
+                  frmPrincipal.FrameSync1.mlog.text :=('Historico Sanidade '+intToStr(i)+' de '+intToStr(vJoGet.Count));
+               end);
+            except
+              on E: Exception do
+               Raise exception.Create(E.Message);
+            end;
+          end;
+        end;
+     end;
+     result:='Animais Baixado com Sucesso!'
+  end
+  else
+   Result :=vJsonString;
+ except
+ on E: Exception do
+   begin
+     frmPrincipal.FrameSync1.mlog.text :=(E.Message);
+   end;
+ end;
+end;
+
 
 function TdmSync.GetGenerico(DataSet: TFDQuery): string;
 var
@@ -461,8 +542,7 @@ begin
               result:='Erro:'+E.Message;
             end;
          end;
-         result:=StringReplace(DataSet.Name,'T','',[rfReplaceAll])+
-         ' Baixados com Sucesso!'
+         result:='Dados Baixados com Sucesso!'
       end
       else
        Result :=StringReplace(DataSet.Name,'T','',[rfReplaceAll])+' Sem Dados Para Baixar!'
@@ -576,11 +656,10 @@ begin
               result:='Erro:'+E.Message;
             end;
          end;
-         result:=StringReplace(DataSet.Name,'T','',[rfReplaceAll])+
-         ' Baixados com Sucesso!'
+         result:='Dados Baixados com Sucesso!'
       end
       else
-       Result :=StringReplace(DataSet.Name,'T','',[rfReplaceAll])+' Sem Dados Para Baixar!'
+       Result :='Sem Dados Para Baixar!'
      end
      else
        Result :=vJsonString;

@@ -92,6 +92,11 @@ type
     ShadowEffect15: TShadowEffect;
     Label15: TLabel;
     chkBaixaAnimais: TButton;
+    btnSanidade: TRectangle;
+    Image10: TImage;
+    ShadowEffect9: TShadowEffect;
+    Label2: TLabel;
+    chkBaixaHistSani: TButton;
     procedure btnFechaSyncClick(Sender: TObject);
     procedure btnEnviarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -103,6 +108,8 @@ type
     procedure chkBaixaAnimaisClick(Sender: TObject);
     procedure btnBaixaAllClick(Sender: TObject);
     procedure btnAnimaisClick(Sender: TObject);
+    procedure chkBaixaHistSaniClick(Sender: TObject);
+    procedure btnSanidadeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -272,6 +279,15 @@ begin
       mlog.text :=(dmSync.GetAnimais);
       Sleep(1000);
     end;
+    if chkBaixaHistSani.Text='X' then
+    begin
+      TThread.Synchronize(nil, procedure
+      begin
+       mlog.text :=('Baixando Hist. Sanidade...');
+      end);
+      mlog.text :=(dmSync.GetHistSanidade);
+      Sleep(1000);
+    end;
 
     TThread.Synchronize(nil, procedure
     begin
@@ -409,12 +425,28 @@ begin
  Visible := false;
 end;
 
+procedure TFrameSync.btnSanidadeClick(Sender: TObject);
+begin
+   if chkBaixaHistSani.Text='' then
+   chkBaixaHistSani.Text :='X'
+  else
+   chkBaixaHistSani.Text :='';
+end;
+
 procedure TFrameSync.chkBaixaAnimaisClick(Sender: TObject);
 begin
   if chkBaixaAnimais.Text='' then
    chkBaixaAnimais.Text :='X'
   else
    chkBaixaAnimais.Text :='';
+end;
+
+procedure TFrameSync.chkBaixaHistSaniClick(Sender: TObject);
+begin
+   if chkBaixaHistSani.Text='' then
+   chkBaixaHistSani.Text :='X'
+  else
+   chkBaixaHistSani.Text :='';
 end;
 
 procedure TFrameSync.Rectangle19Click(Sender: TObject);

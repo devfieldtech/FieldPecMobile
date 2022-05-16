@@ -53,7 +53,8 @@ uses
   UFrameLoteFornecimento in '..\FornecimentoConf\UFrameLoteFornecimento.pas' {FrameLoteFornecimento: TFrame},
   UTeclado in '..\Teclado\UTeclado.pas' {frmTeclado},
   UDMDashBoard in '..\dmDB\UDMDashBoard.pas' {dmDash: TDataModule},
-  UDashBoard in '..\DashBoard\UDashBoard.pas' {frmDashBoard};
+  UDashBoard in '..\DashBoard\UDashBoard.pas' {frmDashBoard},
+  UHistSanidade in '..\HistSanidade\UHistSanidade.pas' {frmHistSanidade};
 
 {$R *.res}
 
@@ -84,5 +85,6 @@ begin
   Application.CreateForm(TfrmTeclado, frmTeclado);
   Application.CreateForm(TdmDash, dmDash);
   Application.CreateForm(TfrmDashBoard, frmDashBoard);
+  Application.CreateForm(TfrmHistSanidade, frmHistSanidade);
   Application.Run;
 end.

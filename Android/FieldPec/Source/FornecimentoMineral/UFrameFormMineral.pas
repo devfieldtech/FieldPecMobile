@@ -41,6 +41,10 @@ type
     Label4: TLabel;
     lblEstoqueCasinha: TLabel;
     lblMineral: TMemo;
+    Label5: TLabel;
+    lblRealizadoCochoKG: TLabel;
+    Label7: TLabel;
+    lblEstoqueCasinhaKG: TLabel;
   private
     { Private declarations }
   public

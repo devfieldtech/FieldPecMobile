@@ -6,7 +6,7 @@ object dmdb: Tdmdb
     Params.Strings = (
       
         'Database=E:\Projetos2021\Field\FieldPecMobile\Android\FieldPec\d' +
-        'b\FP2.db'
+        'b\FPecMobile.db'
       'LockingMode=Normal'
       'DriverID=SQLite')
     Connected = True
@@ -2289,6 +2289,50 @@ object dmdb: Tdmdb
       ProviderFlags = []
       ReadOnly = True
       Size = 32767
+    end
+  end
+  object HIST_SANIDADE: TFDQuery
+    Connection = FCon
+    SQL.Strings = (
+      'SELECT * FROM HIST_SANIDADE')
+    Left = 256
+    Top = 336
+    object HIST_SANIDADEID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object HIST_SANIDADEID_ANIMAL: TIntegerField
+      FieldName = 'ID_ANIMAL'
+      Origin = 'ID_ANIMAL'
+      Required = True
+    end
+    object HIST_SANIDADEID_PROPRIEDADE: TIntegerField
+      FieldName = 'ID_PROPRIEDADE'
+      Origin = 'ID_PROPRIEDADE'
+    end
+    object HIST_SANIDADEDATA_APLICACAO: TDateField
+      FieldName = 'DATA_APLICACAO'
+      Origin = 'DATA_APLICACAO'
+    end
+    object HIST_SANIDADEPRODUTO: TStringField
+      FieldName = 'PRODUTO'
+      Origin = 'PRODUTO'
+      Size = 100
+    end
+    object HIST_SANIDADEDOSE_ML: TBCDField
+      FieldName = 'DOSE_ML'
+      Origin = 'DOSE_ML'
+      Precision = 15
+      Size = 3
+    end
+    object HIST_SANIDADECARENCIA_DIAS: TIntegerField
+      FieldName = 'CARENCIA_DIAS'
+      Origin = 'CARENCIA_DIAS'
+    end
+    object HIST_SANIDADECARENCIA_DATA: TDateField
+      FieldName = 'CARENCIA_DATA'
+      Origin = 'CARENCIA_DATA'
     end
   end
 end
