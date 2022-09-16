@@ -162,6 +162,7 @@ type
     FFrameLote : TFrameLoteLeitura;
     vIdLeitura,vIdBebedouro,vFlagSync,vIdLote,vIdCurral,vAjuste : string;
     vListBoxIdex:single;
+    vIndexLote:integer;
     procedure FrameMouseDown(Sender: TObject; Button: TMouseButton;
      Shift: TShiftState; X, Y: Single);
     procedure FrameMouseUp(Sender: TObject; Button: TMouseButton;
@@ -538,6 +539,7 @@ end;
 
 procedure TfrmLeituraCocho.ItemLoteClick(Sender: TObject);
 begin
+ vIndexLote   := TListBoxItem(sender).Index;
  vIdLote      := TListBoxItem(sender).TagString;
  vIdCurral    := intToStr(TListBoxItem(sender).Tag);
  GeraGrafico(vIdLote);
@@ -612,7 +614,15 @@ begin
   dmdb.LEITURA_COCHO.ApplyUpdates(-1);
   ShowMessage('Leitura Lançada com Sucesso!');
   GeraListaCardLotes('');
-
+  if vIndexLote<ListaCardsLotes.Items.Count then
+  begin
+   try
+    ListaCardsLotes.ItemIndex  := vIndexLote + 1;
+   except
+    on E : Exception do
+     ShowMessage('Fim da Listas');
+   end;
+  end;
  except
    on E : Exception do
     ShowMessage('Erro ao Confirmar Registro : '+E.Message);

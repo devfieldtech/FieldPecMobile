@@ -495,6 +495,8 @@ type
     procedure AbreLinhaConfimaneto;
     procedure AbreSanidadeAnimal(IdAnimal:string);
     function  VerificaFornecimentoExite(vData,vIdCurral,vTrato,vIdDieta:string):Boolean;
+    function  RetornaUltimoTratoCurral(IdCurral:string):string;
+    function  RetornaUltimoTratoCorrigidoCurral(IdCurral: string): string;
   end;
 
 var
@@ -1240,6 +1242,38 @@ begin
 // end;
 end;
 
+function Tdmdb.RetornaUltimoTratoCurral(IdCurral: string): string;
+begin
+  with qryAux,qryAux.SQL do
+  begin
+    Clear;
+    Add('select MAX(trato) MAX_TRATO from FORNECIMENTO_CONF S');
+    Add('where ID_LOCAL ='+IdCurral);
+    Open;
+    Result := FieldByName('MAX_TRATO').AsString;
+  end;
+end;
+
+function Tdmdb.RetornaUltimoTratoCorrigidoCurral(IdCurral: string): string;
+var
+ vPrev,vReal:Double;
+begin
+  with qryAux,qryAux.SQL do
+  begin
+    Clear;
+    Add('select');
+    Add(' coalesce(sum(S.PREVISTO_MN_KG),0)PREVISTO_MN_KG,');
+    Add(' coalesce(sum(S.REALIZADO_MN_KG),0)REALIZADO_MN_KG');
+    Add('from FORNECIMENTO_CONF S');
+    Add('where ID_LOCAL ='+IdCurral);
+    Add('and DATA_FORN='+FormatDateTime('yyyy-mm-dd',date).QuotedString);
+    Open;
+    vPrev := FieldByName('PREVISTO_MN_KG').AsFloat;
+    vReal := FieldByName('REALIZADO_MN_KG').AsFloat;
+    Result := FloatToStr(vPrev-vReal);
+  end;
+end;
+
 procedure Tdmdb.FABRICACAOReconcileError(DataSet: TFDDataSet; E: EFDException;
   UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
 begin
@@ -1253,10 +1287,10 @@ begin
  {$IF DEFINED(iOS) or DEFINED(ANDROID)}
    FCon.Params.DriverID :='SQLite';
    FCon.Params.Values['Database'] :=
-   TPath.Combine(TPath.GetDocumentsPath,'FPecMobile.db');
+   TPath.Combine(TPath.GetDocumentsPath,'FPM.db');
  {$ENDIF}
  {$IFDEF MSWINDOWS}
-   vPath := ExtractFilePath(ParamStr(0))+'db\FPecMobile.db';
+   vPath := ExtractFilePath(ParamStr(0))+'db\FPM.db';
    if FileExists(vPath) then
    begin
     FCon.Params.DriverID :='SQLite';

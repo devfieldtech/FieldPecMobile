@@ -9,7 +9,6 @@ object dmdb: Tdmdb
         'b\FPecMobile.db'
       'LockingMode=Normal'
       'DriverID=SQLite')
-    Connected = True
     LoginPrompt = False
     BeforeConnect = FConBeforeConnect
     Left = 48
@@ -2301,6 +2300,7 @@ object dmdb: Tdmdb
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object HIST_SANIDADEID_ANIMAL: TIntegerField
       FieldName = 'ID_ANIMAL'

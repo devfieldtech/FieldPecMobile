@@ -138,7 +138,7 @@ begin
    if rdSisbov.IsChecked then
     vFiltro:=vFiltro+' and identificacao_2='+edtIdentificacao.Text.QuotedString;
    if RdManejo.IsChecked then
-    vFiltro:=vFiltro+' and SUBSTRING(IDENTIFICACAO_2 FROM 9 FOR 6)='+edtIdentificacao.Text.QuotedString;
+    vFiltro:=vFiltro+' and SUBSTR(IDENTIFICACAO_2,9,6)='+edtIdentificacao.Text.QuotedString;
    if rdChip.IsChecked then
     vFiltro:=vFiltro+' and identificacao_1='+edtIdentificacao.Text.QuotedString;
  end;

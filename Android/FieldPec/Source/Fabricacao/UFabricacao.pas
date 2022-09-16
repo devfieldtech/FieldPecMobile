@@ -191,11 +191,6 @@ type
   private
     c : TCustomCombo;
     {$IFDEF ANDROID}
-    procedure DisplayRationale(Sender: TObject;
-      const APermissions: TArray<string>; const APostRationaleProc: TProc);
-    procedure LocationPermissionRequestResult(Sender: TObject;
-      const APermissions: TArray<string>;
-      const AGrantResults: TArray<TPermissionStatus>);
     Location: TLocationCoord2D;
     FGeocoder: TGeocoder;
     Access_Fine_Location, Access_Coarse_Location : string;
@@ -203,7 +198,7 @@ type
      procedure LocationPermissionRequestResult
                 (Sender: TObject; const APermissions: TArray<string>;
                 const AGrantResults: TArray<TPermissionStatus>);
-     procedure DisplayRationale(Sender: TObject;
+    procedure DisplayRationale(Sender: TObject;
               const APermissions: TArray<string>; const APostRationaleProc: TProc);
     {$ENDIF}
   public

@@ -3,7 +3,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.embarcadero.PecMobile"
         android:versionCode="1"
-        android:versionName="1.0.0"
+        android:versionName="2022.06.01"
         android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="29" />
@@ -23,7 +23,7 @@
         android:debuggable="True" 
         android:largeHeap="False"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme"
+        android:theme="@android:style/Theme.NoTitleBar"
         android:hardwareAccelerated="true"
         android:resizeableActivity="false"
         android:requestLegacyExternalStorage="true">

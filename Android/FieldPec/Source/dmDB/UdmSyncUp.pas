@@ -115,6 +115,7 @@ type
     FORNECIMENTO_CONFID_USUARIO_ALTERACAO: TIntegerField;
     FORNECIMENTO_CONFDATA_ALTERACAO: TSQLTimeStampField;
     FORNECIMENTO_CONFSYNC: TIntegerField;
+    QryAuxLoopFab: TFDQuery;
   private
     procedure AlteraFlagSync(Atabela, AFlag,Aid: string);
     procedure AtualizaIdSyncFabricacao(AIdOld, AidNew: string);
@@ -146,36 +147,38 @@ var
  JsonToSend  : TStringStream;
  I:integer;
 begin
- with QryAuxLoop,QryAuxLoop.SQL do
- begin
-   Clear;
-   Add('select * from fabricacao where status=2 and sync=0');
-   Open;
-   while not QryAuxLoop.Eof do
+ Url := 'http://'+Host+':'+Porta+'/FABRICACAO';
+   with QryAuxLoopFab,QryAuxLoopFab.SQL do
    begin
-     with FABRICACAO,FABRICACAO.SQL do
+     Clear;
+     Add('select * from fabricacao where status=2 and sync=0');
+     Open;
+   end;
+   QryAuxLoopFab.First;
+   while not QryAuxLoopFab.Eof do
+   begin
+    with FABRICACAO,FABRICACAO.SQL do
      begin
       Clear;
-      Add('select * from fabricacao where id='+QryAuxLoop.FieldByName('id').AsString);
+      Add('select * from fabricacao where id='+QryAuxLoopFab.FieldByName('id').AsString);
       Open;
      end;
+     frmPrincipal.IdHTTP1.Request.CustomHeaders.Clear;
+     frmPrincipal.IdHTTP1.Request.CustomHeaders.Clear;
+     frmPrincipal.IdHTTP1.Request.ContentType := 'application/json';
+     frmPrincipal.IdHTTP1.Request.Accept      := 'application/json';
      if not FABRICACAO.IsEmpty then
      begin
        JsonToSend := TStringStream.Create(nil);
        FABRICACAO.SaveToStream(JsonToSend,sfJSON);
-       Url := 'http://'+Host+':'+Porta+'/FABRICACAO';
-       frmPrincipal.IdHTTP1.Request.CustomHeaders.Clear;
-       frmPrincipal.IdHTTP1.Request.CustomHeaders.Clear;
-       frmPrincipal.IdHTTP1.Request.ContentType := 'application/json';
-       frmPrincipal.IdHTTP1.Request.Accept      := 'application/json';
        try
          vReultHTTP := frmPrincipal.IdHTTP1.Post(url,JsonToSend);
          if copy(vReultHTTP,0,4)='{"OK'then
          begin
            vReultHTTP := StringReplace(vReultHTTP,'{"OK":"','',[rfReplaceAll]);
            vReultHTTP := StringReplace(vReultHTTP,'"}','',[rfReplaceAll]);
-           AlteraFlagSync('FABRICACAO','1',QryAuxLoop.FieldByName('id').AsString);
-           AtualizaIdSyncFabricacao(QryAuxLoop.FieldByName('id').AsString,
+           AlteraFlagSync('FABRICACAO','1',QryAuxLoopFab.FieldByName('id').AsString);
+           AtualizaIdSyncFabricacao(QryAuxLoopFab.FieldByName('id').AsString,
             vReultHTTP);
            PostFabricacaoInsumos(vReultHTTP);
          end
@@ -185,7 +188,7 @@ begin
            ShowMessage(vReultHTTP);
           end);
          Inc(I);
-         QryAuxLoop.Next;
+         QryAuxLoopFab.Next;
        except
         on E: Exception do
         begin
@@ -198,7 +201,6 @@ begin
        end;
      end;
    end;
- end;
  Result     := vReultHTTP;
 end;
 

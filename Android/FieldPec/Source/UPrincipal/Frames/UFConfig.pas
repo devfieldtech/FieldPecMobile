@@ -89,12 +89,12 @@ begin
      dmSync.GetGenerico(dmSync.PROPRIEDADES);
      dmdb.PROPRIEDADES.Close;
      dmdb.PROPRIEDADES.Open;
-     if vResult='USERS Baixados com Sucesso!' then
+     if vResult='Dados Baixados com Sucesso!' then
      begin
        ShowMessage('Usuarios baixados com sucesso');
        frmPrincipal.vPrimeiroAcesso := false;
-       Visible:=false;
        frmPrincipal.frmeLogin1.Visible := true;
+       Visible := false;
      end
      else
      begin

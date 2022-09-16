@@ -366,6 +366,7 @@ procedure TfrmFornecimento.GeraListaCardLotes(vFiltro: string);
 var
   I:integer;
   item: TListBoxItem;
+  vMaxTrato:string;
 begin
  if cbxTrato.ItemIndex=-1  then
  begin
@@ -396,6 +397,7 @@ begin
  I :=1;
  while not dmDB.LISTA_LOTE_FRAME.eof do
  begin
+  vMaxTrato := dmdb.RetornaUltimoTratoCurral(dmDB.LISTA_LOTE_FRAMEIDCURRAL.AsString);
   ListaCards.BeginUpdate;
   item := TListBoxItem.Create(self);
   FFrameLote := TFrameLoteFornecimento.Create(self);
@@ -431,7 +433,12 @@ begin
   FFrameLote.lblLote.Text           := dmDB.LISTA_LOTE_FRAMEIDLOTE.AsString;
   FFrameLote.lblRacaoPrevista.Text  := dmDB.LISTA_LOTE_FRAMERACAO.AsString;
   FFrameLote.lblTrato.Text          := dmDB.LISTA_LOTE_FRAMETRATO.AsString;
-  FFrameLote.lblPrevisto.Text       := dmDB.LISTA_LOTE_FRAMEPREVISTO_MN_KG.AsString;
+
+  if vMaxTrato=dmDB.LISTA_LOTE_FRAMETRATO.AsString then
+   FFrameLote.lblPrevisto.Text       := dmdb.RetornaUltimoTratoCorrigidoCurral(dmDB.LISTA_LOTE_FRAMEIDCURRAL.AsString)
+  else
+   FFrameLote.lblPrevisto.Text       := dmDB.LISTA_LOTE_FRAMEPREVISTO_MN_KG.AsString;
+
   FFrameLote.lblRealizado.Text      := dmDB.LISTA_LOTE_FRAMEREALIZADO_MN_KG.AsString;
   item.Parent                       := ListaCardsLotes;
 
@@ -584,7 +591,6 @@ begin
   dmdb.FORNECIMENTO_CONFVALOR_KG_RACAO.AsInteger := 0;
   dmdb.FORNECIMENTO_CONFSYNC.AsInteger           := 0;
   dmdb.FORNECIMENTO_CONF.ApplyUpdates(-1);
-  ShowMessage('Fornecimento Lançada com Sucesso!');
   GeraListaCardLotes('');
   if vIndexLote<ListaCardsLotes.Items.Count then
   begin

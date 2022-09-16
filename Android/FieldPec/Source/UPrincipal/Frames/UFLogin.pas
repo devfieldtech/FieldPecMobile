@@ -51,7 +51,6 @@ type
     BindSourceDB1: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkFillControlToField: TLinkFillControlToField;
-    lblVersao: TLabel;
     procedure btnLoginClick(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
     procedure btnLoginMouseDown(Sender: TObject; Button: TMouseButton;

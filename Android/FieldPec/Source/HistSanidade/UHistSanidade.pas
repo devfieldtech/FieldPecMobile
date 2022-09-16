@@ -28,9 +28,6 @@ type
     Layout7: TLayout;
     Label2: TLabel;
     Label1: TLabel;
-    Rectangle4: TRectangle;
-    edtIdentificacao: TEdit;
-    ClearEditButton2: TClearEditButton;
     Rectangle2: TRectangle;
     edtLocal: TEdit;
     ClearEditButton1: TClearEditButton;
@@ -54,8 +51,13 @@ type
     Layout3: TLayout;
     lblTotalRegistro: TLabel;
     Lista: TListView;
+    Rectangle4: TRectangle;
+    edtIdentificacao: TEdit;
+    ClearEditButton2: TClearEditButton;
     procedure btnLerQrClick(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
+    procedure btnCloseAllClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -66,7 +68,7 @@ var
   frmHistSanidade: TfrmHistSanidade;
 
 implementation
-USES UPrincipal;
+USES UPrincipal, UnitCamera;
 
 {$R *.fmx}
 
@@ -95,26 +97,21 @@ begin
    if rdSisbov.IsChecked then
     vFiltro:=vFiltro+' and identificacao_2='+edtIdentificacao.Text.QuotedString;
    if RdManejo.IsChecked then
-    vFiltro:=vFiltro+' and SUBSTRING(IDENTIFICACAO_2 FROM 9 FOR 6)='+edtIdentificacao.Text.QuotedString;
+    vFiltro:=vFiltro+' and SUBSTR(IDENTIFICACAO_2,9,6)='+edtIdentificacao.Text.QuotedString;
    if rdChip.IsChecked then
     vFiltro:=vFiltro+' and identificacao_1='+edtIdentificacao.Text.QuotedString;
  end;
+
  vIDAnimal := dmdb.RetornaIdAnimal(vFiltro);
  if vIDAnimal.Length<=0 then
  begin
    ShowMessage('Animal Não Encontrado!');
+   Lista.Items.Clear;
    Exit;
  end;
  Lista.Items.Clear;
  dmdb.AbreSanidadeAnimal(vIDAnimal);
- dmDB.HIST_SANIDADE.First;
- Lista.BeginUpdate;
- if vLayout <>nil then
-  vLayout.free;
- vLayout  := TLayout.Create(Lista);
-
- TThread.CreateAnonymousThread(
- procedure
+ if not dmDB.HIST_SANIDADE.IsEmpty then
  begin
      while not dmDB.HIST_SANIDADE.eof do
      begin
@@ -142,7 +139,14 @@ begin
         dmDB.HIST_SANIDADE.Next;
        end;
      end;
- end).Start;
+ end
+ else
+   ShowMessage('Animal não possui Histórico Sanitário!')
+end;
+
+procedure TfrmHistSanidade.btnCloseAllClick(Sender: TObject);
+begin
+  Close;
 end;
 
 procedure TfrmHistSanidade.btnLerQrClick(Sender: TObject);
@@ -161,10 +165,16 @@ begin
       edtIdentificacao.Text := copy(vCod,2,vCod.Length)
      else
       edtIdentificacao.Text := vCod;
-     GeraLista;
+//     GeraLista;
     end;
   end);
  {$ENDIF}
+end;
+
+procedure TfrmHistSanidade.FormShow(Sender: TObject);
+begin
+  Lista.Items.Clear;
+  edtIdentificacao.Text :='';
 end;
 
 end.

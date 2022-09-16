@@ -22,7 +22,7 @@ uses
   ,FMX.Media,System.IOUtils, UFLogin, UFConfig, IdBaseComponent, IdComponent,
   IdTCPConnection, IdTCPClient, IdHTTP, UFSync
  {$IFDEF MSWINDOWS}
-  ,Winapi.Windows, UHistSanidade
+  ,Winapi.Windows
  {$ENDIF}
   ;
 
@@ -217,6 +217,8 @@ type
     ShadowEffect25: TShadowEffect;
     Label25: TLabel;
     MediaPlayer26: TMediaPlayer;
+    layInferiro: TLayout;
+    lblVersao: TLabel;
     procedure FormShow(Sender: TObject);
     procedure btnCloseAllClick(Sender: TObject);
     procedure btnConfigMouseUp(Sender: TObject; Button: TMouseButton;
@@ -261,6 +263,12 @@ type
   public
    vPrimeiroAcesso:Boolean;
    procedure MostraMenu;
+   {$IF DEFINED(iOS) or DEFINED(ANDROID)}
+     function GetVersaoArq: string;
+   {$ENDIF}
+   {$IFDEF MSWINDOWS}
+     function  GetVersaoArqWin:string;
+   {$ENDIF}
   end;
 
 var
@@ -276,7 +284,7 @@ uses UDmDB, UdmSync, UCurrais, UFrameListaAlimentos, UAlimento, UFrameRaca,
   UFrameCocho, UListCocho, UFrameRebanho, UFrameProdutores,
   UFrameLimpaBebedouro, ULimpaBebedouro, UdmSyncUp, UListMotivoMov, UMovAnimal,
   UFornMineral, UFrameLeituraCocho, ULeituraCocho, UFabricacao, UFornecimento,
-  UDMDashBoard, UDashBoard;
+  UDMDashBoard, UDashBoard,UHistSanidade;
 
 procedure TfrmPrincipal.MostraMenu;
 begin
@@ -545,7 +553,7 @@ begin
 
  dmSyncUP.FABRICACAO.Close;
  dmSyncUP.FABRICACAO.Open;
- FrameSync1.lblFabricacao.Text :='Fabricação :'+intToStr(dmSyncUP.FABRICACAO_INSUMOS.RecordCount);
+ FrameSync1.lblFabricacao.Text :='Fabricação :'+intToStr(dmSyncUP.FABRICACAO.RecordCount);
 
  dmSyncUP.LEITURA_COCHO.Close;
  dmSyncUP.LEITURA_COCHO.Open;
@@ -566,8 +574,56 @@ begin
    TRectangle(sender).Opacity := 1;
 end;
 
+{$IFDEF MSWINDOWS}
+function TfrmPrincipal.GetVersaoArqWin: string;
+var
+  VerInfoSize: DWORD;
+  VerInfo: Pointer;
+  VerValueSize: DWORD;
+  VerValue: PVSFixedFileInfo;
+  Dummy: DWORD;
+begin
+  VerInfoSize := GetFileVersionInfoSize(PChar(
+  ParamStr(0)), Dummy);
+  GetMem(VerInfo, VerInfoSize);
+  GetFileVersionInfo(PChar(ParamStr(0)), 0,
+  VerInfoSize, VerInfo);
+  VerQueryValue(VerInfo, '\', Pointer(VerValue),
+  VerValueSize);
+  with VerValue^ do
+  begin
+    Result := IntToStr(dwFileVersionMS shr 16);
+    Result := Result + '.' + IntToStr(
+    dwFileVersionMS and $FFFF);
+    Result := Result + '.' + IntToStr(
+    dwFileVersionLS shr 16);
+    Result := Result + '.' + IntToStr(
+    dwFileVersionLS and $FFFF);
+  end;
+  FreeMem(VerInfo, VerInfoSize);
+end;
+{$ENDIF}
+
+{$IF DEFINED(iOS) or DEFINED(ANDROID)}
+function TfrmPrincipal.GetVersaoArq: string;
+var
+ PKGInfo:JPackageInfo;
+begin
+ PKGInfo := SharedActivity.getPackageManager.getPackageInfo(
+   SharedActivity.getPackageName,0);
+ result := JStringToString(PKGInfo.VersionName)
+end;
+{$ENDIF}
+
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
+ {$IFDEF MSWINDOWS}
+  lblversao.text                 := GetVersaoArqWin;
+ {$ENDIF}
+ {$IF DEFINED(iOS) or DEFINED(ANDROID)}
+  lblversao.text                 := GetVersaoArq;
+//  dmdb.CreateTablesVersao(GetVersaoArq);
+ {$ENDIF}
  recNutricaoAnimal.Visible := false;
  RecMenuAnimais.Visible := false;
  recSubMnuCad.Visible   := false;

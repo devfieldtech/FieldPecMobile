@@ -481,4 +481,10 @@ object dmSyncUp: TdmSyncUp
       Required = True
     end
   end
+  object QryAuxLoopFab: TFDQuery
+    CachedUpdates = True
+    Connection = dmdb.FCon
+    Left = 32
+    Top = 160
+  end
 end

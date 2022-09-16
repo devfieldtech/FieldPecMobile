@@ -86,5 +86,6 @@ begin
   Application.CreateForm(TdmDash, dmDash);
   Application.CreateForm(TfrmDashBoard, frmDashBoard);
   Application.CreateForm(TfrmHistSanidade, frmHistSanidade);
+  Application.CreateForm(TfrmHistSanidade, frmHistSanidade);
   Application.Run;
 end.
